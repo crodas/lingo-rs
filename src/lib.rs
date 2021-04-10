@@ -7,6 +7,7 @@ use std::str::FromStr;
 /// by build.rs
 use textcat::storage::FileContent;
 
+#[derive(PartialEq)]
 pub enum Language {
     Albanian,
     Arabic,
@@ -90,12 +91,6 @@ impl fmt::Display for Language {
 impl fmt::Debug for Language {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.name())
-    }
-}
-
-impl PartialEq<Language> for Language {
-    fn eq(&self, other: &Language) -> bool {
-        *self.name() == *other.name()
     }
 }
 
@@ -2558,193 +2553,615 @@ mod test {
     use crate::{Language, Lingo};
 
     #[test]
-    fn test_albanian() {
+    fn test_albanian_11() {
         let l = Lingo::new();
-
-        assert_eq!(Language::Albanian, l.get_language("Gjithkush ka të drejtën e shkollimit. Arsimi duhet të jetë falas, të paktën në shkollat fillore dhe të ulta. Arsimi fillor është i detyrueshëm. Arsimi teknik dhe profesional duhet të zgjerohet e arsimi i lartë duhet t\'u bëhet i mundshëm të gjithëve në bazë të aftësisë.").unwrap(), "Gjithkush ka të drejtën e shkollimit. Arsimi duhet të jetë falas, të paktën në shkollat fillore dhe të ulta. Arsimi fillor është i detyrueshëm. Arsimi teknik dhe profesional duhet të zgjerohet e arsimi i lartë duhet t\'u bëhet i mundshëm të gjithëve në bazë të aftësisë.");
+        let sample = "Gjithkush ka të drejtën e shkollimit. Arsimi duhet të jetë falas, të paktën në shkollat fillore dhe të ulta. Arsimi fillor është i detyrueshëm. Arsimi teknik dhe profesional duhet të zgjerohet e arsimi i lartë duhet t\'u bëhet i mundshëm të gjithëve në bazë të aftësisë.";
+        assert_eq!(
+            Language::Albanian,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
     }
 
     #[test]
-    fn test_catalan() {
+    fn test_spanish_21() {
         let l = Lingo::new();
-
-        assert_eq!(Language::Catalan, l.get_language("Francisco de Goya y Lucientes (Fuendetodos, Saragossa, 30 de març del 1746 - Bordeus, França, 15 d\'abril del 1828) fou un pintor i gravador aragonès. La seva obra comprèn la pintura de cavallet i mural, el gravat i el dibuix. En totes aquestes facetes va desenvolupar un estil que inaugura el romanticisme. La seva contribució representa també el començament de la pintura contemporània, i se\'l considera un precursor de les avantguardes pictòriques del segle XX.").unwrap(), "Francisco de Goya y Lucientes (Fuendetodos, Saragossa, 30 de març del 1746 - Bordeus, França, 15 d\'abril del 1828) fou un pintor i gravador aragonès. La seva obra comprèn la pintura de cavallet i mural, el gravat i el dibuix. En totes aquestes facetes va desenvolupar un estil que inaugura el romanticisme. La seva contribució representa també el començament de la pintura contemporània, i se\'l considera un precursor de les avantguardes pictòriques del segle XX.");
-
-        assert_eq!(Language::Catalan, l.get_language("La seva obra reflecteix el convuls període històric en què va viure, particularment per les conseqüències de la Guerra de la Independència Espanyola (Guerra del Francès), de la qual ha quedat la sèrie d\'estampes Els estralls de la guerra. Cal destacat també la famosa pintura La maja nua.").unwrap(), "La seva obra reflecteix el convuls període històric en què va viure, particularment per les conseqüències de la Guerra de la Independència Espanyola (Guerra del Francès), de la qual ha quedat la sèrie d\'estampes Els estralls de la guerra. Cal destacat també la famosa pintura La maja nua.");
-
-        assert_eq!(Language::Catalan, l.get_language("El claustre d\'estil romànic del Mas del Vent de Palamós és un conjunt arquitectònic suposadament datat del segle XII i que s\'ha considerat procedent de Castella que es troba dins d\'una finca privada des de 1959. La seva troballa va sortir a la premsa a inicis de juny de 2012 gràcies a la investigació de Gerardo Boto, investigador del Departament d\'Història i Història de l\'Art de la Universitat de Girona,[1] tot i que varis documents anteriors ja tenien constància de la seva existència.[2][3] L\'obra està mancada de qualsevol catalogació o protecció.[4]").unwrap(), "El claustre d\'estil romànic del Mas del Vent de Palamós és un conjunt arquitectònic suposadament datat del segle XII i que s\'ha considerat procedent de Castella que es troba dins d\'una finca privada des de 1959. La seva troballa va sortir a la premsa a inicis de juny de 2012 gràcies a la investigació de Gerardo Boto, investigador del Departament d\'Història i Història de l\'Art de la Universitat de Girona,[1] tot i que varis documents anteriors ja tenien constància de la seva existència.[2][3] L\'obra està mancada de qualsevol catalogació o protecció.[4]");
-
-        assert_eq!(Language::Catalan, l.get_language("Segons el càlcul de Gerardo Boto, les galeries fan 23,8 i 23,9 metres de llargada. Dues d\'elles presenten deu arcs sobre columnes i capitells dobles, excepte la del mig, que és quàdruple. De les altres dues galeries que acabarien de tancar el claustre de 44 capitells no se\'n conserven columnes ni arcs i els capitells reposen directament sobre les bases.[7] Envoltat de pins, oliveres i garrofers,[8] compta amb un petit teulat de ferro que el protegeix de la humitat.[9]").unwrap(), "Segons el càlcul de Gerardo Boto, les galeries fan 23,8 i 23,9 metres de llargada. Dues d\'elles presenten deu arcs sobre columnes i capitells dobles, excepte la del mig, que és quàdruple. De les altres dues galeries que acabarien de tancar el claustre de 44 capitells no se\'n conserven columnes ni arcs i els capitells reposen directament sobre les bases.[7] Envoltat de pins, oliveres i garrofers,[8] compta amb un petit teulat de ferro que el protegeix de la humitat.[9]");
-
-        assert_eq!(Language::Catalan, l.get_language("El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]").unwrap(), "El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]");
-
-        assert_eq!(Language::Catalan, l.get_language("El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]").unwrap(), "El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]");
-
-        assert_eq!(Language::Catalan, l.get_language("Xena: Warrior Princess (en català. Xena: la princesa guerrera) és una sèrie de televisió originalment emesa entre el 15 de setembre de 1995 i el 18 de juny de 2001. La sèrie va ser creada el 1995 pels directors i productors Robert Tapert i John Schulian, amb l\'ajuda dels productors Sam Raimi i RJ Stewart. La idea va sorgir a partir de Xena, un personatge secundari de la primera temporada de Hercules: The Legendary Journeys. Rodada a Nova Zelanda, es tracta d\'una coproducció entre aquest país i els Estats Units. La sèrie ha estat produïda per la Pacific Renaissance Pictures Ltd, els creadors són Robert Tapert i Sam Raimi, productors de la sèrie i fou distribuïda per Universal Studios. La sèrie, ambientada a l\'Antiga Grècia, narra les aventures de Xena (Lucy Lawless) i Gabrielle (Renée O\'Connor), dos grans guerreres i inseparables amigues que lluiten contra les injustícies de l\'època.").unwrap(), "Xena: Warrior Princess (en català. Xena: la princesa guerrera) és una sèrie de televisió originalment emesa entre el 15 de setembre de 1995 i el 18 de juny de 2001. La sèrie va ser creada el 1995 pels directors i productors Robert Tapert i John Schulian, amb l\'ajuda dels productors Sam Raimi i RJ Stewart. La idea va sorgir a partir de Xena, un personatge secundari de la primera temporada de Hercules: The Legendary Journeys. Rodada a Nova Zelanda, es tracta d\'una coproducció entre aquest país i els Estats Units. La sèrie ha estat produïda per la Pacific Renaissance Pictures Ltd, els creadors són Robert Tapert i Sam Raimi, productors de la sèrie i fou distribuïda per Universal Studios. La sèrie, ambientada a l\'Antiga Grècia, narra les aventures de Xena (Lucy Lawless) i Gabrielle (Renée O\'Connor), dos grans guerreres i inseparables amigues que lluiten contra les injustícies de l\'època.");
-
-        assert_eq!(Language::Catalan, l.get_language("La sèrie es va mantenir en l\'aire durant sis temporades als Estats Units, entre 1995 i 2001, convertint-se en la més reeixida de les sèries sindicades del moment i arribant a ser un autèntic fenomen social al llarg de tot el món .De fet, és considerada una de les millors sèries de la història per la revista TV Guide i, avui dia, el fanatisme per la sèrie continua actiu a Internet. Aquesta sèrie d\'aventures, vista en més de vuitanta-sis països dels cinc continents, ha rebut diversos premis, incloent un Emmy. A més, aprofitant l\'èxit de la mateixa, s\'han comercialitzat nombrosos productes sobre ella, com ara episodis en DVD, una pel·lícula, llibres, còmics o videojocs. La influència de la sèrie fora de la pantalla arriba a sectors com la comunitat lèsbica o la astronòmica, així com a altres sèries de televisió i pel·lícules.").unwrap(), "La sèrie es va mantenir en l\'aire durant sis temporades als Estats Units, entre 1995 i 2001, convertint-se en la més reeixida de les sèries sindicades del moment i arribant a ser un autèntic fenomen social al llarg de tot el món .De fet, és considerada una de les millors sèries de la història per la revista TV Guide i, avui dia, el fanatisme per la sèrie continua actiu a Internet. Aquesta sèrie d\'aventures, vista en més de vuitanta-sis països dels cinc continents, ha rebut diversos premis, incloent un Emmy. A més, aprofitant l\'èxit de la mateixa, s\'han comercialitzat nombrosos productes sobre ella, com ara episodis en DVD, una pel·lícula, llibres, còmics o videojocs. La influència de la sèrie fora de la pantalla arriba a sectors com la comunitat lèsbica o la astronòmica, així com a altres sèries de televisió i pel·lícules.");
+        let sample = "En el hotel ¡Ya estoy en el hotel! Ayer por la noche he llegado a la ciudad de Santiago de Compostela. ";
+        assert_eq!(
+            Language::Spanish,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
     }
 
     #[test]
-    fn test_dutch() {
+    fn test_spanish_22() {
         let l = Lingo::new();
-
-        assert_eq!(Language::Dutch, l.get_language("Het Nederlands is een West-Germaanse taal en de moedertaal van de meeste inwoners van Nederland, België en Suriname, de drie lidstaten van de Nederlandse Taalunie, een internationale instelling die onder meer de regels voor de Nederlandse standaardtaal vastlegt. In de Europese Unie spreken ongeveer 23 miljoen mensen Nederlands als eerste taal, en een bijkomende vijf miljoen als tweede taal. Verder is het Nederlands ook een officiële taal van de Caraïbische eilanden Aruba, Curaçao en Sint-Maarten, terwijl er nog minderheden bestaan in Frankrijk, Duitsland en in mindere mate Indonesië, en nog ruim een half miljoen sprekers in de Verenigde Staten, Canada en Australië. De Kaap-Hollandse dialecten van Zuid-Afrika en Namibië werden gestandaardiseerd tot Afrikaans, een wederzijds verstaanbare dochtertaal van het Nederlands.").unwrap(), "Het Nederlands is een West-Germaanse taal en de moedertaal van de meeste inwoners van Nederland, België en Suriname, de drie lidstaten van de Nederlandse Taalunie, een internationale instelling die onder meer de regels voor de Nederlandse standaardtaal vastlegt. In de Europese Unie spreken ongeveer 23 miljoen mensen Nederlands als eerste taal, en een bijkomende vijf miljoen als tweede taal. Verder is het Nederlands ook een officiële taal van de Caraïbische eilanden Aruba, Curaçao en Sint-Maarten, terwijl er nog minderheden bestaan in Frankrijk, Duitsland en in mindere mate Indonesië, en nog ruim een half miljoen sprekers in de Verenigde Staten, Canada en Australië. De Kaap-Hollandse dialecten van Zuid-Afrika en Namibië werden gestandaardiseerd tot Afrikaans, een wederzijds verstaanbare dochtertaal van het Nederlands.");
-
-        assert_eq!(Language::Dutch, l.get_language("Het Nederlands is nauw verwant aan het Engels en Duits, en wordt tussen beide geplaatst. Naast het feit dat het Nederlands de Hoogduitse klankverschuiving niet heeft ondergaan, verschilt het Nederlands – net als het Engels – verder ook van het Duits door de sterke reductie van de naamvallen, de algemene zeldzaamheid van de Germaanse umlaut en een meer regelmatige morfologie. Het moderne Nederlands heeft in oorsprong drie grammaticale geslachten, waarvan er twee in de praktijk grotendeels samenvallen (de de-woorden). Bijgevolg speelt het grammaticale geslacht een kleinere grammaticale rol dan in het Duits. De Nederlandse woordvolgorde is onderwerp-werkwoord-lijdend voorwerp (SVO) in hoofdzinnen maar past, net als in het Duits, inversie toe in bijzinnen (SOV). Het Nederlands kent een hoofdzakelijk Germaanse woordenschat, in grotere mate dan het sterk geromaniseerde Engels, maar aangevuld door een grotere Romaanse component dan in het Duits.").unwrap(), "Het Nederlands is nauw verwant aan het Engels en Duits, en wordt tussen beide geplaatst. Naast het feit dat het Nederlands de Hoogduitse klankverschuiving niet heeft ondergaan, verschilt het Nederlands – net als het Engels – verder ook van het Duits door de sterke reductie van de naamvallen, de algemene zeldzaamheid van de Germaanse umlaut en een meer regelmatige morfologie. Het moderne Nederlands heeft in oorsprong drie grammaticale geslachten, waarvan er twee in de praktijk grotendeels samenvallen (de de-woorden). Bijgevolg speelt het grammaticale geslacht een kleinere grammaticale rol dan in het Duits. De Nederlandse woordvolgorde is onderwerp-werkwoord-lijdend voorwerp (SVO) in hoofdzinnen maar past, net als in het Duits, inversie toe in bijzinnen (SOV). Het Nederlands kent een hoofdzakelijk Germaanse woordenschat, in grotere mate dan het sterk geromaniseerde Engels, maar aangevuld door een grotere Romaanse component dan in het Duits.");
+        let sample = "El hotel está a pocos minutos de la catedral. Hace un mes que he hecho la reserva de la habitación.";
+        assert_eq!(
+            Language::Spanish,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
     }
 
     #[test]
-    fn test_english() {
+    fn test_spanish_23() {
         let l = Lingo::new();
-
-        assert_eq!(Language::English, l.get_language("SEOUL, South Korea (AP) — The outside world focuses on the messages of doom and gloom from North Korea: bombastic threats of nuclear war, fantasy videos of U.S. cities in flames, digitally altered photos of leader Kim Jong Un guiding military drills. But back home, North Koreans get a decidedly softer dose of propaganda: Kim portrayed as a young, energetic leader, a people person and family man.").unwrap(), "SEOUL, South Korea (AP) — The outside world focuses on the messages of doom and gloom from North Korea: bombastic threats of nuclear war, fantasy videos of U.S. cities in flames, digitally altered photos of leader Kim Jong Un guiding military drills. But back home, North Koreans get a decidedly softer dose of propaganda: Kim portrayed as a young, energetic leader, a people person and family man.");
-
-        assert_eq!(Language::English, l.get_language("Mixed in with the images showing Kim aboard a speeding boat on a tour of front-line islands, or handing out commemorative rifles to smartly saluting soldiers, are those of Kim and his wife clapping at a dolphin show or linking arms with weeping North Korean children").unwrap(), "Mixed in with the images showing Kim aboard a speeding boat on a tour of front-line islands, or handing out commemorative rifles to smartly saluting soldiers, are those of Kim and his wife clapping at a dolphin show or linking arms with weeping North Korean children");
-
-        assert_eq!(Language::English, l.get_language("The pictures can look odd or obviously staged to outsiders. But they\'re carefully crafted propaganda meant to give North Koreans an image of a country governed by a leader who is as comfortable overseeing a powerful military as he is mingling with the people.").unwrap(), "The pictures can look odd or obviously staged to outsiders. But they\'re carefully crafted propaganda meant to give North Koreans an image of a country governed by a leader who is as comfortable overseeing a powerful military as he is mingling with the people.");
-
-        assert_eq!(Language::English, l.get_language("Views are the V in MVC. Views are responsible for generating the specific output required for the request. Often this is in the form of HTML, XML, or JSON, but streaming files and creating PDF’s that users can download are also responsibilities of the View Layer.").unwrap(), "Views are the V in MVC. Views are responsible for generating the specific output required for the request. Often this is in the form of HTML, XML, or JSON, but streaming files and creating PDF’s that users can download are also responsibilities of the View Layer.");
-
-        assert_eq!(Language::English, l.get_language("CakePHP comes with a few built-in View classes for handling the most common rendering scenarios").unwrap(), "CakePHP comes with a few built-in View classes for handling the most common rendering scenarios");
-
-        assert_eq!(Language::English, l.get_language("View extending allows you to wrap one view in another. Combining this with view blocks gives you a powerful way to keep your views DRY. For example, your application has a sidebar that needs to change depending on the specific view being rendered. By extending a common view file you can avoid repeating the common markup for your sidebar, and only define the parts that change").unwrap(), "View extending allows you to wrap one view in another. Combining this with view blocks gives you a powerful way to keep your views DRY. For example, your application has a sidebar that needs to change depending on the specific view being rendered. By extending a common view file you can avoid repeating the common markup for your sidebar, and only define the parts that change");
+        let sample = "Y estoy encantado! La habitación es de tamaño mediano. Tiene mucha luz y una gran ventana. ";
+        assert_eq!(
+            Language::Spanish,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
     }
 
     #[test]
-    fn test_esperanto() {
+    fn test_spanish_24() {
         let l = Lingo::new();
-
-        assert_eq!(Language::Esperanto, l.get_language("Lucy LAWLESS, naskiĝis kiel Lucille Frances Ryan (* 29-a de marto 1968 en Mount Albert, Nov-Zelando) estas novzelanda aktorino.").unwrap(), "Lucy LAWLESS, naskiĝis kiel Lucille Frances Ryan (* 29-a de marto 1968 en Mount Albert, Nov-Zelando) estas novzelanda aktorino.");
-
-        assert_eq!(Language::Esperanto, l.get_language("Ŝi iĝis mondkonata en la rolo de Xena, kiel ĉefrolulo de la televida serio. Ŝi ankaŭ rolludis en etaj roloj, kiel en la kineja filmo \"Spiderman\" aŭ en la TV-serio \"Tarzan\" en 2002. Ŝi ankaŭ donis sian voĉon ĉe \"The Simpsons\".").unwrap(), "Ŝi iĝis mondkonata en la rolo de Xena, kiel ĉefrolulo de la televida serio. Ŝi ankaŭ rolludis en etaj roloj, kiel en la kineja filmo \"Spiderman\" aŭ en la TV-serio \"Tarzan\" en 2002. Ŝi ankaŭ donis sian voĉon ĉe \"The Simpsons\".");
-
-        assert_eq!(Language::Esperanto, l.get_language("Ŝi estas edziniĝinta ekde 1998 kun Robert G. Tapert, produktisto de la serio \"Xena\"").unwrap(), "Ŝi estas edziniĝinta ekde 1998 kun Robert G. Tapert, produktisto de la serio \"Xena\"");
-
-        assert_eq!(Language::Esperanto, l.get_language("Laŭ sagao, la urbo (Barcino) estis fondita de Hamilkar Barka, patro de Hanibal Barka el Kartago. Post tio trakonstruis la urbon la romianoj al fortikaĵo (castrum). La centro de la urbo kuŝis sur Mons Taber, sur malgranda monteto proksime al la tiama Konsildomo (Plaça de Sant Jaume). Oni povas ankoraŭ hodiaŭ trovi restaĵojn de la romia urbomuro en la praurba parto. Gravaj romiaj trovitaĵoj estas ekspoziciitaj ĉe Plaça del Rei. En la 5-a jarcento la urbon konkeris visigotoj, en la 8-a jc. la maŭroj. En 801 konkeris la urbon la franca reĝo. Je 985 disrabis Barcelonon Al-Mansur, armeestro de Kordovo.").unwrap(), "Laŭ sagao, la urbo (Barcino) estis fondita de Hamilkar Barka, patro de Hanibal Barka el Kartago. Post tio trakonstruis la urbon la romianoj al fortikaĵo (castrum). La centro de la urbo kuŝis sur Mons Taber, sur malgranda monteto proksime al la tiama Konsildomo (Plaça de Sant Jaume). Oni povas ankoraŭ hodiaŭ trovi restaĵojn de la romia urbomuro en la praurba parto. Gravaj romiaj trovitaĵoj estas ekspoziciitaj ĉe Plaça del Rei. En la 5-a jarcento la urbon konkeris visigotoj, en la 8-a jc. la maŭroj. En 801 konkeris la urbon la franca reĝo. Je 985 disrabis Barcelonon Al-Mansur, armeestro de Kordovo.");
-
-        assert_eq!(Language::Esperanto, l.get_language("En la mezepoko Barcelono estis ĉefurbo de Reĝlando de Aragono kaj elstara mara kaj komerca potenco en la okcidenta Mediteranea maro, kun gravaj posedaĵoj, kiel Sardio kaj Sicilio. Ekde la 15-a jarcento, post la Kompromiso de Caspe (1412) kaj la enlanda milito (1462-1472), la urbo perdis potencon, unue favore al Valencio kaj poste al kastiliaj urboj. La malvenko en la milito de postveno de Hispanio (1701-1714) kaj la postaj reprezalioj de Filipo la 5-a de Kastilio plimalfortigis kaj katenis la urbon ĝis meze de la 19-a jarcento, kiam estiĝis permeso malkonstrui la urbomurojn.").unwrap(), "En la mezepoko Barcelono estis ĉefurbo de Reĝlando de Aragono kaj elstara mara kaj komerca potenco en la okcidenta Mediteranea maro, kun gravaj posedaĵoj, kiel Sardio kaj Sicilio. Ekde la 15-a jarcento, post la Kompromiso de Caspe (1412) kaj la enlanda milito (1462-1472), la urbo perdis potencon, unue favore al Valencio kaj poste al kastiliaj urboj. La malvenko en la milito de postveno de Hispanio (1701-1714) kaj la postaj reprezalioj de Filipo la 5-a de Kastilio plimalfortigis kaj katenis la urbon ĝis meze de la 19-a jarcento, kiam estiĝis permeso malkonstrui la urbomurojn.");
-
-        assert_eq!(Language::Esperanto, l.get_language("La ekonomia bonfarto permesis rapidegan plilarĝigon de la urbo, kiu ensorbis diversajn antaŭurbojn kiel Sants, Gràcia kaj Sarrià. Partoj de la urbo aldoniĝis post eventoj, kiel la internaciaj ekspozicioj de 1888 kaj 1929, la Olimpikaj ludoj (1992) aŭ la Forumo de la Kulturoj (2004).").unwrap(), "La ekonomia bonfarto permesis rapidegan plilarĝigon de la urbo, kiu ensorbis diversajn antaŭurbojn kiel Sants, Gràcia kaj Sarrià. Partoj de la urbo aldoniĝis post eventoj, kiel la internaciaj ekspozicioj de 1888 kaj 1929, la Olimpikaj ludoj (1992) aŭ la Forumo de la Kulturoj (2004).");
+        let sample = "Tengo una cama grande y una gran caja fuerte. Lamentablemente no tiene cuarto de baño propio, pero hay uno común en el pasillo.";
+        assert_eq!(
+            Language::Spanish,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
     }
 
     #[test]
-    fn test_euskara() {
+    fn test_spanish_25() {
         let l = Lingo::new();
+        let sample = "He realizado el check-in nada más llegar. Los empleados del hotel son muy amables. Me ha atendido una recepcionista que sabía hablar… ¡8 idiomas!";
+        assert_eq!(
+            Language::Spanish,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
-        assert_eq!(Language::Euskara, l.get_language("Eskozia (ingelesez eta scotseraz Scotland; Eskoziako gaeleraz Alba) Erresuma Batua osatzen duten lau herrialdeetatik iparraldeena kokatzen dena da. Ingalaterra eta Galesekin batera Britainia Handiko Uhartea osatzen dute, Eskoziak lurralde honen heren bat hartzen du eta 790 uharte baino gehiago ditu. Ipar eta mendebaldean Ozeano Atlantikoarekin mugatzen du, ekialdean Ipar Itsasoarekin, hegoaldean Ingalaterrarekin eta azkenik hego-mendebaldean Iparraldeko kanala eta Irlandako itsasoarekin. Eskoziar lurraldea 78.772 km2-tan hedatzen da eta bere biztanleria gutxi-gorabehera 5.116.900 biztanletakoa da, honek km2-ko 65 biztanleko dentsitatea ematen duelarik. Hiriburua Edinburgh da, aldiz hiririk handiena Glasgow, azken honen hiriguneak eskoziar biztanlegoaren %20a osatzen duelarik.").unwrap(), "Eskozia (ingelesez eta scotseraz Scotland; Eskoziako gaeleraz Alba) Erresuma Batua osatzen duten lau herrialdeetatik iparraldeena kokatzen dena da. Ingalaterra eta Galesekin batera Britainia Handiko Uhartea osatzen dute, Eskoziak lurralde honen heren bat hartzen du eta 790 uharte baino gehiago ditu. Ipar eta mendebaldean Ozeano Atlantikoarekin mugatzen du, ekialdean Ipar Itsasoarekin, hegoaldean Ingalaterrarekin eta azkenik hego-mendebaldean Iparraldeko kanala eta Irlandako itsasoarekin. Eskoziar lurraldea 78.772 km2-tan hedatzen da eta bere biztanleria gutxi-gorabehera 5.116.900 biztanletakoa da, honek km2-ko 65 biztanleko dentsitatea ematen duelarik. Hiriburua Edinburgh da, aldiz hiririk handiena Glasgow, azken honen hiriguneak eskoziar biztanlegoaren %20a osatzen duelarik.");
+    #[test]
+    fn test_guarani_31() {
+        let l = Lingo::new();
+        let sample = "Mayma yvypóra ou ko yvy ári iñapytyʼyre ha eteĩcha tekoruvicharenda ha akatúape jeguerekópe; ha ikatu rupi oikuaa añetéva ha añeteʼyva, iporãva ha ivaíva, tekotevẽ pehenguéicha oiko oñondivekuéra";
+        assert_eq!(
+            Language::Guarani,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
-        assert_eq!(Language::Euskara, l.get_language("1707 urterarte Eskoziako Erresuma independientea izan zen, data honetan Britainia Handia sortzeko Ingalaterrarekin Batasun Agiria sinatu zelarik. Batasunak ez zuen Eskoziako berezko sistema legal edo judizialaren aldaketarik suposatu, hau ordudanik Gales, Ingalaterra eta Ipar Irlandakotik ezberdina delarik, honenbestez nazioarteko zuzenbidean erakunde juridiko ezberdintzat onartu eta hartzen da. Berezko legeen biziraupena jaso da, baita eskoziar kulturako zati diren hezkuntza eta erlijio sistema ezberdinak, hauek mendeetan zehar garatu direlarik. XIX. mendean sortua, eskoziar independentismoa eragina eta indarra pilatuz joan da, batez ere XX. mendearen amaieratik aurrera, eta Scottish National Party (SNP, Eskoziako Alderdi Nazionala) alderdia ordezkari duela. Alderdi horren helburu nagusia Eskoziaren independentzia da eta 2011ko Eskoziar Parlamenturako hauteskundeetan gehiengo absolutua lortu zuen.").unwrap(), "1707 urterarte Eskoziako Erresuma independientea izan zen, data honetan Britainia Handia sortzeko Ingalaterrarekin Batasun Agiria sinatu zelarik. Batasunak ez zuen Eskoziako berezko sistema legal edo judizialaren aldaketarik suposatu, hau ordudanik Gales, Ingalaterra eta Ipar Irlandakotik ezberdina delarik, honenbestez nazioarteko zuzenbidean erakunde juridiko ezberdintzat onartu eta hartzen da. Berezko legeen biziraupena jaso da, baita eskoziar kulturako zati diren hezkuntza eta erlijio sistema ezberdinak, hauek mendeetan zehar garatu direlarik. XIX. mendean sortua, eskoziar independentismoa eragina eta indarra pilatuz joan da, batez ere XX. mendearen amaieratik aurrera, eta Scottish National Party (SNP, Eskoziako Alderdi Nazionala) alderdia ordezkari duela. Alderdi horren helburu nagusia Eskoziaren independentzia da eta 2011ko Eskoziar Parlamenturako hauteskundeetan gehiengo absolutua lortu zuen.");
+    #[test]
+    fn test_catalan_41() {
+        let l = Lingo::new();
+        let sample = "Francisco de Goya y Lucientes (Fuendetodos, Saragossa, 30 de març del 1746 - Bordeus, França, 15 d\'abril del 1828) fou un pintor i gravador aragonès. La seva obra comprèn la pintura de cavallet i mural, el gravat i el dibuix. En totes aquestes facetes va desenvolupar un estil que inaugura el romanticisme. La seva contribució representa també el començament de la pintura contemporània, i se\'l considera un precursor de les avantguardes pictòriques del segle XX.";
+        assert_eq!(
+            Language::Catalan,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
-        assert_eq!(Language::Euskara, l.get_language("Meneame.net taldeko adimena erabiliz albisteak ezagutarazteko balio duen gaztelaniazko bloga da. Erregistratutako erabiltzaileek gainontzekoek (erregistratuta edo gabe) bozka ditzaketen albisteak bidal ditzakete webgunera, boto gehien dituzten albisteak azalera pasako direlarik. Proiektu honen garatzailea Ricardo Galli da, Balear Uharteetako Unibertsitateko irakaslea.").unwrap(), "Meneame.net taldeko adimena erabiliz albisteak ezagutarazteko balio duen gaztelaniazko bloga da. Erregistratutako erabiltzaileek gainontzekoek (erregistratuta edo gabe) bozka ditzaketen albisteak bidal ditzakete webgunera, boto gehien dituzten albisteak azalera pasako direlarik. Proiektu honen garatzailea Ricardo Galli da, Balear Uharteetako Unibertsitateko irakaslea.");
+    #[test]
+    fn test_catalan_42() {
+        let l = Lingo::new();
+        let sample = "La seva obra reflecteix el convuls període històric en què va viure, particularment per les conseqüències de la Guerra de la Independència Espanyola (Guerra del Francès), de la qual ha quedat la sèrie d\'estampes Els estralls de la guerra. Cal destacat també la famosa pintura La maja nua.";
+        assert_eq!(
+            Language::Catalan,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
-        assert_eq!(Language::Euskara, l.get_language("Web 2.0 proiektu bat da, Digg.com-en ideia berean oinarrituz. Hala eta guztiz ere, azken honek ez bezala, karma bezalako kontzeptuak ere baditu. Karma erabiltzaile batek duen puntuazioa da, bere partehartzea eta lan onaren ondorioz handituz doana.").unwrap(), "Web 2.0 proiektu bat da, Digg.com-en ideia berean oinarrituz. Hala eta guztiz ere, azken honek ez bezala, karma bezalako kontzeptuak ere baditu. Karma erabiltzaile batek duen puntuazioa da, bere partehartzea eta lan onaren ondorioz handituz doana.");
+    #[test]
+    fn test_catalan_43() {
+        let l = Lingo::new();
+        let sample = "El claustre d\'estil romànic del Mas del Vent de Palamós és un conjunt arquitectònic suposadament datat del segle XII i que s\'ha considerat procedent de Castella que es troba dins d\'una finca privada des de 1959. La seva troballa va sortir a la premsa a inicis de juny de 2012 gràcies a la investigació de Gerardo Boto, investigador del Departament d\'Història i Història de l\'Art de la Universitat de Girona,[1] tot i que varis documents anteriors ja tenien constància de la seva existència.[2][3] L\'obra està mancada de qualsevol catalogació o protecció.[4]";
+        assert_eq!(
+            Language::Catalan,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
+    #[test]
+    fn test_catalan_44() {
+        let l = Lingo::new();
+        let sample = "Segons el càlcul de Gerardo Boto, les galeries fan 23,8 i 23,9 metres de llargada. Dues d\'elles presenten deu arcs sobre columnes i capitells dobles, excepte la del mig, que és quàdruple. De les altres dues galeries que acabarien de tancar el claustre de 44 capitells no se\'n conserven columnes ni arcs i els capitells reposen directament sobre les bases.[7] Envoltat de pins, oliveres i garrofers,[8] compta amb un petit teulat de ferro que el protegeix de la humitat.[9]";
+        assert_eq!(
+            Language::Catalan,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_catalan_45() {
+        let l = Lingo::new();
+        let sample = "El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]";
+        assert_eq!(
+            Language::Catalan,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_catalan_46() {
+        let l = Lingo::new();
+        let sample = "El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]";
+        assert_eq!(
+            Language::Catalan,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_catalan_47() {
+        let l = Lingo::new();
+        let sample = "Xena: Warrior Princess (en català. Xena: la princesa guerrera) és una sèrie de televisió originalment emesa entre el 15 de setembre de 1995 i el 18 de juny de 2001. La sèrie va ser creada el 1995 pels directors i productors Robert Tapert i John Schulian, amb l\'ajuda dels productors Sam Raimi i RJ Stewart. La idea va sorgir a partir de Xena, un personatge secundari de la primera temporada de Hercules: The Legendary Journeys. Rodada a Nova Zelanda, es tracta d\'una coproducció entre aquest país i els Estats Units. La sèrie ha estat produïda per la Pacific Renaissance Pictures Ltd, els creadors són Robert Tapert i Sam Raimi, productors de la sèrie i fou distribuïda per Universal Studios. La sèrie, ambientada a l\'Antiga Grècia, narra les aventures de Xena (Lucy Lawless) i Gabrielle (Renée O\'Connor), dos grans guerreres i inseparables amigues que lluiten contra les injustícies de l\'època.";
+        assert_eq!(
+            Language::Catalan,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_catalan_48() {
+        let l = Lingo::new();
+        let sample = "La sèrie es va mantenir en l\'aire durant sis temporades als Estats Units, entre 1995 i 2001, convertint-se en la més reeixida de les sèries sindicades del moment i arribant a ser un autèntic fenomen social al llarg de tot el món .De fet, és considerada una de les millors sèries de la història per la revista TV Guide i, avui dia, el fanatisme per la sèrie continua actiu a Internet. Aquesta sèrie d\'aventures, vista en més de vuitanta-sis països dels cinc continents, ha rebut diversos premis, incloent un Emmy. A més, aprofitant l\'èxit de la mateixa, s\'han comercialitzat nombrosos productes sobre ella, com ara episodis en DVD, una pel·lícula, llibres, còmics o videojocs. La influència de la sèrie fora de la pantalla arriba a sectors com la comunitat lèsbica o la astronòmica, així com a altres sèries de televisió i pel·lícules.";
+        assert_eq!(
+            Language::Catalan,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_dutch_51() {
+        let l = Lingo::new();
+        let sample = "Het Nederlands is een West-Germaanse taal en de moedertaal van de meeste inwoners van Nederland, België en Suriname, de drie lidstaten van de Nederlandse Taalunie, een internationale instelling die onder meer de regels voor de Nederlandse standaardtaal vastlegt. In de Europese Unie spreken ongeveer 23 miljoen mensen Nederlands als eerste taal, en een bijkomende vijf miljoen als tweede taal. Verder is het Nederlands ook een officiële taal van de Caraïbische eilanden Aruba, Curaçao en Sint-Maarten, terwijl er nog minderheden bestaan in Frankrijk, Duitsland en in mindere mate Indonesië, en nog ruim een half miljoen sprekers in de Verenigde Staten, Canada en Australië. De Kaap-Hollandse dialecten van Zuid-Afrika en Namibië werden gestandaardiseerd tot Afrikaans, een wederzijds verstaanbare dochtertaal van het Nederlands.";
+        assert_eq!(
+            Language::Dutch,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_dutch_52() {
+        let l = Lingo::new();
+        let sample = "Het Nederlands is nauw verwant aan het Engels en Duits, en wordt tussen beide geplaatst. Naast het feit dat het Nederlands de Hoogduitse klankverschuiving niet heeft ondergaan, verschilt het Nederlands – net als het Engels – verder ook van het Duits door de sterke reductie van de naamvallen, de algemene zeldzaamheid van de Germaanse umlaut en een meer regelmatige morfologie. Het moderne Nederlands heeft in oorsprong drie grammaticale geslachten, waarvan er twee in de praktijk grotendeels samenvallen (de de-woorden). Bijgevolg speelt het grammaticale geslacht een kleinere grammaticale rol dan in het Duits. De Nederlandse woordvolgorde is onderwerp-werkwoord-lijdend voorwerp (SVO) in hoofdzinnen maar past, net als in het Duits, inversie toe in bijzinnen (SOV). Het Nederlands kent een hoofdzakelijk Germaanse woordenschat, in grotere mate dan het sterk geromaniseerde Engels, maar aangevuld door een grotere Romaanse component dan in het Duits.";
+        assert_eq!(
+            Language::Dutch,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_english_61() {
+        let l = Lingo::new();
+        let sample = "SEOUL, South Korea (AP) — The outside world focuses on the messages of doom and gloom from North Korea: bombastic threats of nuclear war, fantasy videos of U.S. cities in flames, digitally altered photos of leader Kim Jong Un guiding military drills. But back home, North Koreans get a decidedly softer dose of propaganda: Kim portrayed as a young, energetic leader, a people person and family man.";
+        assert_eq!(
+            Language::English,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_english_62() {
+        let l = Lingo::new();
+        let sample = "Mixed in with the images showing Kim aboard a speeding boat on a tour of front-line islands, or handing out commemorative rifles to smartly saluting soldiers, are those of Kim and his wife clapping at a dolphin show or linking arms with weeping North Korean children";
+        assert_eq!(
+            Language::English,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_english_63() {
+        let l = Lingo::new();
+        let sample = "The pictures can look odd or obviously staged to outsiders. But they\'re carefully crafted propaganda meant to give North Koreans an image of a country governed by a leader who is as comfortable overseeing a powerful military as he is mingling with the people.";
+        assert_eq!(
+            Language::English,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_english_64() {
+        let l = Lingo::new();
+        let sample = "Views are the V in MVC. Views are responsible for generating the specific output required for the request. Often this is in the form of HTML, XML, or JSON, but streaming files and creating PDF’s that users can download are also responsibilities of the View Layer.";
+        assert_eq!(
+            Language::English,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_english_65() {
+        let l = Lingo::new();
+        let sample = "CakePHP comes with a few built-in View classes for handling the most common rendering scenarios";
+        assert_eq!(
+            Language::English,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_english_66() {
+        let l = Lingo::new();
+        let sample = "View extending allows you to wrap one view in another. Combining this with view blocks gives you a powerful way to keep your views DRY. For example, your application has a sidebar that needs to change depending on the specific view being rendered. By extending a common view file you can avoid repeating the common markup for your sidebar, and only define the parts that change";
+        assert_eq!(
+            Language::English,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_esperanto_71() {
+        let l = Lingo::new();
+        let sample = "Lucy LAWLESS, naskiĝis kiel Lucille Frances Ryan (* 29-a de marto 1968 en Mount Albert, Nov-Zelando) estas novzelanda aktorino.";
+        assert_eq!(
+            Language::Esperanto,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_esperanto_72() {
+        let l = Lingo::new();
+        let sample = "Ŝi iĝis mondkonata en la rolo de Xena, kiel ĉefrolulo de la televida serio. Ŝi ankaŭ rolludis en etaj roloj, kiel en la kineja filmo \"Spiderman\" aŭ en la TV-serio \"Tarzan\" en 2002. Ŝi ankaŭ donis sian voĉon ĉe \"The Simpsons\".";
+        assert_eq!(
+            Language::Esperanto,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_esperanto_73() {
+        let l = Lingo::new();
+        let sample =
+            "Ŝi estas edziniĝinta ekde 1998 kun Robert G. Tapert, produktisto de la serio \"Xena\"";
+        assert_eq!(
+            Language::Esperanto,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_esperanto_74() {
+        let l = Lingo::new();
+        let sample = "Laŭ sagao, la urbo (Barcino) estis fondita de Hamilkar Barka, patro de Hanibal Barka el Kartago. Post tio trakonstruis la urbon la romianoj al fortikaĵo (castrum). La centro de la urbo kuŝis sur Mons Taber, sur malgranda monteto proksime al la tiama Konsildomo (Plaça de Sant Jaume). Oni povas ankoraŭ hodiaŭ trovi restaĵojn de la romia urbomuro en la praurba parto. Gravaj romiaj trovitaĵoj estas ekspoziciitaj ĉe Plaça del Rei. En la 5-a jarcento la urbon konkeris visigotoj, en la 8-a jc. la maŭroj. En 801 konkeris la urbon la franca reĝo. Je 985 disrabis Barcelonon Al-Mansur, armeestro de Kordovo.";
+        assert_eq!(
+            Language::Esperanto,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_esperanto_75() {
+        let l = Lingo::new();
+        let sample = "En la mezepoko Barcelono estis ĉefurbo de Reĝlando de Aragono kaj elstara mara kaj komerca potenco en la okcidenta Mediteranea maro, kun gravaj posedaĵoj, kiel Sardio kaj Sicilio. Ekde la 15-a jarcento, post la Kompromiso de Caspe (1412) kaj la enlanda milito (1462-1472), la urbo perdis potencon, unue favore al Valencio kaj poste al kastiliaj urboj. La malvenko en la milito de postveno de Hispanio (1701-1714) kaj la postaj reprezalioj de Filipo la 5-a de Kastilio plimalfortigis kaj katenis la urbon ĝis meze de la 19-a jarcento, kiam estiĝis permeso malkonstrui la urbomurojn.";
+        assert_eq!(
+            Language::Esperanto,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_esperanto_76() {
+        let l = Lingo::new();
+        let sample = "La ekonomia bonfarto permesis rapidegan plilarĝigon de la urbo, kiu ensorbis diversajn antaŭurbojn kiel Sants, Gràcia kaj Sarrià. Partoj de la urbo aldoniĝis post eventoj, kiel la internaciaj ekspozicioj de 1888 kaj 1929, la Olimpikaj ludoj (1992) aŭ la Forumo de la Kulturoj (2004).";
+        assert_eq!(
+            Language::Esperanto,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_euskara_81() {
+        let l = Lingo::new();
+        let sample = "Eskozia (ingelesez eta scotseraz Scotland; Eskoziako gaeleraz Alba) Erresuma Batua osatzen duten lau herrialdeetatik iparraldeena kokatzen dena da. Ingalaterra eta Galesekin batera Britainia Handiko Uhartea osatzen dute, Eskoziak lurralde honen heren bat hartzen du eta 790 uharte baino gehiago ditu. Ipar eta mendebaldean Ozeano Atlantikoarekin mugatzen du, ekialdean Ipar Itsasoarekin, hegoaldean Ingalaterrarekin eta azkenik hego-mendebaldean Iparraldeko kanala eta Irlandako itsasoarekin. Eskoziar lurraldea 78.772 km2-tan hedatzen da eta bere biztanleria gutxi-gorabehera 5.116.900 biztanletakoa da, honek km2-ko 65 biztanleko dentsitatea ematen duelarik. Hiriburua Edinburgh da, aldiz hiririk handiena Glasgow, azken honen hiriguneak eskoziar biztanlegoaren %20a osatzen duelarik.";
         assert_eq!(
             Language::Euskara,
-            l.get_language("Meneame.neten oinarrituta, eta euskaraz, Zabaldu.com egitasmoa dugu.")
-                .unwrap(),
-            "Meneame.neten oinarrituta, eta euskaraz, Zabaldu.com egitasmoa dugu."
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
         );
     }
 
     #[test]
-    fn test_chinese() {
+    fn test_euskara_82() {
         let l = Lingo::new();
-
-        assert_eq!(Language::Chinese, l.get_language("在欧冠小组赛第二轮与鲍里索夫（白俄罗斯球队）的对阵中，梅西独中两元，并造成对方打进一个乌龙球，最终使得巴塞5-0大胜对手。本场比赛后，梅西以194个进球，追平库巴拉成为巴塞罗那足球俱乐部历史上的第二射手。其後在作客捷克的比尔森胜利時再演帽子戲法協助球隊作客4比0大勝，本场比赛后，美斯突破200球。在主场5:0战胜利雲特的比赛中，梅西打入1球，本场比赛是梅西代表巴塞罗那一队正式参加的第292场的比赛，至此，梅西追平菲利普·科库，并列成为代表巴塞罗那俱乐部出场次数最多的外籍球员。").unwrap(), "在欧冠小组赛第二轮与鲍里索夫（白俄罗斯球队）的对阵中，梅西独中两元，并造成对方打进一个乌龙球，最终使得巴塞5-0大胜对手。本场比赛后，梅西以194个进球，追平库巴拉成为巴塞罗那足球俱乐部历史上的第二射手。其後在作客捷克的比尔森胜利時再演帽子戲法協助球隊作客4比0大勝，本场比赛后，美斯突破200球。在主场5:0战胜利雲特的比赛中，梅西打入1球，本场比赛是梅西代表巴塞罗那一队正式参加的第292场的比赛，至此，梅西追平菲利普·科库，并列成为代表巴塞罗那俱乐部出场次数最多的外籍球员。");
+        let sample = "1707 urterarte Eskoziako Erresuma independientea izan zen, data honetan Britainia Handia sortzeko Ingalaterrarekin Batasun Agiria sinatu zelarik. Batasunak ez zuen Eskoziako berezko sistema legal edo judizialaren aldaketarik suposatu, hau ordudanik Gales, Ingalaterra eta Ipar Irlandakotik ezberdina delarik, honenbestez nazioarteko zuzenbidean erakunde juridiko ezberdintzat onartu eta hartzen da. Berezko legeen biziraupena jaso da, baita eskoziar kulturako zati diren hezkuntza eta erlijio sistema ezberdinak, hauek mendeetan zehar garatu direlarik. XIX. mendean sortua, eskoziar independentismoa eragina eta indarra pilatuz joan da, batez ere XX. mendearen amaieratik aurrera, eta Scottish National Party (SNP, Eskoziako Alderdi Nazionala) alderdia ordezkari duela. Alderdi horren helburu nagusia Eskoziaren independentzia da eta 2011ko Eskoziar Parlamenturako hauteskundeetan gehiengo absolutua lortu zuen.";
+        assert_eq!(
+            Language::Euskara,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
     }
 
     #[test]
-    fn test_persian() {
+    fn test_euskara_83() {
         let l = Lingo::new();
-
-        assert_eq!(Language::Persian, l.get_language("ابوجعفر خازن خراسانی ستاره‌شناس و ریاضی‌دان ایرانی[۱] است که در قرن چهارم هجری قمری در خراسان می‌زیست. از او کتاب‌هایی در این دو علم در دست است. وی به کمک مقاطع مخروطی، معادلهٴ درجه سوم را که به معادلهٴ ماهانی موسوم است حل کرد. در مابین سال‌های ۹۶۱ و ۹۷۱ میلادی درگذشت.").unwrap(), "ابوجعفر خازن خراسانی ستاره‌شناس و ریاضی‌دان ایرانی[۱] است که در قرن چهارم هجری قمری در خراسان می‌زیست. از او کتاب‌هایی در این دو علم در دست است. وی به کمک مقاطع مخروطی، معادلهٴ درجه سوم را که به معادلهٴ ماهانی موسوم است حل کرد. در مابین سال‌های ۹۶۱ و ۹۷۱ میلادی درگذشت.");
-
-        assert_eq!(Language::Persian, l.get_language("خراسان (خراسان بزرگ یا خراسان باستانی یا خراسان تاریخی) سرزمینی بزرگ‌تر از خراسان امروزی، بخشی از ایران بزرگ و از دوران ایران ساسانی نامی سنتی و همگانی برای اشاره به نواحی شرقی ایران است. ساسانیان سرزمین ایران را چهار بخش کرده بودند که یکی از آن بخش‌ها خراسان به معنای «سرزمین خورشید» بود.[۲][۳] گسترهٔ تاریخی خراسان بزرگ استان خراسان در ایران کنونی و بخش‌های شمالی و باختری افغانستان و ترکمنستان امروزی را در بر می‌گرفت. در مفهوم گسترده‌تر ازبکستان و تاجیکستان و بخش‌هایی از قرقیزستان و قزاقستان را هم می‌توان در خراسان بزرگ تاریخی برشمرد.[۴]").unwrap(), "خراسان (خراسان بزرگ یا خراسان باستانی یا خراسان تاریخی) سرزمینی بزرگ‌تر از خراسان امروزی، بخشی از ایران بزرگ و از دوران ایران ساسانی نامی سنتی و همگانی برای اشاره به نواحی شرقی ایران است. ساسانیان سرزمین ایران را چهار بخش کرده بودند که یکی از آن بخش‌ها خراسان به معنای «سرزمین خورشید» بود.[۲][۳] گسترهٔ تاریخی خراسان بزرگ استان خراسان در ایران کنونی و بخش‌های شمالی و باختری افغانستان و ترکمنستان امروزی را در بر می‌گرفت. در مفهوم گسترده‌تر ازبکستان و تاجیکستان و بخش‌هایی از قرقیزستان و قزاقستان را هم می‌توان در خراسان بزرگ تاریخی برشمرد.[۴]");
+        let sample = "Meneame.net taldeko adimena erabiliz albisteak ezagutarazteko balio duen gaztelaniazko bloga da. Erregistratutako erabiltzaileek gainontzekoek (erregistratuta edo gabe) bozka ditzaketen albisteak bidal ditzakete webgunera, boto gehien dituzten albisteak azalera pasako direlarik. Proiektu honen garatzailea Ricardo Galli da, Balear Uharteetako Unibertsitateko irakaslea.";
+        assert_eq!(
+            Language::Euskara,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
     }
 
     #[test]
-    fn test_japanese() {
+    fn test_euskara_84() {
         let l = Lingo::new();
+        let sample = "Web 2.0 proiektu bat da, Digg.com-en ideia berean oinarrituz. Hala eta guztiz ere, azken honek ez bezala, karma bezalako kontzeptuak ere baditu. Karma erabiltzaile batek duen puntuazioa da, bere partehartzea eta lan onaren ondorioz handituz doana.";
+        assert_eq!(
+            Language::Euskara,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
+    #[test]
+    fn test_euskara_85() {
+        let l = Lingo::new();
+        let sample = "Meneame.neten oinarrituta, eta euskaraz, Zabaldu.com egitasmoa dugu.";
+        assert_eq!(
+            Language::Euskara,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_chinese_91() {
+        let l = Lingo::new();
+        let sample = "在欧冠小组赛第二轮与鲍里索夫（白俄罗斯球队）的对阵中，梅西独中两元，并造成对方打进一个乌龙球，最终使得巴塞5-0大胜对手。本场比赛后，梅西以194个进球，追平库巴拉成为巴塞罗那足球俱乐部历史上的第二射手。其後在作客捷克的比尔森胜利時再演帽子戲法協助球隊作客4比0大勝，本场比赛后，美斯突破200球。在主场5:0战胜利雲特的比赛中，梅西打入1球，本场比赛是梅西代表巴塞罗那一队正式参加的第292场的比赛，至此，梅西追平菲利普·科库，并列成为代表巴塞罗那俱乐部出场次数最多的外籍球员。";
+        assert_eq!(
+            Language::Chinese,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_persian_101() {
+        let l = Lingo::new();
+        let sample = "ابوجعفر خازن خراسانی ستاره‌شناس و ریاضی‌دان ایرانی[۱] است که در قرن چهارم هجری قمری در خراسان می‌زیست. از او کتاب‌هایی در این دو علم در دست است. وی به کمک مقاطع مخروطی، معادلهٴ درجه سوم را که به معادلهٴ ماهانی موسوم است حل کرد. در مابین سال‌های ۹۶۱ و ۹۷۱ میلادی درگذشت.";
+        assert_eq!(
+            Language::Persian,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_persian_102() {
+        let l = Lingo::new();
+        let sample = "خراسان (خراسان بزرگ یا خراسان باستانی یا خراسان تاریخی) سرزمینی بزرگ‌تر از خراسان امروزی، بخشی از ایران بزرگ و از دوران ایران ساسانی نامی سنتی و همگانی برای اشاره به نواحی شرقی ایران است. ساسانیان سرزمین ایران را چهار بخش کرده بودند که یکی از آن بخش‌ها خراسان به معنای «سرزمین خورشید» بود.[۲][۳] گسترهٔ تاریخی خراسان بزرگ استان خراسان در ایران کنونی و بخش‌های شمالی و باختری افغانستان و ترکمنستان امروزی را در بر می‌گرفت. در مفهوم گسترده‌تر ازبکستان و تاجیکستان و بخش‌هایی از قرقیزستان و قزاقستان را هم می‌توان در خراسان بزرگ تاریخی برشمرد.[۴]";
+        assert_eq!(
+            Language::Persian,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_japanese_111() {
+        let l = Lingo::new();
+        let sample = "どうした報道ステーション？OBとしてもあまりに悲しい「”女性を馬鹿にした”番組 ";
         assert_eq!(
             Language::Japanese,
-            l.get_language(
-                "どうした報道ステーション？OBとしてもあまりに悲しい「”女性を馬鹿にした”番組 "
-            )
-            .unwrap(),
-            "どうした報道ステーション？OBとしてもあまりに悲しい「”女性を馬鹿にした”番組 "
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
         );
+    }
 
-        assert_eq!(Language::Japanese, l.get_language("呉座氏は、ベストセラー「応仁の乱」で知られる日本中世史が専門の歴史学者。「鎌倉殿の13人」は三谷幸喜さんが脚本を担当し、鎌倉幕府の2代執権北条義時を描く。主演の義時を小栗旬さんが演じる").unwrap(), "呉座氏は、ベストセラー「応仁の乱」で知られる日本中世史が専門の歴史学者。「鎌倉殿の13人」は三谷幸喜さんが脚本を担当し、鎌倉幕府の2代執権北条義時を描く。主演の義時を小栗旬さんが演じる");
-
+    #[test]
+    fn test_japanese_112() {
+        let l = Lingo::new();
+        let sample = "呉座氏は、ベストセラー「応仁の乱」で知られる日本中世史が専門の歴史学者。「鎌倉殿の13人」は三谷幸喜さんが脚本を担当し、鎌倉幕府の2代執権北条義時を描く。主演の義時を小栗旬さんが演じる";
         assert_eq!(
             Language::Japanese,
-            l.get_language("などと批判の声が上がっていた").unwrap(),
-            "などと批判の声が上がっていた"
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
         );
     }
 
     #[test]
-    fn test_greek() {
+    fn test_japanese_113() {
         let l = Lingo::new();
-
-        assert_eq!(Language::Greek, l.get_language("Τρεις Έλληνες που ζουν στο Ισραήλ περιγράφουν την πρώτη φάση επιστροφής στην κανονικότητα.").unwrap(), "Τρεις Έλληνες που ζουν στο Ισραήλ περιγράφουν την πρώτη φάση επιστροφής στην κανονικότητα.");
-
-        assert_eq!(Language::Greek, l.get_language("Κάτι που μοιάζει σαν αιωνιότητα –η πανδημία κορωνοϊού που «έσκασε» στα χέρια του πλανήτη πριν από περίπου έναν χρόνο").unwrap(), "Κάτι που μοιάζει σαν αιωνιότητα –η πανδημία κορωνοϊού που «έσκασε» στα χέρια του πλανήτη πριν από περίπου έναν χρόνο");
+        let sample = "などと批判の声が上がっていた";
+        assert_eq!(
+            Language::Japanese,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
     }
 
     #[test]
-    fn test_hindi() {
+    fn test_greek_121() {
         let l = Lingo::new();
+        let sample = "Τρεις Έλληνες που ζουν στο Ισραήλ περιγράφουν την πρώτη φάση επιστροφής στην κανονικότητα.";
+        assert_eq!(
+            Language::Greek,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
-        assert_eq!(Language::Hindi, l.get_language("नई दिल्ली, एजेंसी। उत्तर भारत के पहाड़ी राज्यों में पिछले 2 दिनों से भारी बारिश और बर्फबारी हो रही है। जम्मू और कश्मीर के ऊपर बना पश्चिमी विक्षोभ पूर्वी दिशा में आगे बढ़ता रहेगा। साथ ही चक्रवाती सिस्टम हरियाणा और दिल्ली के ऊपर पहुंच जाएगा। स्काईमेट वेदर के मुताबिक इन दोनों सिस्टमों के कारण उत्तर भारत के पहाड़ी राज्यों के साथ-साथ मैदानी इलाकों में आज भी मौसमी गतिविधियां जारी रहेंगी और कुछ हिस्सों में ओलावृष्टि की संभावना है। राजस्थान के बाद पंजाब, हरियाणा और दिल्ली समेत उत्तर के मैदानी इलाकों से गुरुवार से मौसम साफ हो जाएगा। पहाड़ों पर गतिविधियां जारी रहेंगी और 25 मार्च से मौसम साफ होने की संभावना है।,").unwrap(), "नई दिल्ली, एजेंसी। उत्तर भारत के पहाड़ी राज्यों में पिछले 2 दिनों से भारी बारिश और बर्फबारी हो रही है। जम्मू और कश्मीर के ऊपर बना पश्चिमी विक्षोभ पूर्वी दिशा में आगे बढ़ता रहेगा। साथ ही चक्रवाती सिस्टम हरियाणा और दिल्ली के ऊपर पहुंच जाएगा। स्काईमेट वेदर के मुताबिक इन दोनों सिस्टमों के कारण उत्तर भारत के पहाड़ी राज्यों के साथ-साथ मैदानी इलाकों में आज भी मौसमी गतिविधियां जारी रहेंगी और कुछ हिस्सों में ओलावृष्टि की संभावना है। राजस्थान के बाद पंजाब, हरियाणा और दिल्ली समेत उत्तर के मैदानी इलाकों से गुरुवार से मौसम साफ हो जाएगा। पहाड़ों पर गतिविधियां जारी रहेंगी और 25 मार्च से मौसम साफ होने की संभावना है।,");
+    #[test]
+    fn test_greek_122() {
+        let l = Lingo::new();
+        let sample = "Κάτι που μοιάζει σαν αιωνιότητα –η πανδημία κορωνοϊού που «έσκασε» στα χέρια του πλανήτη πριν από περίπου έναν χρόνο";
+        assert_eq!(
+            Language::Greek,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
+    #[test]
+    fn test_hindi_131() {
+        let l = Lingo::new();
+        let sample = "नई दिल्ली, एजेंसी। उत्तर भारत के पहाड़ी राज्यों में पिछले 2 दिनों से भारी बारिश और बर्फबारी हो रही है। जम्मू और कश्मीर के ऊपर बना पश्चिमी विक्षोभ पूर्वी दिशा में आगे बढ़ता रहेगा। साथ ही चक्रवाती सिस्टम हरियाणा और दिल्ली के ऊपर पहुंच जाएगा। स्काईमेट वेदर के मुताबिक इन दोनों सिस्टमों के कारण उत्तर भारत के पहाड़ी राज्यों के साथ-साथ मैदानी इलाकों में आज भी मौसमी गतिविधियां जारी रहेंगी और कुछ हिस्सों में ओलावृष्टि की संभावना है। राजस्थान के बाद पंजाब, हरियाणा और दिल्ली समेत उत्तर के मैदानी इलाकों से गुरुवार से मौसम साफ हो जाएगा। पहाड़ों पर गतिविधियां जारी रहेंगी और 25 मार्च से मौसम साफ होने की संभावना है।,";
         assert_eq!(
             Language::Hindi,
-            l.get_language("परमबीर सिंह की याचिका पर सुप्रीम कोर्ट में आज सुनवाई, सीबीआइ जांच की मांग")
-                .unwrap(),
-            "परमबीर सिंह की याचिका पर सुप्रीम कोर्ट में आज सुनवाई, सीबीआइ जांच की मांग"
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
         );
     }
 
     #[test]
-    fn test_russian() {
+    fn test_hindi_132() {
         let l = Lingo::new();
+        let sample = "परमबीर सिंह की याचिका पर सुप्रीम कोर्ट में आज सुनवाई, सीबीआइ जांच की मांग";
+        assert_eq!(
+            Language::Hindi,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
+    #[test]
+    fn test_russian_141() {
+        let l = Lingo::new();
+        let sample = "Болеющий коронавирусом Иван Ургант продолжил работать";
         assert_eq!(
             Language::Russian,
-            l.get_language("Болеющий коронавирусом Иван Ургант продолжил работать")
-                .unwrap(),
-            "Болеющий коронавирусом Иван Ургант продолжил работать"
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
         );
-
-        assert_eq!(Language::Russian, l.get_language("Телеведущий сказал, что он сидит на даче один в самоизоляции после получения положительного теста на коронавирус - семьи с ним нет.").unwrap(), "Телеведущий сказал, что он сидит на даче один в самоизоляции после получения положительного теста на коронавирус - семьи с ним нет.");
     }
 
     #[test]
-    fn test_vietnamese() {
+    fn test_russian_142() {
         let l = Lingo::new();
+        let sample = "Телеведущий сказал, что он сидит на даче один в самоизоляции после получения положительного теста на коронавирус - семьи с ним нет.";
+        assert_eq!(
+            Language::Russian,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
+    #[test]
+    fn test_vietnamese_151() {
+        let l = Lingo::new();
+        let sample = "Dự án Grand Marina Saigon \'chào sân\' thị trường quốc tế";
         assert_eq!(
             Language::Vietnamese,
-            l.get_language("Dự án Grand Marina Saigon \'chào sân\' thị trường quốc tế")
-                .unwrap(),
-            "Dự án Grand Marina Saigon \'chào sân\' thị trường quốc tế"
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
         );
-
-        assert_eq!(Language::Vietnamese, l.get_language("Đại sứ EU nói Việt Nam là nước có tiềm năng được chuyển giao công nghệ sản xuất vaccine Covid-19, dù vấn đề này chưa được thảo luận.").unwrap(), "Đại sứ EU nói Việt Nam là nước có tiềm năng được chuyển giao công nghệ sản xuất vaccine Covid-19, dù vấn đề này chưa được thảo luận.");
-
-        assert_eq!(Language::Vietnamese, l.get_language("Dự án căn hộ hạng sang Grand Marina Saigon được nhà phát triển Masterise Homes giới thiệu tại Hong Kong, mở đường chinh phục nhà đầu tư quốc tế.").unwrap(), "Dự án căn hộ hạng sang Grand Marina Saigon được nhà phát triển Masterise Homes giới thiệu tại Hong Kong, mở đường chinh phục nhà đầu tư quốc tế.");
     }
 
     #[test]
-    fn test_urdu() {
+    fn test_vietnamese_152() {
         let l = Lingo::new();
+        let sample = "Đại sứ EU nói Việt Nam là nước có tiềm năng được chuyển giao công nghệ sản xuất vaccine Covid-19, dù vấn đề này chưa được thảo luận.";
+        assert_eq!(
+            Language::Vietnamese,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
-        assert_eq!(Language::Urdu, l.get_language("سعودی محکمہ پاسپورٹ نے سعودی شہریوں اور مقیم غیرملکیوں سے پھر کہا ہے کہ وہ مملکت کے تمام علاقوں میں محکمہ پاسپورٹ کے ڈائریکٹر جنرل سے ویڈیو کالنگ سروس سے استفادہ کریں۔ ").unwrap(), "سعودی محکمہ پاسپورٹ نے سعودی شہریوں اور مقیم غیرملکیوں سے پھر کہا ہے کہ وہ مملکت کے تمام علاقوں میں محکمہ پاسپورٹ کے ڈائریکٹر جنرل سے ویڈیو کالنگ سروس سے استفادہ کریں۔ ");
+    #[test]
+    fn test_vietnamese_153() {
+        let l = Lingo::new();
+        let sample = "Dự án căn hộ hạng sang Grand Marina Saigon được nhà phát triển Masterise Homes giới thiệu tại Hong Kong, mở đường chinh phục nhà đầu tư quốc tế.";
+        assert_eq!(
+            Language::Vietnamese,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
 
-        assert_eq!(Language::Urdu, l.get_language("سیدتی میگزین کے مطابق محکمہ پاسپورٹ نے ٹوئٹر کے اکاؤنٹ پر کہا کہ سعودی عرب کے تمام علاقوں کے پاسپورٹ دفاتر میں ڈائریکٹر جنرل سے وڈیو کال کی سہولت مقامی شہریوں اور مقیم غیرملکیوں کو ڈیجیٹل پلیٹ فارمز کے ذریعے خدمات کا معیار بہتر بنانے کی غرض سے متعارف کرائی گئی ہے۔").unwrap(), "سیدتی میگزین کے مطابق محکمہ پاسپورٹ نے ٹوئٹر کے اکاؤنٹ پر کہا کہ سعودی عرب کے تمام علاقوں کے پاسپورٹ دفاتر میں ڈائریکٹر جنرل سے وڈیو کال کی سہولت مقامی شہریوں اور مقیم غیرملکیوں کو ڈیجیٹل پلیٹ فارمز کے ذریعے خدمات کا معیار بہتر بنانے کی غرض سے متعارف کرائی گئی ہے۔");
+    #[test]
+    fn test_urdu_161() {
+        let l = Lingo::new();
+        let sample = "سعودی محکمہ پاسپورٹ نے سعودی شہریوں اور مقیم غیرملکیوں سے پھر کہا ہے کہ وہ مملکت کے تمام علاقوں میں محکمہ پاسپورٹ کے ڈائریکٹر جنرل سے ویڈیو کالنگ سروس سے استفادہ کریں۔ ";
+        assert_eq!(
+            Language::Urdu,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
+    }
+
+    #[test]
+    fn test_urdu_162() {
+        let l = Lingo::new();
+        let sample = "سیدتی میگزین کے مطابق محکمہ پاسپورٹ نے ٹوئٹر کے اکاؤنٹ پر کہا کہ سعودی عرب کے تمام علاقوں کے پاسپورٹ دفاتر میں ڈائریکٹر جنرل سے وڈیو کال کی سہولت مقامی شہریوں اور مقیم غیرملکیوں کو ڈیجیٹل پلیٹ فارمز کے ذریعے خدمات کا معیار بہتر بنانے کی غرض سے متعارف کرائی گئی ہے۔";
+        assert_eq!(
+            Language::Urdu,
+            l.get_language(sample).unwrap(),
+            "{}",
+            sample
+        );
     }
 }

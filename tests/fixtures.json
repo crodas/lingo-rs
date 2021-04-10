@@ -6,6 +6,22 @@
 		]
 	},
 	{
+		"category": "spanish",
+		"fixtures": [
+			"En el hotel ¡Ya estoy en el hotel! Ayer por la noche he llegado a la ciudad de Santiago de Compostela. ",
+			"El hotel está a pocos minutos de la catedral. Hace un mes que he hecho la reserva de la habitación.",
+			"Y estoy encantado! La habitación es de tamaño mediano. Tiene mucha luz y una gran ventana. ",
+			"Tengo una cama grande y una gran caja fuerte. Lamentablemente no tiene cuarto de baño propio, pero hay uno común en el pasillo.",
+			"He realizado el check-in nada más llegar. Los empleados del hotel son muy amables. Me ha atendido una recepcionista que sabía hablar… ¡8 idiomas!"
+		]
+	},
+	{
+		"category": "guarani",
+		"fixtures": [
+			"Mayma yvypóra ou ko yvy ári iñapytyʼyre ha eteĩcha tekoruvicharenda ha akatúape jeguerekópe; ha ikatu rupi oikuaa añetéva ha añeteʼyva, iporãva ha ivaíva, tekotevẽ pehenguéicha oiko oñondivekuéra"
+		]
+	},
+	{
 		"category": "catalan",
 		"fixtures": [
 			"Francisco de Goya y Lucientes (Fuendetodos, Saragossa, 30 de març del 1746 - Bordeus, França, 15 d'abril del 1828) fou un pintor i gravador aragonès. La seva obra comprèn la pintura de cavallet i mural, el gravat i el dibuix. En totes aquestes facetes va desenvolupar un estil que inaugura el romanticisme. La seva contribució representa també el començament de la pintura contemporània, i se'l considera un precursor de les avantguardes pictòriques del segle XX.",

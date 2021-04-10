@@ -96,12 +96,19 @@ mod test {
     use crate::{Language, Lingo};
 
     {% for test in tests %}
-    #[test]
-    fn test_{{test['category']}}() {
-        let l = Lingo::new();
+        {% set i = loop.index %}
         {% for text in test['fixtures'] %}
-            assert_eq!(Language::{{test['category']|capitalize}}, l.get_language("{{text|addslashes}}").unwrap(), "{{text|addslashes}}");
+        #[test]
+        fn test_{{test['category']}}_{{i}}{{loop.index}}() {
+            let l = Lingo::new();
+            let sample = "{{text|addslashes}}";
+            assert_eq!(
+                Language::{{test['category']|capitalize}},
+                l.get_language(sample).unwrap(),
+                "{}",
+                sample
+            );
+        }
         {% endfor %}
-    }
     {% endfor %}
 }
