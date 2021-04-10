@@ -67,8 +67,10 @@ impl Lingo {
         )
     }
 
+    #[allow(unused_must_use)]
+    #[allow(clippy::invisible_characters)]
     pub fn get_embed_languages() -> FileContent {
-        FileContent::from_vec(vec![
+        let mut f = FileContent::from_vec(vec![
         {% for c in ngrams %}
             (
                 Language::{{c.0|capitalize}}.name(),
@@ -78,7 +80,12 @@ impl Lingo {
                 ]
             ),{% endfor %}
         ]
-        )
+        );
+
+        // The more languages we support the less lower the threshold needs to be
+        f.set_threshold(0.01);
+
+        f
     }
 }
 
@@ -98,11 +105,19 @@ mod test {
         fn test_{{test['category']}}_{{i}}{{loop.index}}() {
             let l = Lingo::new();
             let sample = "{{text|addslashes}}";
+            let language = l.get_language(sample);
+
+            if language.is_none() {
+                panic!(
+                    "{} -> {}",
+                    sample,
+                    l.get_languages(sample).unwrap().iter().map(|l| l.0.name()).collect::<Vec<&str>>().join(", ")
+                );
+            }
+
             assert_eq!(
                 Language::{{test['category']|capitalize}},
-                l.get_language(sample).unwrap(),
-                "{}",
-                sample
+                language.unwrap()
             );
         }
         {% endfor %}
