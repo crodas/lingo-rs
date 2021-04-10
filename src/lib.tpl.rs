@@ -102,7 +102,7 @@ mod test {
         {% set i = loop.index %}
         {% for text in test['fixtures'] %}
         #[test]
-        fn test_{{test['category']}}_{{i}}{{loop.index}}() {
+        fn test_{{test['category']}}_{{loop.index}}() {
             let l = Lingo::new();
             let sample = "{{text|addslashes}}";
             let language = l.get_language(sample);

@@ -14,6 +14,7 @@ pub enum Language {
     Afrikaans,
     Albanian,
     Arabic,
+    Armenian,
     Azerbaijani,
     Belarusian,
     Bengali,
@@ -30,6 +31,7 @@ pub enum Language {
     Euskara,
     Finnish,
     French,
+    Georgian,
     German,
     Greek,
     Guarani,
@@ -37,6 +39,8 @@ pub enum Language {
     Hebrew,
     Hindi,
     Hungarian,
+    Icelandic,
+    Indonesian,
     Irish,
     Italian,
     Japanese,
@@ -60,6 +64,7 @@ impl Language {
             Self::Afrikaans => "afrikaans",
             Self::Albanian => "albanian",
             Self::Arabic => "arabic",
+            Self::Armenian => "armenian",
             Self::Azerbaijani => "azerbaijani",
             Self::Belarusian => "belarusian",
             Self::Bengali => "bengali",
@@ -76,6 +81,7 @@ impl Language {
             Self::Euskara => "euskara",
             Self::Finnish => "finnish",
             Self::French => "french",
+            Self::Georgian => "georgian",
             Self::German => "german",
             Self::Greek => "greek",
             Self::Guarani => "guarani",
@@ -83,6 +89,8 @@ impl Language {
             Self::Hebrew => "hebrew",
             Self::Hindi => "hindi",
             Self::Hungarian => "hungarian",
+            Self::Icelandic => "icelandic",
+            Self::Indonesian => "indonesian",
             Self::Irish => "irish",
             Self::Italian => "italian",
             Self::Japanese => "japanese",
@@ -114,6 +122,7 @@ impl FromStr for Language {
             "afrikaans" => Ok(Self::Afrikaans),
             "albanian" => Ok(Self::Albanian),
             "arabic" => Ok(Self::Arabic),
+            "armenian" => Ok(Self::Armenian),
             "azerbaijani" => Ok(Self::Azerbaijani),
             "belarusian" => Ok(Self::Belarusian),
             "bengali" => Ok(Self::Bengali),
@@ -130,6 +139,7 @@ impl FromStr for Language {
             "euskara" => Ok(Self::Euskara),
             "finnish" => Ok(Self::Finnish),
             "french" => Ok(Self::French),
+            "georgian" => Ok(Self::Georgian),
             "german" => Ok(Self::German),
             "greek" => Ok(Self::Greek),
             "guarani" => Ok(Self::Guarani),
@@ -137,6 +147,8 @@ impl FromStr for Language {
             "hebrew" => Ok(Self::Hebrew),
             "hindi" => Ok(Self::Hindi),
             "hungarian" => Ok(Self::Hungarian),
+            "icelandic" => Ok(Self::Icelandic),
+            "indonesian" => Ok(Self::Indonesian),
             "irish" => Ok(Self::Irish),
             "italian" => Ok(Self::Italian),
             "japanese" => Ok(Self::Japanese),
@@ -307,6 +319,45 @@ impl Lingo {
                     "بية", "بارا", "الي", "الم_", "الر", "اب_", "ا_ال", "أورو", "أور", "_مبا",
                     "_كر", "_ضد_", "_ضد", "_ش", "_ج", "_الك", "_الر", "_201", "يق", "يف", "ير_",
                     "ى_ال", "ى_ا",
+                ],
+            ),
+            (
+                Language::Armenian.name(),
+                vec![
+                    "ա", "ն", "ր", "ո", "ե", "ի", "ւ", "ու", "մ", "ան", "կ", "ն_", "տ", "յ", "ս",
+                    "վ", "հ", "ար", "եր", "ի_", "լ", "_ա", "ց", "կա", "թ", "_հ", "դ", "ը", "ք",
+                    "ակ", "գ", "նե", "այ", "րա", "մ_", "ին", "ը_", "պ", "նա", "հա", "ան_", "ւմ",
+                    "ում", "որ", "ր_", "_մ", "մա", "ղ", "բ", "է", "ներ", "ել", "ւմ_", "_հա",
+                    "ում_", "յա", "տա", "_է", "_ե", "րո", "րի", "_ո", "ւթ", "ութ", "_կ", "ամ", "ծ",
+                    "են", "լ_", "շ", "թյ", "խ", "ւթյ", "ությ", "է_", "ւն", "ակա", "ին_", "ուն",
+                    "ռ", "_է_", "աս", "նո", "վա", "չ", "յո", "կան", "_ն", "յու", "_ի", "յան", "ատ",
+                    "ել_", "նի", "ավ", "պա", "երի", "ական", "ց_", "զ", "ջ", "ստ", "_ս", "րի_",
+                    "նու", "րե", "_դ", "_պ", "րու", "յուն", "առ", "_գ", "կան_", "վե", "_տ", "մե",
+                    "և", "ք_", "տե", "ով", "_բ", "սա", "ւ_", "_կա", "ս_", "աց", "ւթյո", "թյու",
+                    "թյո", "մի", "լո", "իր", "ետ", "վ_", "ած", "ների", "ն_ա", "են_", "ես", "նք",
+                    "ող", "ա_", "կո", "երի_", "վո", "րդ", "_ու", "խա", "բա", "դա", "յան_", "թյա",
+                    "ւթյա", "րը", "նի_", "անի", "ամա", "_որ", "արա", "րը_", "_այ", "անա", "_մա",
+                    "ման", "նն", "նակ", "_վ", "տ_", "ձ", "որ_", "եր_", "ագ", "ն_հ", "լի", "նը",
+                    "ծ_", "տո", "գա", "ու_", "նը_", "անո", "ահ", "կ_", "_են", "ով_", "հայ", "_պա",
+                    "թյան", "քա", "պե", "ապ", "փ", "_մե", "_թ", "նդ", "կար", "ալ", "և_", "րկ",
+                    "ռա", "աղ", "երը", "ժ", "ած_", "սի", "_հայ", "հե", "երը_", "_խ", "_ար", "յի",
+                    "մ_է", "ի_հ", "գո", "_մի", "այի", "տան", "_չ", "ից", "անու", "նում", "մար",
+                    "եղ", "լու", "ղա", "ստա", "_լ", "_եր", "աստ", "համ", "ւմ_է", "աշ", "ցո", "_ան",
+                    "եց", "դի", "յն", "ախ", "կե", "անի_", "շա", "ադ", "ից_", "արո", "առա", "_համ",
+                    "_բա", "ի_ա", "_շ", "_ք", "_նա", "ված", "_և", "_հե", "ննե", "համա", "դր",
+                    "_են_", "րան", "տար", "ններ", "ազ", "օ", "ոն", "ըն", "տի", "թե", "ները", "եկ",
+                    "_առ", "րութ", "_և_", "վել", "նք_", "մ_է_", "իա", "ցի", "ճ", "ցու", "րտ", "նց",
+                    "_ին", "ւր", "ուր", "բե", "թա", "ն_հա", "իս", "_ը", "այա", "րն", "ն_ո", "ղ_",
+                    "կի", "ավա", "ն_մ", "ցա", "ն_կ", "կու", "_իր", "ի_մ", "եմ", "դե", "ված_", "մո",
+                    "մբ", "այն", "քի", "հո", "ես_", "մն", "ար_", "տու", "աստա", "ւս", "ավո", "մ_ե",
+                    "խո", "վոր", "դ_", "գր", "աք", "անը", "_որ_", "րակ", "նչ", "ելո", "սե", "լա",
+                    "ուս", "հետ", "արդ", "տր", "իմ", "ատա", "անը_", "ւնն", "ւն_", "ջա", "նկ", "տն",
+                    "ունն", "հան", "րգ", "ստան", "րվ", "ուն_", "յին", "իկ", "երո", "ային", "_տա",
+                    "_ըն", "րում", "_2", "յին_", "բո", "ւմ_ե", "ռո", "կն", "_կար", "_դա", "պատ",
+                    "_տե", "_1", "րին", "վի", "սո", "մաս", "ման_", "լ_է", "ցն", "րծ", "իտ", "աբ",
+                    "ավոր", "_փ", "_առա", "դո", "_հետ", "ան_հ", "գի", "ւյ", "վու", "ել_է", "ույ",
+                    "ներ_", "նակա", "յն_", "_օ", "որո", "նել", "ի_հա", "_քա", "եւ", "նութ", "նտ",
+                    "_ամ", "ւննե", "պետ",
                 ],
             ),
             (
@@ -1309,6 +1360,411 @@ impl Lingo {
                     "um", "uis", "tou", "t_l", "t_c", "t_a", "sion", "sio", "s_co", "rés", "rc",
                     "rai", "pas", "os", "ort", "omp", "lle", "le_p", "le_c", "k", "ité_", "ire_",
                     "ir_", "im",
+                ],
+            ),
+            (
+                Language::Georgian.name(),
+                vec![
+                    "ა",
+                    "ი",
+                    "ე",
+                    "ს",
+                    "რ",
+                    "ო",
+                    "მ",
+                    "ლ",
+                    "დ",
+                    "ნ",
+                    "ს_",
+                    "ბ",
+                    "ი_",
+                    "ის",
+                    "ვ",
+                    "ა_",
+                    "უ",
+                    "თ",
+                    "ის_",
+                    "ებ",
+                    "გ",
+                    "და",
+                    "_მ",
+                    "ტ",
+                    "ლი",
+                    "შ",
+                    "ხ",
+                    "არ",
+                    "ან",
+                    "კ",
+                    "სა",
+                    "რი",
+                    "_ს",
+                    "_დ",
+                    "_ა",
+                    "ც",
+                    "ბი",
+                    "მა",
+                    "ამ",
+                    "წ",
+                    "ელ",
+                    "_და",
+                    "ერ",
+                    "და_",
+                    "ად",
+                    "ქ",
+                    "_გ",
+                    "ია",
+                    "გა",
+                    "ლე",
+                    "რე",
+                    "პ",
+                    "ები",
+                    "ნი",
+                    "მო",
+                    "ლი_",
+                    "ბა",
+                    "რო",
+                    "მი",
+                    "ას",
+                    "ულ",
+                    "ფ",
+                    "ზ",
+                    "ნა",
+                    "_ი",
+                    "რა",
+                    "_სა",
+                    "ვე",
+                    "ე_",
+                    "თა",
+                    "ში",
+                    "ავ",
+                    "ალ",
+                    "ენ",
+                    "ობ",
+                    "მე",
+                    "_გა",
+                    "დე",
+                    "_რ",
+                    "ვი",
+                    "ვა",
+                    "ში_",
+                    "სი",
+                    "ნ_",
+                    "_შ",
+                    "ნე",
+                    "_წ",
+                    "ო_",
+                    "ს_მ",
+                    "ით",
+                    "ყ",
+                    "ლა",
+                    "თ_",
+                    "ლო",
+                    "ილ",
+                    "შე",
+                    "_კ",
+                    "ეს",
+                    "ბის",
+                    "ურ",
+                    "ინ",
+                    "ომ",
+                    "ორ",
+                    "ახ",
+                    "ღ",
+                    "_და_",
+                    "_ე",
+                    "რთ",
+                    "დი",
+                    "დ_",
+                    "_შე",
+                    "ბის_",
+                    "ძ",
+                    "ლებ",
+                    "ან_",
+                    "ული",
+                    "ონ",
+                    "თი",
+                    "ბა_",
+                    "რი_",
+                    "იდ",
+                    "ოს",
+                    "ების",
+                    "ტი",
+                    "ება",
+                    "_მა",
+                    "_პ",
+                    "ს_ს",
+                    "ირ",
+                    "ი_მ",
+                    "_მო",
+                    "ით_",
+                    "ის_მ",
+                    "_თ",
+                    "ელი",
+                    "ხე",
+                    "რის",
+                    "ემ",
+                    "ლის",
+                    "_მი",
+                    "ეთ",
+                    "ა_მ",
+                    "ია_",
+                    "_1",
+                    "ული_",
+                    "რებ",
+                    "ატ",
+                    "ც_",
+                    "აც",
+                    "_რო",
+                    "აშ",
+                    "ად_",
+                    "ჩ",
+                    "ს_დ",
+                    "ოდ",
+                    "ტე",
+                    "ოლ",
+                    "ზე",
+                    "ა_დ",
+                    "მ_",
+                    "ევ",
+                    "ი_ა",
+                    "ბე",
+                    "ედ",
+                    "ტა",
+                    "ი_დ",
+                    "სე",
+                    "კა",
+                    "_ბ",
+                    "ბუ",
+                    "ცი",
+                    "იმ",
+                    "რის_",
+                    "_უ",
+                    "ი_ს",
+                    "სტ",
+                    "ას_",
+                    "ათ",
+                    "ა_ს",
+                    "ა_ა",
+                    "იან",
+                    "მდ",
+                    "ოვ",
+                    "ა_და",
+                    "მის",
+                    "ლის_",
+                    "გი",
+                    "ტო",
+                    "ის_ს",
+                    "ს_გ",
+                    "არი",
+                    "ხა",
+                    "რომ",
+                    "_ნ",
+                    "წე",
+                    "აქ",
+                    "ება_",
+                    "ს_ა",
+                    "ნებ",
+                    "ობა",
+                    "ეო",
+                    "_არ",
+                    "ვლ",
+                    "რ_",
+                    "სახ",
+                    "ილი",
+                    "არე",
+                    "ანი",
+                    "_რომ",
+                    "ნდ",
+                    "ბი_",
+                    "ი_და",
+                    "ველ",
+                    "_ხ",
+                    "_მე",
+                    "კი",
+                    "აი",
+                    "_ქ",
+                    "ერი",
+                    "ამო",
+                    "_ფ",
+                    "დებ",
+                    "ადა",
+                    "აღ",
+                    "ური",
+                    "პი",
+                    "იე",
+                    "ეს_",
+                    "გე",
+                    "ს_შ",
+                    "კუ",
+                    "იც",
+                    "ზე_",
+                    "ბს",
+                    "ს_და",
+                    "უნ",
+                    "ლ_",
+                    "ები_",
+                    "თვ",
+                    "ლს",
+                    "იო",
+                    "აკ",
+                    "ბულ",
+                    "ბს_",
+                    "ვის",
+                    "აგ",
+                    "i",
+                    "ს_სა",
+                    "ნის",
+                    "ერთ",
+                    "გან",
+                    "დგ",
+                    "ობი",
+                    "ნი_",
+                    "იტ",
+                    "ი_გ",
+                    "მა_",
+                    "ჯ",
+                    "ელი_",
+                    "აა",
+                    "ყო",
+                    "მდე",
+                    "აზ",
+                    "ორი",
+                    "ნო",
+                    "კო",
+                    "იუ",
+                    "ებუ",
+                    "ბით",
+                    "აში",
+                    "ი_ი",
+                    "ებულ",
+                    "_ო",
+                    "სი_",
+                    "იი",
+                    "ალი",
+                    "_ტ",
+                    "ს_გა",
+                    "ბო",
+                    "რს",
+                    "ისა",
+                    "გამ",
+                    "_გამ",
+                    "ქა",
+                    "ეტ",
+                    "ტრ",
+                    "ოს_",
+                    "ნტ",
+                    "ვრ",
+                    "ეგ",
+                    "მარ",
+                    "ბით_",
+                    "რმ",
+                    "იკ",
+                    "ართ",
+                    "წლ",
+                    "იდა",
+                    "_ერ",
+                    "ლები",
+                    "ის_დ",
+                    "ს_შე",
+                    "ოგ",
+                    "აში_",
+                    "_ც",
+                    "თა_",
+                    "ეთი",
+                    "ამა",
+                    "_ამ",
+                    "_2",
+                    "ფი",
+                    "ხვ",
+                    "ური_",
+                    "წა",
+                    "ლია",
+                    "დან",
+                    "_წლ",
+                    "ლს_",
+                    "ლობ",
+                    "თავ",
+                    "გრ",
+                    "ბრ",
+                    "რუ",
+                    "ის_გ",
+                    "ა_რ",
+                    "_წე",
+                    "_სი",
+                    "დრ",
+                    "ი_გა",
+                    "თი_",
+                    "ანა",
+                    "_თა",
+                    "წი",
+                    "_ჩ",
+                    "_რა",
+                    "პა",
+                    "თე",
+                    "გამო",
+                    "_ნა",
+                    "ხლ",
+                    "სამ",
+                    "ნის_",
+                    "ისი",
+                    "ცე",
+                    "ებს",
+                    "რდ",
+                    "ვის_",
+                    "ს_რ",
+                    "ელს",
+                    "ხო",
+                    "ნს",
+                    "იის",
+                    "ეობ",
+                    "ებს_",
+                    "ფე",
+                    "იყ",
+                    "ებით",
+                    "აუ",
+                    "ასა",
+                    "ა_სა",
+                    "ობა_",
+                    "ი_რ",
+                    "გო",
+                    "ბული",
+                    "ოე",
+                    "აბ",
+                    "სო",
+                    "მოს",
+                    "ომე",
+                    "აც_",
+                    "ადგ",
+                    "_ის",
+                    "ივ",
+                    "19",
+                    "ინა",
+                    "ნა_",
+                    "ექ",
+                    "_19",
+                    "ცხ",
+                    "ი_სა",
+                    "ახლ",
+                    "ამი",
+                    "ტუ",
+                    "ს_ი",
+                    "თის",
+                    "თან",
+                    "_სამ",
+                    "სა_",
+                    "_ლ",
+                    "სხ",
+                    "მხ",
+                    "დან_",
+                    "_ერთ",
+                    "მის_",
+                    "იდან",
+                    "ის_შ",
+                    "იის_",
+                    "ა_გ",
+                    "0_",
+                    "რები",
+                    "ჭ",
                 ],
             ),
             (
@@ -2317,6 +2773,85 @@ impl Lingo {
                     "ent", "_u", "mag", "re_", "ai_", "te_", "d_", "b_", "ter", "eze", "_am",
                     "a_a_", "tel", "nye", "mel", "_na", "_fo", "_ko", "_a_t", "si", "_vá", "un",
                     "gá", "_mag",
+                ],
+            ),
+            (
+                Language::Icelandic.name(),
+                vec![
+                    "a", "r", "n", "i", "e", "s", "t", "l", "u", "ð", "g", "m", "k", "r_", "f",
+                    "a_", "v", "_s", "ð_", "o", "ar", "h", "á", "in", "i_", "_e", "d", "að", "í",
+                    "_a", "n_", "er", "m_", "_h", "þ", "_v", "_þ", "að_", "j", "nn", "st", "g_",
+                    "_f", "an", "b", "ei", "um", "ó", "t_", "ur", "_m", "ið", "y", "na", "_að",
+                    "ir", "um_", "u_", "_o", "ti", "ar_", "_að_", "p", "ri", "æ", "ta", "_á", "í_",
+                    "ve", "á_", "ö", "nd", "ur_", "_í", "ra", "og", "og_", "_og_", "_og", "la",
+                    "en", "_t", "ir_", "ið_", "_í_", "ni", "il", "ng", "_l", "ga", "_b", "le",
+                    "un", "ú", "s_", "se", "_er", "ki", "_g", "eg", "tt", "sk", "é", "er_", "vi",
+                    "_k", "al", "inn", "nu", "l_", "_se", "em", "nn_", "ða", "am", "_á_", "ði",
+                    "sa", "af", "ma", "_ve", "kk", "_n", "rð", "ka", "_er_", "_u", "ver", "tu",
+                    "me", "re", "na_", "_vi", "þe", "ðu", "li", "ja", "_þe", "ing", "gu", "ef",
+                    "ns", "va", "da", "r_s", "di", "sem", "ll", "þa", "_þa", "ha", "he", "ru",
+                    "mi", "em_", "_sem", "sem_", "lu", "_st", "gi", "fr", "ra_", "til", "ek",
+                    "_ha", "jó", "is", "yr", "ag", "_r", "eð", "st_", "_ti", "fa", "_me", "ann",
+                    "_til", "_he", "ta_", "ge", "es", "ld", "ss", "or", "ein", "ndi", "rn", "si",
+                    "and", "rs", "a_s", "nar", "it", "f_", "ku", "il_", "_fr", "við", "ki_", "_d",
+                    "et", "r_e", "leg", "inn_", "_sa", "r_a", "fy", "_ei", "_en", "au", "_um",
+                    "til_", "_ver", "_sk", "as", "_við", "fi", "sta", "nna", "ekk", "ig", "_fy",
+                    "sam", "ý", "ð_s", "r_h", "ga_", "ni_", "fyr", "ey", "num", "kki", "gar",
+                    "nni", "var", "ik", "ví", "sl", "ði_", "num_", "_fyr", "_va", "ri_", "on",
+                    "það", "_það", "það_", "með", "rá", "ða_", "rir", "ko", "kki_", "_ge", "_ekk",
+                    "_ek", "hv", "fu", "ál", "fn", "erð", "ekki", "_um_", "ður", "r_v", "_með",
+                    "ð_e", "ns_", "du", "te", "el", "sv", "rf", "yri", "_sam", "a_e", "við_",
+                    "ega", "nin", "en_", "ke", "gr", "d_", "ð_v", "i_s", "r_þ", "rt", "nga",
+                    "_ein", "yrir", "n_s", "ins", "in_", "fyri", "ak", "vo", "_al", "_en_", "nar_",
+                    "k_", "enn", "a_a", "tt_", "ru_", "r_f", "ór", "_2", "ne", "at", "ngu", "ár",
+                    "rk", "með_", "eð_", "ð_h", "ær", "rir_", "_1", "lan", "c", "all", "_mi",
+                    "_af", "öl", "tr", "kr", "gar_", "ður_", "di_", "r_m", "ð_f", "ík", "ti_",
+                    "m_s", "ug", "pp", "já", "im", "be", "ð_þ", "yn", "r_að", "an_", "la_", "_hv",
+                    "þei", "má", "lei", "br", "ba", "_þei", "ja_", "fe", "eir", "_ef", "rg", "_le",
+                    "ok", "nda", "ast", "_var", "ör", "ér", "a_v", "_sv", "kj", "g_s", "ft", "su",
+                    "inga", "jö", "sin", "ndi_", "ð_a", "han", "a_h", "æð", "nu_", "m_e", "ins_",
+                    "a_þ", "ól", "un_", "tur", "ka_", "ann_", "a_f", "n_e", "gn", "ess", "_han",
+                    "rr", "rin", "nni_", "mu", "inu", "fl", "æt", "stu", "r_á",
+                ],
+            ),
+            (
+                Language::Indonesian.name(),
+                vec![
+                    "a", "n", "e", "i", "an", "t", "u", "r", "k", "m", "s", "g", "d", "n_", "a_",
+                    "p", "l", "ng", "an_", "b", "h", "i_", "er", "_d", "ka", "_m", "en", "y", "da",
+                    "_s", "ya", "o", "_p", "ang", "_k", "la", "g_", "me", "ng_", "ta", "ra", "ar",
+                    "_t", "at", "_b", "_me", "ga", "ak", "in", "ah", "se", "di", "h_", "ang_",
+                    "_a", "pa", "ma", "un", "al", "j", "pe", "sa", "kan", "_se", "te", "u_", "be",
+                    "ba", "tu", "k_", "as", "em", "t_", "ny", "kan_", "ke", "am", "ti", "_i",
+                    "_pe", "_da", "na", "si", "nya", "men", "ri", "_di", "ya_", "ah_", "it",
+                    "_men", "_ke", "ha", "eng", "ap", "_te", "el", "ia", "nga", "ad", "_be", "_y",
+                    "yan", "_ya", "yang", "nya_", "_yan", "ber", "c", "ja", "nt", "at_", "li",
+                    "r_", "w", "gan", "ik", "de", "s_", "uk", "ai", "aka", "dan", "ngan", "ki",
+                    "ala", "_ber", "is", "ara", "_l", "_ba", "nd", "_ma", "ua", "mu", "gan_", "ni",
+                    "ak_", "ter", "ing", "enga", "ada", "pu", "per", "ran", "wa", "ru", "_sa",
+                    "ata", "ag", "n_d", "eb", "l_", "_ka", "ek", "il", "su", "us", "dan_", "bu",
+                    "di_", "_dan", "n_k", "_de", "a_m", "ela", "a_s", "re", "n_s", "mp", "mb",
+                    "tu_", "a_d", "m_", "n_m", "_pa", "n_p", "da_", "lah", "era", "tan", "_ter",
+                    "apa", "ri_", "ku", "_h", "es", "or", "ur", "asi", "et", "_j", "an_d", "_per",
+                    "gi", "pen", "an_p", "a_k", "ung", "an_k", "gg", "ngg", "_u", "lah_", "mi",
+                    "itu", "a_p", "an_m", "ut", "an_s", "si_", "ir", "_in", "den", "id", "akan",
+                    "le", "ka_", "a_t", "i_s", "_ti", "ra_", "_o", "un_", "f", "ari", "_pen",
+                    "n_b", "ta_", "rt", "deng", "_r", "i_d", "lu", "n_t", "gu", "ju", "ian", "du",
+                    "on", "_it", "ih", "ca", "_itu", "itu_", "ge", "_den", "pi", "ana", "pat",
+                    "ntu", "meng", "ul", "mem", "_mem", "rang", "ep", "ai_", "bi", "ar_", "ed",
+                    "ay", "_ha", "a_me", "st", "ngk", "gk", "an_b", "um", "uk_", "_di_", "ena",
+                    "p_", "ada_", "man", "ian_", "i_k", "_n", "nda", "ika", "e_", "ama", "a_b",
+                    "n_me", "i_p", "_la", "ud", "lan", "emb", "ari_", "lam", "im", "_ta", "am_",
+                    "_ak", "ia_", "ara_", "al_", "_g", "n_ke", "dar", "_su", "au", "ali", "ni_",
+                    "ert", "ga_", "asa", "a_a", "aha", "dal", "aga", "_c", "ne", "a_i", "n_pe",
+                    "eka", "g_m", "eri", "as_", "seb", "nj", "ng_m", "n_se", "n_a", "dala", "dak",
+                    "_un", "aa", "a_se", "pun", "ora", "ita", "han", "nta", "ini", "i_m", "aj",
+                    "_ki", "mer", "k_m", "unt", "san", "ida", "ema", "ban", "aw", "an_t", "oran",
+                    "n_i", "uh", "_an", "pad", "aya", "ng_d", "g_d", "pat_", "dap", "ent", "tuk",
+                    "eh", "tid", "mas", "dak_", "in_", "_ad", "alam", "_unt", "ntuk", "_mer",
+                    "uka", "rs", "ol", "i_t", "and", "_tid", "ung_", "g_s", "untu", "ti_", "ngka",
+                    "ng_s", "na_", "ini_", "gka", "an_a", "ngga", "gga", "awa", "a_y", "tuk_",
+                    "tida", "ih_", "idak", "asi_", "adi", "ma_", "any", "_pu", "pr",
                 ],
             ),
             (
@@ -3667,7 +4202,7 @@ mod test {
     }
 
     #[test]
-    fn test_afrikaans_11() {
+    fn test_afrikaans_1() {
         let l = Lingo::new();
         let sample = "Elkeen het die reg tot opvoeding. Opvoeding sal gratis wees, ten minste in die elementêre en fundamentele stadiums. Elementêre opvoeding sal verpligtend wees. Tegniese en professionele opvoeding sal geredelik beskikbaar wees en ho‘r opvoeding sal net so geredelik op meriete beskikbaar wees.";
         let language = l.get_language(sample);
@@ -3689,7 +4224,7 @@ mod test {
     }
 
     #[test]
-    fn test_afrikaans_12() {
+    fn test_afrikaans_2() {
         let l = Lingo::new();
         let sample = "Opvoeding sal gemik wees op die volle ontwikkeling van die menslike persoonlikheid en op die bevordering van respek vir menseregte en fundamentele vryheid. Dit sal begrip, verdraag-saamheid en vriendskap tussen alle nasies, rasse of etniese groepe bevorder, asook die aktiwiteite van die Verenigde Volke in die handhawing van vrede.";
         let language = l.get_language(sample);
@@ -3716,7 +4251,7 @@ mod test {
     }
 
     #[test]
-    fn test_azerbaijani_21() {
+    fn test_azerbaijani_1() {
         let l = Lingo::new();
         let sample = "Mərhəmətli, rəhmli Allahın adı ilə!";
         let language = l.get_language(sample);
@@ -3738,7 +4273,7 @@ mod test {
     }
 
     #[test]
-    fn test_azerbaijani_22() {
+    fn test_azerbaijani_2() {
         let l = Lingo::new();
         let sample = "Həmd (şükür və tə\'rif) olsun Allaha (və ya: Həmd məxsusdur Allaha) - aləmlərin Rəbbinə,";
         let language = l.get_language(sample);
@@ -3760,7 +4295,7 @@ mod test {
     }
 
     #[test]
-    fn test_azerbaijani_23() {
+    fn test_azerbaijani_3() {
         let l = Lingo::new();
         let sample =
             " (Bu dünyada hamıya) mərhəmətli, (axirətdə isə ancaq mö\'minlərə) rəhmli olana,";
@@ -3788,7 +4323,7 @@ mod test {
     }
 
     #[test]
-    fn test_bulgarian_31() {
+    fn test_bulgarian_1() {
         let l = Lingo::new();
         let sample = "Bсеки човек има право на образование. Oбразованието трябва да бъде безплатно, поне що се отнася до началното и основното образование. Hачалното образование трябва да бъде задължително. Tехническото и професионалното образование трябва да бъдат общодостъпни, а висшето образование трябва да бъде еднакво достъпно за всички на основата на техните способности.";
         let language = l.get_language(sample);
@@ -3810,7 +4345,7 @@ mod test {
     }
 
     #[test]
-    fn test_bulgarian_32() {
+    fn test_bulgarian_2() {
         let l = Lingo::new();
         let sample = "Oбразованието трябва да бъде насочено към цялостно развитие на човешката личност и заcилване на уважението към правата на човека и основните свободи";
         let language = l.get_language(sample);
@@ -3832,7 +4367,7 @@ mod test {
     }
 
     #[test]
-    fn test_bulgarian_33() {
+    fn test_bulgarian_3() {
         let l = Lingo::new();
         let sample = "Bсеки човек има право свободно да участва в културния живот на обществото";
         let language = l.get_language(sample);
@@ -3859,7 +4394,7 @@ mod test {
     }
 
     #[test]
-    fn test_belarusian_41() {
+    fn test_belarusian_1() {
         let l = Lingo::new();
         let sample = "Кожны чалавек мае права на адукацыю. Адукацыя павiнна быць бясплатнай па меншай меры ў тым, што датычыць пачатковай i агульнай адукацыi. Пачатковая адукацыя павiнна быць абавязковай. Тэхнiчная i прафесiянальная адукацыя павiнна быць агульнадаступнай i вышэйшая адукацыя павiнна быць аднолькава даступнай для ўсiх на падставе здольнасцей кожнага.";
         let language = l.get_language(sample);
@@ -3881,7 +4416,7 @@ mod test {
     }
 
     #[test]
-    fn test_belarusian_42() {
+    fn test_belarusian_2() {
         let l = Lingo::new();
         let sample = "Адукацыя павiнна быць накiравана да поўнага развiцця чалавечай асобы i да павелiчэння павагi да правоў чалавека i асноўных свабод";
         let language = l.get_language(sample);
@@ -3903,7 +4438,7 @@ mod test {
     }
 
     #[test]
-    fn test_belarusian_43() {
+    fn test_belarusian_3() {
         let l = Lingo::new();
         let sample = "Кожны чалавек мае права свабодна ўдзельнiчаць у культурным жыццi грамадства";
         let language = l.get_language(sample);
@@ -3930,7 +4465,7 @@ mod test {
     }
 
     #[test]
-    fn test_bengali_51() {
+    fn test_bengali_1() {
         let l = Lingo::new();
         let sample = "প্রত্যেকের‌ই শিক্ষালাভের অধিকার রয়েছে। অন্ততঃপক্ষে প্রাথমিক ও মৌলিক পর্যায়ে শিক্ষা অবৈতনিক হবে। প্রাথমিক শিক্ষা বাধ্যতামূলক হবে। কারিগরী ও বৃত্তিমূলক শিক্ষা সাধারণভাবে লভ্য থাকবে এবং উচ্চতর শিক্ষা মেধার ভিত্তিতে সকলের জন্য সমভাবে উন্মুক্ত থাকবে।";
         let language = l.get_language(sample);
@@ -3952,7 +4487,7 @@ mod test {
     }
 
     #[test]
-    fn test_bengali_52() {
+    fn test_bengali_2() {
         let l = Lingo::new();
         let sample = "ব্যক্তিত্বের পূর্ণ বিকাশ এবং মানবিক অধিকার ও মৌলিক স্বাধীনতা-সমূহের প্রতি শ্রদ্ধাবোধ সুদৃঢ় করার লক্ষ্যে শিক্ষা ";
         let language = l.get_language(sample);
@@ -3979,7 +4514,7 @@ mod test {
     }
 
     #[test]
-    fn test_bosnian_61() {
+    fn test_bosnian_1() {
         let l = Lingo::new();
         let sample = "Svako ima pravo na školovanje. Školovanje treba da bude besplatno bar u osnovnim i nižim školama. Osnovna nastava je obavezna. Tehnička i stručna nastava treba da bude opšte dostupna, a viša nastava treba da bude svima podjednako pristupačna na osnovu utvrdjenih kriterijuma.";
         let language = l.get_language(sample);
@@ -4001,7 +4536,7 @@ mod test {
     }
 
     #[test]
-    fn test_bosnian_62() {
+    fn test_bosnian_2() {
         let l = Lingo::new();
         let sample = "Roditelji imaju prvenstveno pravo da biraju vrstu školovanja za svoju decu.";
         let language = l.get_language(sample);
@@ -4028,7 +4563,7 @@ mod test {
     }
 
     #[test]
-    fn test_estonian_71() {
+    fn test_estonian_1() {
         let l = Lingo::new();
         let sample = "Igal inimesel on õigus haridusele. Haridus peab olema tasuta vähemalt alg- ja üldhariduse osas. Algharidus peab olema kohustuslik. Tehniline ja kutseharidus peab olema kättesaadav kõigile ja kõrgem haridus võrdselt kättesaadav kõigile vastavalt igaühe võimetele.";
         let language = l.get_language(sample);
@@ -4050,7 +4585,7 @@ mod test {
     }
 
     #[test]
-    fn test_estonian_72() {
+    fn test_estonian_2() {
         let l = Lingo::new();
         let sample = "Haridus peab olema suunatud inimisiksuse täielikule arendamisele ja inimõigustest ning põhivabadustest lugupidamise suurendamisele";
         let language = l.get_language(sample);
@@ -4072,7 +4607,7 @@ mod test {
     }
 
     #[test]
-    fn test_estonian_73() {
+    fn test_estonian_3() {
         let l = Lingo::new();
         let sample = "Vanematel on oma laste hariduse valikul eesõigus.";
         let language = l.get_language(sample);
@@ -4099,7 +4634,7 @@ mod test {
     }
 
     #[test]
-    fn test_czech_81() {
+    fn test_czech_1() {
         let l = Lingo::new();
         let sample = "Každý má právo na vzdělání. Vzdělání nechť je bezplatné, ";
         let language = l.get_language(sample);
@@ -4121,7 +4656,7 @@ mod test {
     }
 
     #[test]
-    fn test_czech_82() {
+    fn test_czech_2() {
         let l = Lingo::new();
         let sample = "Rodiče mají přednostní právo volit druh vzdělání pro své děti.";
         let language = l.get_language(sample);
@@ -4143,7 +4678,7 @@ mod test {
     }
 
     #[test]
-    fn test_czech_83() {
+    fn test_czech_3() {
         let l = Lingo::new();
         let sample = "Vzdělání má směřovat k plnému rozvoji lidské osobnosti a k posílení úcty k lidským právům a základním svobodám";
         let language = l.get_language(sample);
@@ -4165,7 +4700,7 @@ mod test {
     }
 
     #[test]
-    fn test_czech_84() {
+    fn test_czech_4() {
         let l = Lingo::new();
         let sample = "rozvoji činnosti Spojených národů pro zachování míru.";
         let language = l.get_language(sample);
@@ -4192,7 +4727,7 @@ mod test {
     }
 
     #[test]
-    fn test_albanian_91() {
+    fn test_albanian_1() {
         let l = Lingo::new();
         let sample = "Gjithkush ka të drejtën e shkollimit. Arsimi duhet të jetë falas, të paktën në shkollat fillore dhe të ulta. Arsimi fillor është i detyrueshëm. Arsimi teknik dhe profesional duhet të zgjerohet e arsimi i lartë duhet t\'u bëhet i mundshëm të gjithëve në bazë të aftësisë.";
         let language = l.get_language(sample);
@@ -4219,7 +4754,7 @@ mod test {
     }
 
     #[test]
-    fn test_spanish_101() {
+    fn test_spanish_1() {
         let l = Lingo::new();
         let sample = "En el hotel ¡Ya estoy en el hotel! Ayer por la noche he llegado a la ciudad de Santiago de Compostela. ";
         let language = l.get_language(sample);
@@ -4241,7 +4776,7 @@ mod test {
     }
 
     #[test]
-    fn test_spanish_102() {
+    fn test_spanish_2() {
         let l = Lingo::new();
         let sample = "El hotel está a pocos minutos de la catedral. Hace un mes que he hecho la reserva de la habitación.";
         let language = l.get_language(sample);
@@ -4263,7 +4798,7 @@ mod test {
     }
 
     #[test]
-    fn test_spanish_103() {
+    fn test_spanish_3() {
         let l = Lingo::new();
         let sample = "Y estoy encantado! La habitación es de tamaño mediano. Tiene mucha luz y una gran ventana. ";
         let language = l.get_language(sample);
@@ -4285,7 +4820,7 @@ mod test {
     }
 
     #[test]
-    fn test_spanish_104() {
+    fn test_spanish_4() {
         let l = Lingo::new();
         let sample = "Tengo una cama grande y una gran caja fuerte. Lamentablemente no tiene cuarto de baño propio, pero hay uno común en el pasillo.";
         let language = l.get_language(sample);
@@ -4307,7 +4842,7 @@ mod test {
     }
 
     #[test]
-    fn test_spanish_105() {
+    fn test_spanish_5() {
         let l = Lingo::new();
         let sample = "He realizado el check-in nada más llegar. Los empleados del hotel son muy amables. Me ha atendido una recepcionista que sabía hablar… ¡8 idiomas!";
         let language = l.get_language(sample);
@@ -4334,7 +4869,7 @@ mod test {
     }
 
     #[test]
-    fn test_guarani_111() {
+    fn test_guarani_1() {
         let l = Lingo::new();
         let sample = "Mayma yvypóra ou ko yvy ári iñapytyʼyre ha eteĩcha tekoruvicharenda ha akatúape jeguerekópe; ha ikatu rupi oikuaa añetéva ha añeteʼyva, iporãva ha ivaíva, tekotevẽ pehenguéicha oiko oñondivekuéra";
         let language = l.get_language(sample);
@@ -4361,7 +4896,7 @@ mod test {
     }
 
     #[test]
-    fn test_catalan_121() {
+    fn test_catalan_1() {
         let l = Lingo::new();
         let sample = "Francisco de Goya y Lucientes (Fuendetodos, Saragossa, 30 de març del 1746 - Bordeus, França, 15 d\'abril del 1828) fou un pintor i gravador aragonès. La seva obra comprèn la pintura de cavallet i mural, el gravat i el dibuix. En totes aquestes facetes va desenvolupar un estil que inaugura el romanticisme. La seva contribució representa també el començament de la pintura contemporània, i se\'l considera un precursor de les avantguardes pictòriques del segle XX.";
         let language = l.get_language(sample);
@@ -4383,7 +4918,7 @@ mod test {
     }
 
     #[test]
-    fn test_catalan_122() {
+    fn test_catalan_2() {
         let l = Lingo::new();
         let sample = "La seva obra reflecteix el convuls període històric en què va viure, particularment per les conseqüències de la Guerra de la Independència Espanyola (Guerra del Francès), de la qual ha quedat la sèrie d\'estampes Els estralls de la guerra. Cal destacat també la famosa pintura La maja nua.";
         let language = l.get_language(sample);
@@ -4405,7 +4940,7 @@ mod test {
     }
 
     #[test]
-    fn test_catalan_123() {
+    fn test_catalan_3() {
         let l = Lingo::new();
         let sample = "El claustre d\'estil romànic del Mas del Vent de Palamós és un conjunt arquitectònic suposadament datat del segle XII i que s\'ha considerat procedent de Castella que es troba dins d\'una finca privada des de 1959. La seva troballa va sortir a la premsa a inicis de juny de 2012 gràcies a la investigació de Gerardo Boto, investigador del Departament d\'Història i Història de l\'Art de la Universitat de Girona,[1] tot i que varis documents anteriors ja tenien constància de la seva existència.[2][3] L\'obra està mancada de qualsevol catalogació o protecció.[4]";
         let language = l.get_language(sample);
@@ -4427,7 +4962,7 @@ mod test {
     }
 
     #[test]
-    fn test_catalan_124() {
+    fn test_catalan_4() {
         let l = Lingo::new();
         let sample = "Segons el càlcul de Gerardo Boto, les galeries fan 23,8 i 23,9 metres de llargada. Dues d\'elles presenten deu arcs sobre columnes i capitells dobles, excepte la del mig, que és quàdruple. De les altres dues galeries que acabarien de tancar el claustre de 44 capitells no se\'n conserven columnes ni arcs i els capitells reposen directament sobre les bases.[7] Envoltat de pins, oliveres i garrofers,[8] compta amb un petit teulat de ferro que el protegeix de la humitat.[9]";
         let language = l.get_language(sample);
@@ -4449,7 +4984,7 @@ mod test {
     }
 
     #[test]
-    fn test_catalan_125() {
+    fn test_catalan_5() {
         let l = Lingo::new();
         let sample = "El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]";
         let language = l.get_language(sample);
@@ -4471,7 +5006,7 @@ mod test {
     }
 
     #[test]
-    fn test_catalan_126() {
+    fn test_catalan_6() {
         let l = Lingo::new();
         let sample = "El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]";
         let language = l.get_language(sample);
@@ -4493,7 +5028,7 @@ mod test {
     }
 
     #[test]
-    fn test_catalan_127() {
+    fn test_catalan_7() {
         let l = Lingo::new();
         let sample = "Xena: Warrior Princess (en català. Xena: la princesa guerrera) és una sèrie de televisió originalment emesa entre el 15 de setembre de 1995 i el 18 de juny de 2001. La sèrie va ser creada el 1995 pels directors i productors Robert Tapert i John Schulian, amb l\'ajuda dels productors Sam Raimi i RJ Stewart. La idea va sorgir a partir de Xena, un personatge secundari de la primera temporada de Hercules: The Legendary Journeys. Rodada a Nova Zelanda, es tracta d\'una coproducció entre aquest país i els Estats Units. La sèrie ha estat produïda per la Pacific Renaissance Pictures Ltd, els creadors són Robert Tapert i Sam Raimi, productors de la sèrie i fou distribuïda per Universal Studios. La sèrie, ambientada a l\'Antiga Grècia, narra les aventures de Xena (Lucy Lawless) i Gabrielle (Renée O\'Connor), dos grans guerreres i inseparables amigues que lluiten contra les injustícies de l\'època.";
         let language = l.get_language(sample);
@@ -4515,7 +5050,7 @@ mod test {
     }
 
     #[test]
-    fn test_catalan_128() {
+    fn test_catalan_8() {
         let l = Lingo::new();
         let sample = "La sèrie es va mantenir en l\'aire durant sis temporades als Estats Units, entre 1995 i 2001, convertint-se en la més reeixida de les sèries sindicades del moment i arribant a ser un autèntic fenomen social al llarg de tot el món .De fet, és considerada una de les millors sèries de la història per la revista TV Guide i, avui dia, el fanatisme per la sèrie continua actiu a Internet. Aquesta sèrie d\'aventures, vista en més de vuitanta-sis països dels cinc continents, ha rebut diversos premis, incloent un Emmy. A més, aprofitant l\'èxit de la mateixa, s\'han comercialitzat nombrosos productes sobre ella, com ara episodis en DVD, una pel·lícula, llibres, còmics o videojocs. La influència de la sèrie fora de la pantalla arriba a sectors com la comunitat lèsbica o la astronòmica, així com a altres sèries de televisió i pel·lícules.";
         let language = l.get_language(sample);
@@ -4542,7 +5077,7 @@ mod test {
     }
 
     #[test]
-    fn test_dutch_131() {
+    fn test_dutch_1() {
         let l = Lingo::new();
         let sample = "Het Nederlands is een West-Germaanse taal en de moedertaal van de meeste inwoners van Nederland, België en Suriname, de drie lidstaten van de Nederlandse Taalunie, een internationale instelling die onder meer de regels voor de Nederlandse standaardtaal vastlegt. In de Europese Unie spreken ongeveer 23 miljoen mensen Nederlands als eerste taal, en een bijkomende vijf miljoen als tweede taal. Verder is het Nederlands ook een officiële taal van de Caraïbische eilanden Aruba, Curaçao en Sint-Maarten, terwijl er nog minderheden bestaan in Frankrijk, Duitsland en in mindere mate Indonesië, en nog ruim een half miljoen sprekers in de Verenigde Staten, Canada en Australië. De Kaap-Hollandse dialecten van Zuid-Afrika en Namibië werden gestandaardiseerd tot Afrikaans, een wederzijds verstaanbare dochtertaal van het Nederlands.";
         let language = l.get_language(sample);
@@ -4564,7 +5099,7 @@ mod test {
     }
 
     #[test]
-    fn test_dutch_132() {
+    fn test_dutch_2() {
         let l = Lingo::new();
         let sample = "Het Nederlands is nauw verwant aan het Engels en Duits, en wordt tussen beide geplaatst. Naast het feit dat het Nederlands de Hoogduitse klankverschuiving niet heeft ondergaan, verschilt het Nederlands – net als het Engels – verder ook van het Duits door de sterke reductie van de naamvallen, de algemene zeldzaamheid van de Germaanse umlaut en een meer regelmatige morfologie. Het moderne Nederlands heeft in oorsprong drie grammaticale geslachten, waarvan er twee in de praktijk grotendeels samenvallen (de de-woorden). Bijgevolg speelt het grammaticale geslacht een kleinere grammaticale rol dan in het Duits. De Nederlandse woordvolgorde is onderwerp-werkwoord-lijdend voorwerp (SVO) in hoofdzinnen maar past, net als in het Duits, inversie toe in bijzinnen (SOV). Het Nederlands kent een hoofdzakelijk Germaanse woordenschat, in grotere mate dan het sterk geromaniseerde Engels, maar aangevuld door een grotere Romaanse component dan in het Duits.";
         let language = l.get_language(sample);
@@ -4591,7 +5126,7 @@ mod test {
     }
 
     #[test]
-    fn test_english_141() {
+    fn test_english_1() {
         let l = Lingo::new();
         let sample = "SEOUL, South Korea (AP) — The outside world focuses on the messages of doom and gloom from North Korea: bombastic threats of nuclear war, fantasy videos of U.S. cities in flames, digitally altered photos of leader Kim Jong Un guiding military drills. But back home, North Koreans get a decidedly softer dose of propaganda: Kim portrayed as a young, energetic leader, a people person and family man.";
         let language = l.get_language(sample);
@@ -4613,7 +5148,7 @@ mod test {
     }
 
     #[test]
-    fn test_english_142() {
+    fn test_english_2() {
         let l = Lingo::new();
         let sample = "Mixed in with the images showing Kim aboard a speeding boat on a tour of front-line islands, or handing out commemorative rifles to smartly saluting soldiers, are those of Kim and his wife clapping at a dolphin show or linking arms with weeping North Korean children";
         let language = l.get_language(sample);
@@ -4635,7 +5170,7 @@ mod test {
     }
 
     #[test]
-    fn test_english_143() {
+    fn test_english_3() {
         let l = Lingo::new();
         let sample = "The pictures can look odd or obviously staged to outsiders. But they\'re carefully crafted propaganda meant to give North Koreans an image of a country governed by a leader who is as comfortable overseeing a powerful military as he is mingling with the people.";
         let language = l.get_language(sample);
@@ -4657,7 +5192,7 @@ mod test {
     }
 
     #[test]
-    fn test_english_144() {
+    fn test_english_4() {
         let l = Lingo::new();
         let sample = "Views are the V in MVC. Views are responsible for generating the specific output required for the request. Often this is in the form of HTML, XML, or JSON, but streaming files and creating PDF’s that users can download are also responsibilities of the View Layer.";
         let language = l.get_language(sample);
@@ -4679,7 +5214,7 @@ mod test {
     }
 
     #[test]
-    fn test_english_145() {
+    fn test_english_5() {
         let l = Lingo::new();
         let sample = "CakePHP comes with a few built-in View classes for handling the most common rendering scenarios";
         let language = l.get_language(sample);
@@ -4701,7 +5236,7 @@ mod test {
     }
 
     #[test]
-    fn test_english_146() {
+    fn test_english_6() {
         let l = Lingo::new();
         let sample = "View extending allows you to wrap one view in another. Combining this with view blocks gives you a powerful way to keep your views DRY. For example, your application has a sidebar that needs to change depending on the specific view being rendered. By extending a common view file you can avoid repeating the common markup for your sidebar, and only define the parts that change";
         let language = l.get_language(sample);
@@ -4728,7 +5263,7 @@ mod test {
     }
 
     #[test]
-    fn test_esperanto_151() {
+    fn test_esperanto_1() {
         let l = Lingo::new();
         let sample = "Lucy LAWLESS, naskiĝis kiel Lucille Frances Ryan (* 29-a de marto 1968 en Mount Albert, Nov-Zelando) estas novzelanda aktorino.";
         let language = l.get_language(sample);
@@ -4750,7 +5285,7 @@ mod test {
     }
 
     #[test]
-    fn test_esperanto_152() {
+    fn test_esperanto_2() {
         let l = Lingo::new();
         let sample = "Ŝi iĝis mondkonata en la rolo de Xena, kiel ĉefrolulo de la televida serio. Ŝi ankaŭ rolludis en etaj roloj, kiel en la kineja filmo \"Spiderman\" aŭ en la TV-serio \"Tarzan\" en 2002. Ŝi ankaŭ donis sian voĉon ĉe \"The Simpsons\".";
         let language = l.get_language(sample);
@@ -4772,7 +5307,7 @@ mod test {
     }
 
     #[test]
-    fn test_esperanto_153() {
+    fn test_esperanto_3() {
         let l = Lingo::new();
         let sample =
             "Ŝi estas edziniĝinta ekde 1998 kun Robert G. Tapert, produktisto de la serio \"Xena\"";
@@ -4795,7 +5330,7 @@ mod test {
     }
 
     #[test]
-    fn test_esperanto_154() {
+    fn test_esperanto_4() {
         let l = Lingo::new();
         let sample = "Laŭ sagao, la urbo (Barcino) estis fondita de Hamilkar Barka, patro de Hanibal Barka el Kartago. Post tio trakonstruis la urbon la romianoj al fortikaĵo (castrum). La centro de la urbo kuŝis sur Mons Taber, sur malgranda monteto proksime al la tiama Konsildomo (Plaça de Sant Jaume). Oni povas ankoraŭ hodiaŭ trovi restaĵojn de la romia urbomuro en la praurba parto. Gravaj romiaj trovitaĵoj estas ekspoziciitaj ĉe Plaça del Rei. En la 5-a jarcento la urbon konkeris visigotoj, en la 8-a jc. la maŭroj. En 801 konkeris la urbon la franca reĝo. Je 985 disrabis Barcelonon Al-Mansur, armeestro de Kordovo.";
         let language = l.get_language(sample);
@@ -4817,7 +5352,7 @@ mod test {
     }
 
     #[test]
-    fn test_esperanto_155() {
+    fn test_esperanto_5() {
         let l = Lingo::new();
         let sample = "En la mezepoko Barcelono estis ĉefurbo de Reĝlando de Aragono kaj elstara mara kaj komerca potenco en la okcidenta Mediteranea maro, kun gravaj posedaĵoj, kiel Sardio kaj Sicilio. Ekde la 15-a jarcento, post la Kompromiso de Caspe (1412) kaj la enlanda milito (1462-1472), la urbo perdis potencon, unue favore al Valencio kaj poste al kastiliaj urboj. La malvenko en la milito de postveno de Hispanio (1701-1714) kaj la postaj reprezalioj de Filipo la 5-a de Kastilio plimalfortigis kaj katenis la urbon ĝis meze de la 19-a jarcento, kiam estiĝis permeso malkonstrui la urbomurojn.";
         let language = l.get_language(sample);
@@ -4839,7 +5374,7 @@ mod test {
     }
 
     #[test]
-    fn test_esperanto_156() {
+    fn test_esperanto_6() {
         let l = Lingo::new();
         let sample = "La ekonomia bonfarto permesis rapidegan plilarĝigon de la urbo, kiu ensorbis diversajn antaŭurbojn kiel Sants, Gràcia kaj Sarrià. Partoj de la urbo aldoniĝis post eventoj, kiel la internaciaj ekspozicioj de 1888 kaj 1929, la Olimpikaj ludoj (1992) aŭ la Forumo de la Kulturoj (2004).";
         let language = l.get_language(sample);
@@ -4866,7 +5401,7 @@ mod test {
     }
 
     #[test]
-    fn test_irish_161() {
+    fn test_irish_1() {
         let l = Lingo::new();
         let sample = "Tá ag gach uile dhuine an ceart chun an oideachais.";
         let language = l.get_language(sample);
@@ -4888,7 +5423,7 @@ mod test {
     }
 
     #[test]
-    fn test_irish_162() {
+    fn test_irish_2() {
         let l = Lingo::new();
         let sample = "Tá ag na tuismitheoirí, i dtosach ar chách eile, an ceart chun an cineál oideachais a thoghadh a bhéarfar dá leanaí";
         let language = l.get_language(sample);
@@ -4915,7 +5450,7 @@ mod test {
     }
 
     #[test]
-    fn test_welsh_171() {
+    fn test_welsh_1() {
         let l = Lingo::new();
         let sample = "Y mae gan bawb hawl i addysg. Dylai addysg fod yn rhydd, o leiaf addysg elfennol a sylfaenol. Dylai addysg elfennol fod yn orfodol. Dylid gwneud addysg dechnegol a phroffesiynol yn agored i bawb, a dylai fod mynediad llawn a chydradd i bawb i addysg uwchradd ar sail teilyngdod";
         let language = l.get_language(sample);
@@ -4937,7 +5472,7 @@ mod test {
     }
 
     #[test]
-    fn test_welsh_172() {
+    fn test_welsh_2() {
         let l = Lingo::new();
         let sample = "Gan rieni y mae\'r hawl cyntaf i ddewis y math o addysg a roddir i\'w plant.";
         let language = l.get_language(sample);
@@ -4964,7 +5499,7 @@ mod test {
     }
 
     #[test]
-    fn test_gujarati_181() {
+    fn test_gujarati_1() {
         let l = Lingo::new();
         let sample = "પોતાનાં બાળકોને કયા પ્રકારનું શિક્ષણ આપવું તે પસંદ કરવાનો પ્રથમ અધિકાર માબાપોને રહેશે.";
         let language = l.get_language(sample);
@@ -4991,7 +5526,7 @@ mod test {
     }
 
     #[test]
-    fn test_hungarian_191() {
+    fn test_hungarian_1() {
         let l = Lingo::new();
         let sample = "Minden személynek joga van a neveléshez. A nevelésnek, legalábbis az elemi és alapvető oktatást illetően, ingyenesnek kell lennie. Az elemi oktatás kötelező. A technikai és szakoktatást általánossá kell tenni; a felsőbb tanulmányokra való felvételnek mindenki előtt -érdeméhez képest- egyenlő feltételek mellett nyitva kell állnia.";
         let language = l.get_language(sample);
@@ -5013,7 +5548,7 @@ mod test {
     }
 
     #[test]
-    fn test_hungarian_192() {
+    fn test_hungarian_2() {
         let l = Lingo::new();
         let sample =
             "A szülőket elsőbbségi jog illeti meg a gyermekeiknek adandó nevelés megválasztásában.";
@@ -5036,12 +5571,253 @@ mod test {
     }
 
     #[test]
+    fn test_indonesian_from_str() {
+        assert_eq!(Language::Indonesian.name(), "indonesian");
+    }
+
+    #[test]
+    fn test_indonesian_1() {
+        let l = Lingo::new();
+        let sample = " Setiap orang berhak mendapat pendidikan";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Indonesian, language.unwrap());
+    }
+
+    #[test]
+    fn test_indonesian_2() {
+        let l = Lingo::new();
+        let sample = "Orang-tua mempunyai hak utama untuk memilih jenis pendidikan yang akan diberikan kepada anak-anak mereka.";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Indonesian, language.unwrap());
+    }
+
+    #[test]
+    fn test_indonesian_3() {
+        let l = Lingo::new();
+        let sample = "Pendidikan harus ditujukan ke arah perkembangan pribadi yang seluas-luasnya serta memperkokoh rasa penghargaan terhadap hak-hak manusia dan kebebasan asasi";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Indonesian, language.unwrap());
+    }
+
+    #[test]
+    fn test_georgian_from_str() {
+        assert_eq!(Language::Georgian.name(), "georgian");
+    }
+
+    #[test]
+    fn test_georgian_1() {
+        let l = Lingo::new();
+        let sample = "ყოველ ადამიანს აქვს განათლების უფლება. განათლება დაწყებითი და ზოგადი მაინც, უფასო უნდა იყოს. დაწყებითი განათლება უნდა იყოს სავალდებულო. ტექნიკური და პროფესიული განათლება უნდა იყოს ხელმისაწვდომი, უმაღლესი განათლება კი - ერთაირად მისაწვდომი ყველასათვის თითოეულის უნარისამბერ";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Georgian, language.unwrap());
+    }
+
+    #[test]
+    fn test_georgian_2() {
+        let l = Lingo::new();
+        let sample = "მშობლებს აქვთ პრიორიტეტის უფლება აირჩიონ რა სახის განათლებაც სურთ თავიანთი მცირეწლოვანი შვილებისათვის.";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Georgian, language.unwrap());
+    }
+
+    #[test]
+    fn test_icelandic_from_str() {
+        assert_eq!(Language::Icelandic.name(), "icelandic");
+    }
+
+    #[test]
+    fn test_icelandic_1() {
+        let l = Lingo::new();
+        let sample = "Hver maður á rétt til menntunar. Skal hún veitt ókeypis, að minnsta kosti barnafræðsla og undirstöðummentu. Börn skulu vera skólaskyld. Iðnaðar- og verknám skal öllum standa til boða og æðri menntu vera öllum jafnfrjáls, þeim er hæfileika hafa til að njóta hennar.";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Icelandic, language.unwrap());
+    }
+
+    #[test]
+    fn test_icelandic_2() {
+        let l = Lingo::new();
+        let sample = "Menntun skal beina í þá átt að þroska persónuleika einstaklinganna og innræta þeim virðingu fyrir mannréttindum og mannhelgi. Hún skal miða að því að efla skilning, umburðarlyndi og vináttu meðal allra þjóða, kynþátta og trúarflokka og að efla starf Sameinuðu þjóðanna í þágu friðarins.";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Icelandic, language.unwrap());
+    }
+
+    #[test]
+    fn test_icelandic_3() {
+        let l = Lingo::new();
+        let sample =
+            "Foreldrar skulu fremur öðrum ráða, hverrar menntunar börn þeirra skuli njóta.";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Icelandic, language.unwrap());
+    }
+
+    #[test]
+    fn test_armenian_from_str() {
+        assert_eq!(Language::Armenian.name(), "armenian");
+    }
+
+    #[test]
+    fn test_armenian_1() {
+        let l = Lingo::new();
+        let sample = "1Եթէ խօսեմ մարդկանց լեզուները եւ հրեշտակներինը, բայց սէր չունենամ, կը նմանուեմ մի պղնձի, որ հնչում է, կամ՝ ծնծղաների, որ ղօղանջում են։";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Armenian, language.unwrap());
+    }
+
+    #[test]
+    fn test_armenian_2() {
+        let l = Lingo::new();
+        let sample = "եւ եթէ ունենամ ամբողջ հաւատը՝ մինչեւ իսկ լեռները տեղափոխելու չափ";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Armenian, language.unwrap());
+    }
+
+    #[test]
     fn test_euskara_from_str() {
         assert_eq!(Language::Euskara.name(), "euskara");
     }
 
     #[test]
-    fn test_euskara_201() {
+    fn test_euskara_1() {
         let l = Lingo::new();
         let sample = "Eskozia (ingelesez eta scotseraz Scotland; Eskoziako gaeleraz Alba) Erresuma Batua osatzen duten lau herrialdeetatik iparraldeena kokatzen dena da. Ingalaterra eta Galesekin batera Britainia Handiko Uhartea osatzen dute, Eskoziak lurralde honen heren bat hartzen du eta 790 uharte baino gehiago ditu. Ipar eta mendebaldean Ozeano Atlantikoarekin mugatzen du, ekialdean Ipar Itsasoarekin, hegoaldean Ingalaterrarekin eta azkenik hego-mendebaldean Iparraldeko kanala eta Irlandako itsasoarekin. Eskoziar lurraldea 78.772 km2-tan hedatzen da eta bere biztanleria gutxi-gorabehera 5.116.900 biztanletakoa da, honek km2-ko 65 biztanleko dentsitatea ematen duelarik. Hiriburua Edinburgh da, aldiz hiririk handiena Glasgow, azken honen hiriguneak eskoziar biztanlegoaren %20a osatzen duelarik.";
         let language = l.get_language(sample);
@@ -5063,7 +5839,7 @@ mod test {
     }
 
     #[test]
-    fn test_euskara_202() {
+    fn test_euskara_2() {
         let l = Lingo::new();
         let sample = "1707 urterarte Eskoziako Erresuma independientea izan zen, data honetan Britainia Handia sortzeko Ingalaterrarekin Batasun Agiria sinatu zelarik. Batasunak ez zuen Eskoziako berezko sistema legal edo judizialaren aldaketarik suposatu, hau ordudanik Gales, Ingalaterra eta Ipar Irlandakotik ezberdina delarik, honenbestez nazioarteko zuzenbidean erakunde juridiko ezberdintzat onartu eta hartzen da. Berezko legeen biziraupena jaso da, baita eskoziar kulturako zati diren hezkuntza eta erlijio sistema ezberdinak, hauek mendeetan zehar garatu direlarik. XIX. mendean sortua, eskoziar independentismoa eragina eta indarra pilatuz joan da, batez ere XX. mendearen amaieratik aurrera, eta Scottish National Party (SNP, Eskoziako Alderdi Nazionala) alderdia ordezkari duela. Alderdi horren helburu nagusia Eskoziaren independentzia da eta 2011ko Eskoziar Parlamenturako hauteskundeetan gehiengo absolutua lortu zuen.";
         let language = l.get_language(sample);
@@ -5085,7 +5861,7 @@ mod test {
     }
 
     #[test]
-    fn test_euskara_203() {
+    fn test_euskara_3() {
         let l = Lingo::new();
         let sample = "Meneame.net taldeko adimena erabiliz albisteak ezagutarazteko balio duen gaztelaniazko bloga da. Erregistratutako erabiltzaileek gainontzekoek (erregistratuta edo gabe) bozka ditzaketen albisteak bidal ditzakete webgunera, boto gehien dituzten albisteak azalera pasako direlarik. Proiektu honen garatzailea Ricardo Galli da, Balear Uharteetako Unibertsitateko irakaslea.";
         let language = l.get_language(sample);
@@ -5107,7 +5883,7 @@ mod test {
     }
 
     #[test]
-    fn test_euskara_204() {
+    fn test_euskara_4() {
         let l = Lingo::new();
         let sample = "Web 2.0 proiektu bat da, Digg.com-en ideia berean oinarrituz. Hala eta guztiz ere, azken honek ez bezala, karma bezalako kontzeptuak ere baditu. Karma erabiltzaile batek duen puntuazioa da, bere partehartzea eta lan onaren ondorioz handituz doana.";
         let language = l.get_language(sample);
@@ -5129,7 +5905,7 @@ mod test {
     }
 
     #[test]
-    fn test_euskara_205() {
+    fn test_euskara_5() {
         let l = Lingo::new();
         let sample = "Meneame.neten oinarrituta, eta euskaraz, Zabaldu.com egitasmoa dugu.";
         let language = l.get_language(sample);
@@ -5156,7 +5932,7 @@ mod test {
     }
 
     #[test]
-    fn test_chinese_211() {
+    fn test_chinese_1() {
         let l = Lingo::new();
         let sample = "在欧冠小组赛第二轮与鲍里索夫（白俄罗斯球队）的对阵中，梅西独中两元，并造成对方打进一个乌龙球，最终使得巴塞5-0大胜对手。本场比赛后，梅西以194个进球，追平库巴拉成为巴塞罗那足球俱乐部历史上的第二射手。其後在作客捷克的比尔森胜利時再演帽子戲法協助球隊作客4比0大勝，本场比赛后，美斯突破200球。在主场5:0战胜利雲特的比赛中，梅西打入1球，本场比赛是梅西代表巴塞罗那一队正式参加的第292场的比赛，至此，梅西追平菲利普·科库，并列成为代表巴塞罗那俱乐部出场次数最多的外籍球员。";
         let language = l.get_language(sample);
@@ -5183,7 +5959,7 @@ mod test {
     }
 
     #[test]
-    fn test_persian_221() {
+    fn test_persian_1() {
         let l = Lingo::new();
         let sample = "ابوجعفر خازن خراسانی ستاره‌شناس و ریاضی‌دان ایرانی[۱] است که در قرن چهارم هجری قمری در خراسان می‌زیست. از او کتاب‌هایی در این دو علم در دست است. وی به کمک مقاطع مخروطی، معادلهٴ درجه سوم را که به معادلهٴ ماهانی موسوم است حل کرد. در مابین سال‌های ۹۶۱ و ۹۷۱ میلادی درگذشت.";
         let language = l.get_language(sample);
@@ -5205,7 +5981,7 @@ mod test {
     }
 
     #[test]
-    fn test_persian_222() {
+    fn test_persian_2() {
         let l = Lingo::new();
         let sample = "خراسان (خراسان بزرگ یا خراسان باستانی یا خراسان تاریخی) سرزمینی بزرگ‌تر از خراسان امروزی، بخشی از ایران بزرگ و از دوران ایران ساسانی نامی سنتی و همگانی برای اشاره به نواحی شرقی ایران است. ساسانیان سرزمین ایران را چهار بخش کرده بودند که یکی از آن بخش‌ها خراسان به معنای «سرزمین خورشید» بود.[۲][۳] گسترهٔ تاریخی خراسان بزرگ استان خراسان در ایران کنونی و بخش‌های شمالی و باختری افغانستان و ترکمنستان امروزی را در بر می‌گرفت. در مفهوم گسترده‌تر ازبکستان و تاجیکستان و بخش‌هایی از قرقیزستان و قزاقستان را هم می‌توان در خراسان بزرگ تاریخی برشمرد.[۴]";
         let language = l.get_language(sample);
@@ -5232,7 +6008,7 @@ mod test {
     }
 
     #[test]
-    fn test_japanese_231() {
+    fn test_japanese_1() {
         let l = Lingo::new();
         let sample = "どうした報道ステーション？OBとしてもあまりに悲しい「”女性を馬鹿にした”番組 ";
         let language = l.get_language(sample);
@@ -5254,7 +6030,7 @@ mod test {
     }
 
     #[test]
-    fn test_japanese_232() {
+    fn test_japanese_2() {
         let l = Lingo::new();
         let sample = "呉座氏は、ベストセラー「応仁の乱」で知られる日本中世史が専門の歴史学者。「鎌倉殿の13人」は三谷幸喜さんが脚本を担当し、鎌倉幕府の2代執権北条義時を描く。主演の義時を小栗旬さんが演じる";
         let language = l.get_language(sample);
@@ -5276,7 +6052,7 @@ mod test {
     }
 
     #[test]
-    fn test_japanese_233() {
+    fn test_japanese_3() {
         let l = Lingo::new();
         let sample = "などと批判の声が上がっていた";
         let language = l.get_language(sample);
@@ -5303,7 +6079,7 @@ mod test {
     }
 
     #[test]
-    fn test_greek_241() {
+    fn test_greek_1() {
         let l = Lingo::new();
         let sample = "Τρεις Έλληνες που ζουν στο Ισραήλ περιγράφουν την πρώτη φάση επιστροφής στην κανονικότητα.";
         let language = l.get_language(sample);
@@ -5325,7 +6101,7 @@ mod test {
     }
 
     #[test]
-    fn test_greek_242() {
+    fn test_greek_2() {
         let l = Lingo::new();
         let sample = "Κάτι που μοιάζει σαν αιωνιότητα –η πανδημία κορωνοϊού που «έσκασε» στα χέρια του πλανήτη πριν από περίπου έναν χρόνο";
         let language = l.get_language(sample);
@@ -5352,7 +6128,7 @@ mod test {
     }
 
     #[test]
-    fn test_hindi_251() {
+    fn test_hindi_1() {
         let l = Lingo::new();
         let sample = "नई दिल्ली, एजेंसी। उत्तर भारत के पहाड़ी राज्यों में पिछले 2 दिनों से भारी बारिश और बर्फबारी हो रही है। जम्मू और कश्मीर के ऊपर बना पश्चिमी विक्षोभ पूर्वी दिशा में आगे बढ़ता रहेगा। साथ ही चक्रवाती सिस्टम हरियाणा और दिल्ली के ऊपर पहुंच जाएगा। स्काईमेट वेदर के मुताबिक इन दोनों सिस्टमों के कारण उत्तर भारत के पहाड़ी राज्यों के साथ-साथ मैदानी इलाकों में आज भी मौसमी गतिविधियां जारी रहेंगी और कुछ हिस्सों में ओलावृष्टि की संभावना है। राजस्थान के बाद पंजाब, हरियाणा और दिल्ली समेत उत्तर के मैदानी इलाकों से गुरुवार से मौसम साफ हो जाएगा। पहाड़ों पर गतिविधियां जारी रहेंगी और 25 मार्च से मौसम साफ होने की संभावना है।,";
         let language = l.get_language(sample);
@@ -5374,7 +6150,7 @@ mod test {
     }
 
     #[test]
-    fn test_hindi_252() {
+    fn test_hindi_2() {
         let l = Lingo::new();
         let sample = "परमबीर सिंह की याचिका पर सुप्रीम कोर्ट में आज सुनवाई, सीबीआइ जांच की मांग";
         let language = l.get_language(sample);
@@ -5401,7 +6177,7 @@ mod test {
     }
 
     #[test]
-    fn test_russian_261() {
+    fn test_russian_1() {
         let l = Lingo::new();
         let sample = "Болеющий коронавирусом Иван Ургант продолжил работать";
         let language = l.get_language(sample);
@@ -5423,7 +6199,7 @@ mod test {
     }
 
     #[test]
-    fn test_russian_262() {
+    fn test_russian_2() {
         let l = Lingo::new();
         let sample = "Телеведущий сказал, что он сидит на даче один в самоизоляции после получения положительного теста на коронавирус - семьи с ним нет.";
         let language = l.get_language(sample);
@@ -5450,7 +6226,7 @@ mod test {
     }
 
     #[test]
-    fn test_vietnamese_271() {
+    fn test_vietnamese_1() {
         let l = Lingo::new();
         let sample = "Dự án Grand Marina Saigon \'chào sân\' thị trường quốc tế";
         let language = l.get_language(sample);
@@ -5472,7 +6248,7 @@ mod test {
     }
 
     #[test]
-    fn test_vietnamese_272() {
+    fn test_vietnamese_2() {
         let l = Lingo::new();
         let sample = "Đại sứ EU nói Việt Nam là nước có tiềm năng được chuyển giao công nghệ sản xuất vaccine Covid-19, dù vấn đề này chưa được thảo luận.";
         let language = l.get_language(sample);
@@ -5494,7 +6270,7 @@ mod test {
     }
 
     #[test]
-    fn test_vietnamese_273() {
+    fn test_vietnamese_3() {
         let l = Lingo::new();
         let sample = "Dự án căn hộ hạng sang Grand Marina Saigon được nhà phát triển Masterise Homes giới thiệu tại Hong Kong, mở đường chinh phục nhà đầu tư quốc tế.";
         let language = l.get_language(sample);
@@ -5521,7 +6297,7 @@ mod test {
     }
 
     #[test]
-    fn test_urdu_281() {
+    fn test_urdu_1() {
         let l = Lingo::new();
         let sample = "سعودی محکمہ پاسپورٹ نے سعودی شہریوں اور مقیم غیرملکیوں سے پھر کہا ہے کہ وہ مملکت کے تمام علاقوں میں محکمہ پاسپورٹ کے ڈائریکٹر جنرل سے ویڈیو کالنگ سروس سے استفادہ کریں۔ ";
         let language = l.get_language(sample);
@@ -5543,7 +6319,7 @@ mod test {
     }
 
     #[test]
-    fn test_urdu_282() {
+    fn test_urdu_2() {
         let l = Lingo::new();
         let sample = "سیدتی میگزین کے مطابق محکمہ پاسپورٹ نے ٹوئٹر کے اکاؤنٹ پر کہا کہ سعودی عرب کے تمام علاقوں کے پاسپورٹ دفاتر میں ڈائریکٹر جنرل سے وڈیو کال کی سہولت مقامی شہریوں اور مقیم غیرملکیوں کو ڈیجیٹل پلیٹ فارمز کے ذریعے خدمات کا معیار بہتر بنانے کی غرض سے متعارف کرائی گئی ہے۔";
         let language = l.get_language(sample);
