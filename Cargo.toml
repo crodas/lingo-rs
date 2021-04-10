@@ -11,6 +11,8 @@ edition = "2018"
 
 [dependencies]
 textcat = "^0.1"
+strum = "0.20.0"
+strum_macros = "0.20.1"
 
 [build-dependencies]
 tera = "1"
