@@ -4,6 +4,7 @@ use std::fs::File;
 use std::io::BufReader;
 use std::io::Read;
 use std::io::Write;
+use std::path::Path;
 use std::process::Command;
 use tera::{Context, Tera};
 use textcat::storage::learn_from_directory;
@@ -15,6 +16,9 @@ struct Fixture {
 }
 
 fn main() {
+    if Path::new("./src/generated.rs").exists() {
+        return ();
+    }
     // train TextCat with all samples
     let _p = learn_from_directory("./fixtures").unwrap();
     let mut tera = Tera::default();
@@ -36,7 +40,7 @@ fn main() {
     context.insert("version", &env!("CARGO_PKG_VERSION").to_string());
     context.insert("tests", &tests);
 
-    File::create("src/lib.rs")
+    File::create("src/generated.rs")
         .unwrap()
         .write_all(tera.render("tpl", &context).unwrap().as_bytes())
         .unwrap();
