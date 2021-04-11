@@ -3,8 +3,11 @@
 ///
 /// Any modification must be done in `lib.tpl.rs` and it will be compiled automatically
 /// by build.rs
+use crate::{stemmer::StemmerTrait, stopwords::StopwordsTrait};
+use rust_stemmers::{Algorithm, Stemmer};
 use std::collections::HashSet;
 use std::str::FromStr;
+use stopwords::{Stopwords, NLTK};
 use strum::IntoEnumIterator;
 use strum_macros::{Display, EnumIter};
 use textcat::storage::FileContent;
@@ -44,6 +47,7 @@ pub enum Language {
     Irish,
     Italian,
     Japanese,
+    Kazakh,
     Ladino,
     Latin,
     Norwegian,
@@ -53,6 +57,8 @@ pub enum Language {
     Russian,
     Spanish,
     Swedish,
+    Tamil,
+    Turkish,
     Urdu,
     Vietnamese,
     Welsh,
@@ -94,6 +100,7 @@ impl Language {
             Self::Irish => "irish",
             Self::Italian => "italian",
             Self::Japanese => "japanese",
+            Self::Kazakh => "kazakh",
             Self::Ladino => "ladino",
             Self::Latin => "latin",
             Self::Norwegian => "norwegian",
@@ -103,6 +110,8 @@ impl Language {
             Self::Russian => "russian",
             Self::Spanish => "spanish",
             Self::Swedish => "swedish",
+            Self::Tamil => "tamil",
+            Self::Turkish => "turkish",
             Self::Urdu => "urdu",
             Self::Vietnamese => "vietnamese",
             Self::Welsh => "welsh",
@@ -111,6 +120,59 @@ impl Language {
 
     pub fn all() -> HashSet<Language> {
         Language::iter().collect()
+    }
+}
+
+impl StopwordsTrait for Language {
+    fn stopwords(&self) -> Option<&'static [&'static str]> {
+        match self {
+            Self::Arabic => NLTK::stopwords(stopwords::Language::Arabic),
+            Self::Azerbaijani => NLTK::stopwords(stopwords::Language::Azerbaijani),
+            Self::Danish => NLTK::stopwords(stopwords::Language::Danish),
+            Self::Dutch => NLTK::stopwords(stopwords::Language::Dutch),
+            Self::English => NLTK::stopwords(stopwords::Language::English),
+            Self::Finnish => NLTK::stopwords(stopwords::Language::Finnish),
+            Self::French => NLTK::stopwords(stopwords::Language::French),
+            Self::German => NLTK::stopwords(stopwords::Language::German),
+            Self::Greek => NLTK::stopwords(stopwords::Language::Greek),
+            Self::Hungarian => NLTK::stopwords(stopwords::Language::Hungarian),
+            Self::Italian => NLTK::stopwords(stopwords::Language::Italian),
+            Self::Kazakh => NLTK::stopwords(stopwords::Language::Kazakh),
+            Self::Norwegian => NLTK::stopwords(stopwords::Language::Norwegian),
+            Self::Portuguese => NLTK::stopwords(stopwords::Language::Portuguese),
+            Self::Romanian => NLTK::stopwords(stopwords::Language::Romanian),
+            Self::Russian => NLTK::stopwords(stopwords::Language::Russian),
+            Self::Spanish => NLTK::stopwords(stopwords::Language::Spanish),
+            Self::Swedish => NLTK::stopwords(stopwords::Language::Swedish),
+            Self::Turkish => NLTK::stopwords(stopwords::Language::Turkish),
+            _ => None,
+        }
+    }
+}
+
+impl StemmerTrait for Language {
+    fn stemmer(&self) -> Option<Stemmer> {
+        match self {
+            Self::Arabic => Some(Stemmer::create(Algorithm::Arabic)),
+            Self::Danish => Some(Stemmer::create(Algorithm::Danish)),
+            Self::Dutch => Some(Stemmer::create(Algorithm::Dutch)),
+            Self::English => Some(Stemmer::create(Algorithm::English)),
+            Self::Finnish => Some(Stemmer::create(Algorithm::Finnish)),
+            Self::French => Some(Stemmer::create(Algorithm::French)),
+            Self::German => Some(Stemmer::create(Algorithm::German)),
+            Self::Greek => Some(Stemmer::create(Algorithm::Greek)),
+            Self::Hungarian => Some(Stemmer::create(Algorithm::Hungarian)),
+            Self::Italian => Some(Stemmer::create(Algorithm::Italian)),
+            Self::Norwegian => Some(Stemmer::create(Algorithm::Norwegian)),
+            Self::Portuguese => Some(Stemmer::create(Algorithm::Portuguese)),
+            Self::Romanian => Some(Stemmer::create(Algorithm::Romanian)),
+            Self::Russian => Some(Stemmer::create(Algorithm::Russian)),
+            Self::Spanish => Some(Stemmer::create(Algorithm::Spanish)),
+            Self::Swedish => Some(Stemmer::create(Algorithm::Swedish)),
+            Self::Tamil => Some(Stemmer::create(Algorithm::Tamil)),
+            Self::Turkish => Some(Stemmer::create(Algorithm::Turkish)),
+            _ => None,
+        }
     }
 }
 
@@ -152,6 +214,7 @@ impl FromStr for Language {
             "irish" => Ok(Self::Irish),
             "italian" => Ok(Self::Italian),
             "japanese" => Ok(Self::Japanese),
+            "kazakh" => Ok(Self::Kazakh),
             "ladino" => Ok(Self::Ladino),
             "latin" => Ok(Self::Latin),
             "norwegian" => Ok(Self::Norwegian),
@@ -161,6 +224,8 @@ impl FromStr for Language {
             "russian" => Ok(Self::Russian),
             "spanish" => Ok(Self::Spanish),
             "swedish" => Ok(Self::Swedish),
+            "tamil" => Ok(Self::Tamil),
+            "turkish" => Ok(Self::Turkish),
             "urdu" => Ok(Self::Urdu),
             "vietnamese" => Ok(Self::Vietnamese),
             "welsh" => Ok(Self::Welsh),
@@ -3340,6 +3405,45 @@ impl Lingo {
                 ],
             ),
             (
+                Language::Kazakh.name(),
+                vec![
+                    "а", "ы", "е", "н", "т", "р", "л", "і", "д", "с", "қ", "о", "к", "м", "ы_",
+                    "н_", "б", "и", "ар", "ж", "у", "ан", "_б", "ғ", "_ж", "да", "ң", "з", "ал",
+                    "а_", "_а", "ын", "й", "та", "г", "_қ", "п", "ш", "і_", "ер", "ен", "е_", "_т",
+                    "ң_", "ды", "_к", "ла", "қа", "нд", "де", "лы", "ін", "ұ", "_с", "ға", "ө",
+                    "ты", "ас", "р_", "ан_", "ны", "ат", "ыл", "_о", "_м", "ен_", "ке", "ә", "сы",
+                    "те", "на", "ра", "ың", "_қа", "ры", "ай", "ме", "ү", "ды_", "ті", "ың_", "ол",
+                    "ст", "не", "ық", "ба", "ғы", "ет", "қ_", "ді", "жа", "_д", "_жа", "ле", "ге",
+                    "ма", "ау", "са", "нда", "рд", "ақ", "ала", "ір", "лд", "ағ", "_ба", "рі",
+                    "ек", "п_", "да_", "я", "гі", "ор", "ары", "ад", "_е", "ел", "тт", "ыс",
+                    "ның_", "ның", "ық_", "_ө", "ес", "л_", "ам", "ре", "к_", "лі", "ынд", "ар_",
+                    "_ке", "ған", "у_", "де_", "ік", "қт", "бо", "асы", "іл", "ында", "ні", "он",
+                    "ыр", "ұр", "алы", "_бо", "ің", "мен", "тар", "ын_", "лар", "не_", "_1", "қы",
+                    "ің_", "ін_", "ді_", "с_", "_ш", "ия", "аз", "бі", "сі", "мен_", "лық", "ей",
+                    "шы", "рт", "бе", "кт", "сы_", "аты", "ына", "лғ", "ған_", "ғы_", "дар", "ылы",
+                    "жы", "_са", "ста", "тер", "ка", "рын", "ері", "_ал", "й_", "ер_", "бол",
+                    "аны", "_де", "м_", "за", "_бол", "_ме", "лы_", "ег", "ады", "ара", "ады_",
+                    "ыны", "со", "в", "уы", "құ", "_та", "ып", "ым", "ты_", "нде", "же", "ша",
+                    "сын", "т_", "се", "кө", "ард", "ән", "_п", "_н", "_кө", "ы_б", "нда_", "ағы",
+                    "_жы", "н_б", "н_а", "лық_", "лға", "йд", "ем", "өз", "кі", "жыл", "ші", "_құ",
+                    "х", "ед", "ік_", "_бі", "мд", "ып_", "_жыл", "_ор", "ген", "н_ж", "па", "_со",
+                    "інд", "ы_қ", "_ә", "ф", "тын", "жә", "_жә", "ім", "то", "әне", "ығ", "зд",
+                    "әне_", "рл", "және", "жән", "_жән", "дан", "қо", "арын", "рды", "мы", "йы",
+                    "бір", "ықт", "ының", "ри", "қта", "інде", "_қо", "н_қ", "на_", "аға", "ы_а",
+                    "іс", "еті", "дың", "бас", "лда", "гі_", "аш", "ин", "тан", "дың_", "ыз",
+                    "нің", "н_т", "_өз", "ұл", "нің_", "із", "іні", "рг", "_же", "_бір", "тү",
+                    "ген_", "аст", "аб", "ға_", "зе", "з_", "анд", "айд", "ры_", "ата", "_2",
+                    "лған", "н_к", "_бас", "лды", "ең", "_ү", "_бе", "ул", "бұ", "рін", "рн",
+                    "құр", "ни", "іне", "нде_", "қан", "ик", "ақ_", "ап", "қар", "қаз", "ай_",
+                    "арды", "_бұ", "тал", "_ар", "лер", "ге_", "_ұ", "ц", "тұ", "_құр", "_р",
+                    "_ма", "ми", "ада", "_қаз", "19", "ті_", "ту", "н_с", "а_б", "рғ", "ру", "ом",
+                    "ез", "ағы_", "інің", "ти", "рі_", "ола", "еді_", "еді", "ары_", "_ау", "і_б",
+                    "зі", "атын", "_тұ", "қты", "ы_т", "_19", "ы_ж", "аза", "ұра", "үр", "ро",
+                    "ны_", "етт", "ы_с", "ығы", "ына_", "тін", "нал", "ауы", "_г", "0_", "ос",
+                    "ло", "_ат", "ілі", "уд", "қал", "ше",
+                ],
+            ),
+            (
                 Language::Ladino.name(),
                 vec![
                     "a", "e", "s", "i", "o", "n", "l", "r", "d", "t", "a_", "s_", "u", "_d", "m",
@@ -4063,6 +4167,450 @@ impl Lingo {
                 ],
             ),
             (
+                Language::Tamil.name(),
+                vec![
+                    "்",
+                    "க",
+                    "ு",
+                    "ி",
+                    "த",
+                    "்_",
+                    "ப",
+                    "ம",
+                    "ட",
+                    "ர",
+                    "ா",
+                    "ல",
+                    "ன",
+                    "வ",
+                    "ற",
+                    "ை",
+                    "்க",
+                    "ய",
+                    "ள",
+                    "ு_",
+                    "்த",
+                    "ம்",
+                    "ச",
+                    "்ப",
+                    "ம்_",
+                    "ந",
+                    "ன்",
+                    "ல்",
+                    "க்",
+                    "_ப",
+                    "து",
+                    "்ட",
+                    "ர்",
+                    "ப்",
+                    "_க",
+                    "ும",
+                    "த்",
+                    "_ம",
+                    "க்க",
+                    "ல்_",
+                    "ில",
+                    "ும்",
+                    "தி",
+                    "இ",
+                    "கள",
+                    "_இ",
+                    "ும்_",
+                    "ப்ப",
+                    "த்த",
+                    "ட்",
+                    "ண",
+                    "கு",
+                    "ிய",
+                    "து_",
+                    "அ",
+                    "_அ",
+                    "_த",
+                    "_வ",
+                    "ரு",
+                    "டு",
+                    "ள்",
+                    "ுக",
+                    "்ற",
+                    "_ச",
+                    "்_ப",
+                    "ட்ட",
+                    "ெ",
+                    "ந்",
+                    "ை_",
+                    "ந்த",
+                    "ில்",
+                    "ே",
+                    "ின",
+                    "ர்_",
+                    "ன்_",
+                    "்_க",
+                    "ில்_",
+                    "ற்",
+                    "பட",
+                    "கி",
+                    "_ந",
+                    "ோ",
+                    "ாக",
+                    "ொ",
+                    "்கள",
+                    "ின்",
+                    "ிக",
+                    "ண்",
+                    "டி",
+                    "ிர",
+                    "ுத",
+                    "வி",
+                    "ழ",
+                    "ி_",
+                    "்கு",
+                    "்தி",
+                    "ைய",
+                    "ங",
+                    "ங்",
+                    "்பட",
+                    "ங்க",
+                    "்_த",
+                    "ஆ",
+                    "று",
+                    "எ",
+                    "_எ",
+                    "ள்_",
+                    "பி",
+                    "்_இ",
+                    "_ஆ",
+                    "ார",
+                    "கா",
+                    "்_ம",
+                    "வர",
+                    "்து",
+                    "கள்",
+                    "கள்_",
+                    "சி",
+                    "ரி",
+                    "்_அ",
+                    "க_",
+                    "ுக்",
+                    "ற்ற",
+                    "ான",
+                    "ூ",
+                    "ப்பட",
+                    "ன்ற",
+                    "ண்ட",
+                    "மா",
+                    "ளி",
+                    "த்தி",
+                    "ின்_",
+                    "ைக",
+                    "ுக்க",
+                    "உ",
+                    "்டு",
+                    "_உ",
+                    "்_ச",
+                    "க்கு",
+                    "்ச",
+                    "ன_",
+                    "ிற",
+                    "யி",
+                    "பு",
+                    "மு",
+                    "பா",
+                    "்_வ",
+                    "யா",
+                    "தா",
+                    "ார்",
+                    "என",
+                    "_என",
+                    "றி",
+                    "்ள",
+                    "்று",
+                    "ீ",
+                    "ள்ள",
+                    "ாட",
+                    "ாக_",
+                    "ுவ",
+                    "வா",
+                    "ால",
+                    "லை",
+                    "த_",
+                    "ுப",
+                    "்கி",
+                    "ிட",
+                    "க்_",
+                    "்கள்",
+                    "பட்",
+                    "மை",
+                    "_மு",
+                    "ுத்",
+                    "பட்ட",
+                    "்_ந",
+                    "வு",
+                    "களி",
+                    "கு_",
+                    "ிக்",
+                    "கும",
+                    "்வ",
+                    "ய_",
+                    "ைப",
+                    "்டி",
+                    "்த_",
+                    "பெ",
+                    "்_எ",
+                    "கும்",
+                    "ிப",
+                    "ரா",
+                    "_பி",
+                    "தில",
+                    "க்_க",
+                    "ுத்த",
+                    "டை",
+                    "a",
+                    "்கு_",
+                    "ப்_",
+                    "ஒ",
+                    "என்",
+                    "்ல",
+                    "ைக்",
+                    "_ஒ",
+                    "_என்",
+                    "்பு",
+                    "்து_",
+                    "ச்",
+                    "ுள",
+                    "நி",
+                    "படு",
+                    "இர",
+                    "_இர",
+                    "த்து",
+                    "ார்_",
+                    "்_ஆ",
+                    "ப்_ப",
+                    "ந்து",
+                    "செ",
+                    "ிக்க",
+                    "ைப்",
+                    "ு_ப",
+                    "வர்",
+                    "டு_",
+                    "்படு",
+                    "ுந",
+                    "ளை",
+                    "_கா",
+                    "ுட",
+                    "ித",
+                    "கை",
+                    "ர்க",
+                    "_1",
+                    "லி",
+                    "யில",
+                    "_வி",
+                    "_செ",
+                    "்பட்",
+                    "ு_ம",
+                    "ங்கள",
+                    "ுற",
+                    "தை",
+                    "ு_க",
+                    "மி",
+                    "போ",
+                    "ுப்",
+                    "ல்ல",
+                    "டுக",
+                    "ு_இ",
+                    "ய்",
+                    "பத",
+                    "தில்",
+                    "திர",
+                    "ெய",
+                    "ிரு",
+                    "லா",
+                    "தன",
+                    "டத",
+                    "_கு",
+                    "ிய_",
+                    "ிப்",
+                    "்பி",
+                    "கொ",
+                    "்தில",
+                    "ிவ",
+                    "ாட்",
+                    "ட்டு",
+                    "ுந்த",
+                    "ுந்",
+                    "று_",
+                    "ந்த_",
+                    "கர",
+                    "ான_",
+                    "ம்_இ",
+                    "ன்ப",
+                    "ுள்",
+                    "ண்டு",
+                    "_பெ",
+                    "ுகள",
+                    "சு",
+                    "்கா",
+                    "ு_வ",
+                    "யில்",
+                    "ப்பு",
+                    "்பா",
+                    "ு_அ",
+                    "ஸ",
+                    "ருந",
+                    "ம்ப",
+                    "ம்_ப",
+                    "ளு",
+                    "ளில",
+                    "ரை",
+                    "கப",
+                    "னை",
+                    "்சி",
+                    "ிப்ப",
+                    "ற்று",
+                    "ாத",
+                    "ாவ",
+                    "திய",
+                    "களில",
+                    "்_உ",
+                    "ர்கள",
+                    "கப்",
+                    "ு_த",
+                    "ற்க",
+                    "ே_",
+                    "இத",
+                    "_சி",
+                    "_இத",
+                    "ட_",
+                    "_நி",
+                    "்டு_",
+                    "ருந்",
+                    "நா",
+                    "இரு",
+                    "_இரு",
+                    "ல்_ப",
+                    "தல",
+                    "டா",
+                    "்ம",
+                    "ாம",
+                    "ா_",
+                    "லு",
+                    "றத",
+                    "தொ",
+                    "்ன",
+                    "ஸ்",
+                    "னி",
+                    "_மா",
+                    "ால்",
+                    "ருக",
+                    "ையி",
+                    "ியா",
+                    "களை",
+                    "்_என",
+                    "ுகி",
+                    "ுப்ப",
+                    "ளில்",
+                    "ைகள",
+                    "ிகள",
+                    "யு",
+                    "க்கி",
+                    "த்_",
+                    "கிற",
+                    "களு",
+                    "_கொ",
+                    "னா",
+                    "_தொ",
+                    "ியி",
+                    "றை",
+                    "ு_ச",
+                    "டுத",
+                    "கப்ப",
+                    "்பத",
+                    "ேர",
+                    "ற_",
+                    "ன்ன",
+                    "ுள்ள",
+                    "ச்ச",
+                    "இந்",
+                    "இந",
+                    "அத",
+                    "_இந்",
+                    "_இந",
+                    "_அத",
+                    "்தா",
+                    "வை",
+                    "ம்_அ",
+                    "ைப்ப",
+                    "ால்_",
+                    "றும",
+                    "டும",
+                    "தம",
+                    "ட்டி",
+                    "கட",
+                    "_தி",
+                    "ித்",
+                    "ம்_க",
+                    "த்_த",
+                    "து_இ",
+                    "ம்_ம",
+                    "றும்",
+                    "்டத",
+                    "ன்று",
+                    "்ந",
+                    "ாண",
+                    "றா",
+                    "்கப",
+                    "ாட்ட",
+                    "ப்பி",
+                    "டிய",
+                    "அம",
+                    "_அம",
+                    "்கும",
+                    "ைக்க",
+                    "ுதி",
+                    "ல்_இ",
+                    "ரும",
+                    "ரு_",
+                ],
+            ),
+            (
+                Language::Turkish.name(),
+                vec![
+                    "a", "e", "i", "l", "r", "n", "k", "t", "d", "m", "ı", "s", "u", "y", "o",
+                    "e_", "n_", "b", "ar", "er", "la", "ü", "le", "i_", "r_", "a_", "an", "_b",
+                    "in", "z", "g", "v", "ý", "de", "ş", "il", "en", "_k", "k_", "ma", "_a", "ri",
+                    "ir", "_d", "_i", "h", "da", "_s", "li", "c", "_y", "ç", "p", "nd", "ra", "ya",
+                    "lar", "ı_", "al", "ın", "ö", "ak", "ve", "_t", "ler", "ğ", "bi", "ek", "_v",
+                    "_g", "re", "me", "ka", "si", "eri", "el", "te", "_ve", "ta", "_e", "_o", "ni",
+                    "et", "ti", "ol", "di", "f", "ve_", "an_", "ay", "ne", "_ve_", "sa", "_bi",
+                    "_h", "u_", "ir_", "in_", "_m", "es", "da_", "am", "en_", "as", "m_", "ki",
+                    "un", "na", "ara", "rı", "lı", "ul", "_ya", "_ka", "nı", "ye", "de_", "at",
+                    "leri", "ile", "im", "kl", "em", "ik", "nl", "mi", "l_", "ge", "_ol", "ha",
+                    "arı", "nda", "ba", "z_", "lan", "iy", "ed", "bir", "rl", "ad", "lu", "ur",
+                    "þ", "bu", "er_", "ün", "on", "_bir", "iz", "is", "sı", "or", "ıl", "_de",
+                    "se", "ak_", "lm", "kt", "esi", "_ge", "t_", "_bu", "ır", "_ç", "rin", "ini",
+                    "ru", "ları", "ür", "it", "_ba", "st", "_ö", "erin", "tı", "rd", "ar_", "nde",
+                    "ke", "ýn", "_sa", "le_", "nu", "_ta", "ý_", "_p", "iş", "ili", "aş", "be",
+                    "ap", "yo", "ri_", "ku", "dı", "_ha", "bir_", "n_b", "_ü", "ind", "bil", "_il",
+                    "ð", "den", "nda_", "ce", "az", "ama", "ey", "inde", "e_b", "ola", "ele", "ği",
+                    "si_", "ld", "ek_", "ınd", "ll", "li_", "ze", "ın_", "ala", "ası", "ön",
+                    "ında", "ca", "_f", "ml", "eri_", "gi", "rm", "ci", "nc", "_al", "ne_", "edi",
+                    "_u", "_te", "tü", "ını", "r_b", "ab", "anı", "çi", "ere", "ko", "eti", "iç",
+                    "_da", "ık", "ör", "yı", "ler_", "ik_", "ış", "rk", "so", "rs", "gö", "um",
+                    "tl", "du", "bu_", "_ola", "çe", "_be", "lar_", "im_", "_bu_", "rak", "eli",
+                    "den_", "_iç", "nde_", "sin", "rın", "_gö", "ver", "na_", "esi_", "arın",
+                    "nla", "_ku", "lma", "ni_", "dan", "mak", "e_k", "ah", "ım", "mı", "i_b", "ev",
+                    "_so", "_ko", "ır_", "yap", "ma_", "len", "iler", "_me", "_yap", "fa", "aya",
+                    "dü", "a_b", "n_k", "alı", "şt", "nin", "anl", "yl", "ok", "iye", "hi", "ac",
+                    "ine", "e_y", "ro", "nin_", "ağ", "lý", "dir", "lara", "rak_", "e_d", "_n",
+                    "ü_", "rý", "n_s", "_ar", "ız", "nı_", "lg", "i_i", "dan_", "üz", "ulu", "n_d",
+                    "arak", "rek", "kar", "içi", "e_i", "’", "rt", "_se", "za", "tir", "kle", "he",
+                    "eni", "ec", "sın", "rı_", "n_a", "ana", "ğı", "el_", "_ye", "çin", "ný", "iğ",
+                    "eğ", "_içi", "ük", "ula", "zi", "lik", "lan_", "ki_", "için", "ine_", "ede",
+                    "a_d", "̇", "ş_", "ýl", "ya_", "uru", "lam", "kla", "i̇", "iri", "rle", "re_",
+                    "r_a", "nm", "mu", "mas", "ekt", "ren", "kı", "gü", "arı_", "ça", "to", "mü",
+                    "_an",
+                ],
+            ),
+            (
                 Language::Urdu.name(),
                 vec![
                     "ی", "ا", "ر", "ک", "و", "م", "س", "ی_", "_ک", "ے_", "ے", "_م", "ن", "می",
@@ -4194,7 +4742,32 @@ impl Lingo {
 
 mod test {
     #[allow(unused_imports)]
-    use crate::{Language, Lingo};
+    use crate::{Language, Lingo, Stemmer, Stopwords};
+
+    #[test]
+    fn test_english_stopwords() {
+        let stopwords = Language::English.stopwords();
+        assert_eq!(true, stopwords.is_some());
+        assert_eq!(true, 100 < stopwords.unwrap().len());
+    }
+
+    #[test]
+    fn test_guarani_stopwords() {
+        let stopwords = Language::Guarani.stopwords();
+        assert_eq!(true, stopwords.is_none());
+    }
+
+    #[test]
+    fn test_english_stemmer() {
+        let stopwords = Language::English.stemmer();
+        assert_eq!(true, stopwords.is_some());
+    }
+
+    #[test]
+    fn test_guarani_stemmer() {
+        let stopwords = Language::Guarani.stemmer();
+        assert_eq!(true, stopwords.is_none());
+    }
 
     #[test]
     fn test_afrikaans_from_str() {
@@ -4243,6 +4816,220 @@ mod test {
         }
 
         assert_eq!(Language::Afrikaans, language.unwrap());
+    }
+
+    #[test]
+    fn test_tamil_from_str() {
+        assert_eq!(Language::Tamil.name(), "tamil");
+    }
+
+    #[test]
+    fn test_tamil_1() {
+        let l = Lingo::new();
+        let sample = "சமுதாயத்தின் பண்பாட்டு வாழ்க்கையிற் சுதந்திரமாகப் பங்குகொள்வதற்கும், கலைகளைத் தூய்ப்பதற்கும் அறிவியல் முன்னேற்றத்திலும், அதன் நன்மைகளிலும் பங்கெடு்ப்பதற்கும் எவருக்கும் உரிமையுண்டு.";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Tamil, language.unwrap());
+    }
+
+    #[test]
+    fn test_tamil_2() {
+        let l = Lingo::new();
+        let sample = "அறிவியல், இலக்கிய, கலைப் படைப்பின் ஆக்கியற் கர்த்தர் என்ற வகையில் அப்படைப்புகள் வழியாக வரும் ஒழுக்க நெறி, பருப்பொருள் நலங்களின் பாதுகாப்பிற்கு அத்தகையோர் ஒவ்வொருவருக்கும் உரிமை உடையவராவர்.";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Tamil, language.unwrap());
+    }
+
+    #[test]
+    fn test_tamil_3() {
+        let l = Lingo::new();
+        let sample = "உறுப்புரை 27";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Tamil, language.unwrap());
+    }
+
+    #[test]
+    fn test_kazakh_from_str() {
+        assert_eq!(Language::Kazakh.name(), "kazakh");
+    }
+
+    #[test]
+    fn test_kazakh_1() {
+        let l = Lingo::new();
+        let sample = "Ас мәзіріндегі ең жақсы тағам қайсысы?";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Kazakh, language.unwrap());
+    }
+
+    #[test]
+    fn test_kazakh_2() {
+        let l = Lingo::new();
+        let sample = "Өлкеңіздегі ең жақсы тағам қайсысы";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Kazakh, language.unwrap());
+    }
+
+    #[test]
+    fn test_kazakh_3() {
+        let l = Lingo::new();
+        let sample = "Мен ет жемеймін.";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Kazakh, language.unwrap());
+    }
+
+    #[test]
+    fn test_turkish_from_str() {
+        assert_eq!(Language::Turkish.name(), "turkish");
+    }
+
+    #[test]
+    fn test_turkish_1() {
+        let l = Lingo::new();
+        let sample = "Herkes, topluluğun kültürel faaliyetine serbestçe katılmak, güzel sanatları tatmak, ilim sahasındaki ilerleyişe iştirak etmek ve bundan faydalanmak hakkını haizdir.";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Turkish, language.unwrap());
+    }
+
+    #[test]
+    fn test_turkish_2() {
+        let l = Lingo::new();
+        let sample = "Herkesin yarattığı, her türlü bilim, edebiyat veya sanat eserlerinden mütevellit manevi ve maddi menfaatlerin korunmasına hakkı vardır.";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Turkish, language.unwrap());
+    }
+
+    #[test]
+    fn test_turkish_3() {
+        let l = Lingo::new();
+        let sample =
+            "Ana baba, çocuklarına verilecek eğitim türünü seçmek hakkını öncelikle haizdirler.";
+        let language = l.get_language(sample);
+
+        if language.is_none() {
+            panic!(
+                "{} -> {}",
+                sample,
+                l.get_languages(sample)
+                    .unwrap()
+                    .iter()
+                    .map(|l| l.0.name())
+                    .collect::<Vec<&str>>()
+                    .join(", ")
+            );
+        }
+
+        assert_eq!(Language::Turkish, language.unwrap());
     }
 
     #[test]
