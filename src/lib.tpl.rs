@@ -3,8 +3,11 @@
 ///
 /// Any modification must be done in `lib.tpl.rs` and it will be compiled automatically
 /// by build.rs
+use crate::{stopwords::StopwordsTrait, stemmer::StemmerTrait};
+use rust_stemmers::{Algorithm, Stemmer};
 use std::collections::HashSet;
 use std::str::FromStr;
+use stopwords::{Stopwords, NLTK};
 use strum::IntoEnumIterator;
 use strum_macros::{Display, EnumIter};
 use textcat::storage::FileContent;
@@ -25,6 +28,27 @@ impl Language {
 
     pub fn all() -> HashSet<Language> {
         Language::iter().collect()
+    }
+}
+
+impl StopwordsTrait for Language {
+    fn stopwords(&self) -> Option<&'static [&'static str]> {
+        match self {
+        {% for lang in stopwords %}
+            Self::{{lang}} => NLTK::stopwords(stopwords::Language::{{lang}}),{% endfor %}
+            _ => None
+        }
+    }
+}
+
+impl StemmerTrait for Language {
+    fn stemmer(&self) -> Option<Stemmer> {
+        match self {
+        {% for lang in stemmers %}
+            Self::{{lang}} => Some(Stemmer::create(Algorithm::{{lang}})),{% endfor %}
+            _ => None
+        }
+
     }
 }
 
@@ -91,7 +115,32 @@ impl Lingo {
 
 mod test {
     #[allow(unused_imports)]
-    use crate::{Language, Lingo};
+    use crate::{Language, Lingo, Stopwords, Stemmer};
+
+    #[test]
+    fn test_english_stopwords() {
+        let stopwords = Language::English.stopwords();
+        assert_eq!(true, stopwords.is_some());
+        assert_eq!(true, 100 < stopwords.unwrap().len());
+    }
+
+    #[test]
+    fn test_guarani_stopwords() {
+        let stopwords = Language::Guarani.stopwords();
+        assert_eq!(true, stopwords.is_none());
+    }
+
+    #[test]
+    fn test_english_stemmer() {
+        let stopwords = Language::English.stemmer();
+        assert_eq!(true, stopwords.is_some());
+    }
+
+    #[test]
+    fn test_guarani_stemmer() {
+        let stopwords = Language::Guarani.stemmer();
+        assert_eq!(true, stopwords.is_none());
+    }
 
     {% for test in tests %}
         #[test]

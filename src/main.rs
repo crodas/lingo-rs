@@ -9,11 +9,11 @@ fn main() {
         .read_line(&mut input)
         .expect("failed to read from pipe");
 
-    if let Some(lang) = lingo.get_language(&input) {
-        println!("Language: {}", lang);
-    } else {
-        println!("Language: Unknown");
-    }
+    let lang = match lingo.get_language(&input) {
+        Some(l) => l.name(),
+        _ => "Unknown",
+    };
 
+    println!("Language: {}", lang);
     println!("Input text: {}", input);
 }

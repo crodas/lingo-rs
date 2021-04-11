@@ -7,6 +7,30 @@
 		]
 	},
 	{
+		"category": "tamil",
+		"fixtures": [
+			"சமுதாயத்தின் பண்பாட்டு வாழ்க்கையிற் சுதந்திரமாகப் பங்குகொள்வதற்கும், கலைகளைத் தூய்ப்பதற்கும் அறிவியல் முன்னேற்றத்திலும், அதன் நன்மைகளிலும் பங்கெடு்ப்பதற்கும் எவருக்கும் உரிமையுண்டு.",
+			"அறிவியல், இலக்கிய, கலைப் படைப்பின் ஆக்கியற் கர்த்தர் என்ற வகையில் அப்படைப்புகள் வழியாக வரும் ஒழுக்க நெறி, பருப்பொருள் நலங்களின் பாதுகாப்பிற்கு அத்தகையோர் ஒவ்வொருவருக்கும் உரிமை உடையவராவர்.",
+			"உறுப்புரை 27"
+		]
+	},
+	{
+		"category": "kazakh",
+		"fixtures": [
+			"Ас мәзіріндегі ең жақсы тағам қайсысы?",
+			"Өлкеңіздегі ең жақсы тағам қайсысы",
+			"Мен ет жемеймін."
+		]
+	},
+	{
+		"category": "turkish",
+		"fixtures": [
+			"Herkes, topluluğun kültürel faaliyetine serbestçe katılmak, güzel sanatları tatmak, ilim sahasındaki ilerleyişe iştirak etmek ve bundan faydalanmak hakkını haizdir.",
+			"Herkesin yarattığı, her türlü bilim, edebiyat veya sanat eserlerinden mütevellit manevi ve maddi menfaatlerin korunmasına hakkı vardır.",
+			"Ana baba, çocuklarına verilecek eğitim türünü seçmek hakkını öncelikle haizdirler."
+		]
+	},
+	{
 		"category": "azerbaijani",
 		"fixtures": [
 			"Mərhəmətli, rəhmli Allahın adı ilə!",
