@@ -1,5 +1,91 @@
 [
 	{
+		"category": "afrikaans",
+		"fixtures": [
+			"Elkeen het die reg tot opvoeding. Opvoeding sal gratis wees, ten minste in die elementêre en fundamentele stadiums. Elementêre opvoeding sal verpligtend wees. Tegniese en professionele opvoeding sal geredelik beskikbaar wees en ho‘r opvoeding sal net so geredelik op meriete beskikbaar wees.",
+			"Opvoeding sal gemik wees op die volle ontwikkeling van die menslike persoonlikheid en op die bevordering van respek vir menseregte en fundamentele vryheid. Dit sal begrip, verdraag-saamheid en vriendskap tussen alle nasies, rasse of etniese groepe bevorder, asook die aktiwiteite van die Verenigde Volke in die handhawing van vrede."
+		]
+	},
+	{
+		"category": "tamil",
+		"fixtures": [
+			"சமுதாயத்தின் பண்பாட்டு வாழ்க்கையிற் சுதந்திரமாகப் பங்குகொள்வதற்கும், கலைகளைத் தூய்ப்பதற்கும் அறிவியல் முன்னேற்றத்திலும், அதன் நன்மைகளிலும் பங்கெடு்ப்பதற்கும் எவருக்கும் உரிமையுண்டு.",
+			"அறிவியல், இலக்கிய, கலைப் படைப்பின் ஆக்கியற் கர்த்தர் என்ற வகையில் அப்படைப்புகள் வழியாக வரும் ஒழுக்க நெறி, பருப்பொருள் நலங்களின் பாதுகாப்பிற்கு அத்தகையோர் ஒவ்வொருவருக்கும் உரிமை உடையவராவர்.",
+			"உறுப்புரை 27"
+		]
+	},
+	{
+		"category": "kazakh",
+		"fixtures": [
+			"Ас мәзіріндегі ең жақсы тағам қайсысы?",
+			"Өлкеңіздегі ең жақсы тағам қайсысы",
+			"Мен ет жемеймін."
+		]
+	},
+	{
+		"category": "turkish",
+		"fixtures": [
+			"Herkes, topluluğun kültürel faaliyetine serbestçe katılmak, güzel sanatları tatmak, ilim sahasındaki ilerleyişe iştirak etmek ve bundan faydalanmak hakkını haizdir.",
+			"Herkesin yarattığı, her türlü bilim, edebiyat veya sanat eserlerinden mütevellit manevi ve maddi menfaatlerin korunmasına hakkı vardır.",
+			"Ana baba, çocuklarına verilecek eğitim türünü seçmek hakkını öncelikle haizdirler."
+		]
+	},
+	{
+		"category": "azerbaijani",
+		"fixtures": [
+			"Mərhəmətli, rəhmli Allahın adı ilə!",
+			"Həmd (şükür və tə'rif) olsun Allaha (və ya: Həmd məxsusdur Allaha) - aləmlərin Rəbbinə,",
+			" (Bu dünyada hamıya) mərhəmətli, (axirətdə isə ancaq mö'minlərə) rəhmli olana,"
+		]
+	},
+	{
+		"category": "bulgarian",
+		"fixtures": [
+			"Bсеки човек има право на образование. Oбразованието трябва да бъде безплатно, поне що се отнася до началното и основното образование. Hачалното образование трябва да бъде задължително. Tехническото и професионалното образование трябва да бъдат общодостъпни, а висшето образование трябва да бъде еднакво достъпно за всички на основата на техните способности.",
+			"Oбразованието трябва да бъде насочено към цялостно развитие на човешката личност и заcилване на уважението към правата на човека и основните свободи",
+			"Bсеки човек има право свободно да участва в културния живот на обществото"
+		]
+	},
+	{
+		"category": "belarusian",
+		"fixtures": [
+			"Кожны чалавек мае права на адукацыю. Адукацыя павiнна быць бясплатнай па меншай меры ў тым, што датычыць пачатковай i агульнай адукацыi. Пачатковая адукацыя павiнна быць абавязковай. Тэхнiчная i прафесiянальная адукацыя павiнна быць агульнадаступнай i вышэйшая адукацыя павiнна быць аднолькава даступнай для ўсiх на падставе здольнасцей кожнага.",
+			"Адукацыя павiнна быць накiравана да поўнага развiцця чалавечай асобы i да павелiчэння павагi да правоў чалавека i асноўных свабод",
+			"Кожны чалавек мае права свабодна ўдзельнiчаць у культурным жыццi грамадства"
+		]
+	},
+	{
+		"category": "bengali",
+		"fixtures": [
+			"প্রত্যেকের‌ই শিক্ষালাভের অধিকার রয়েছে। অন্ততঃপক্ষে প্রাথমিক ও মৌলিক পর্যায়ে শিক্ষা অবৈতনিক হবে। প্রাথমিক শিক্ষা বাধ্যতামূলক হবে। কারিগরী ও বৃত্তিমূলক শিক্ষা সাধারণভাবে লভ্য থাকবে এবং উচ্চতর শিক্ষা মেধার ভিত্তিতে সকলের জন্য সমভাবে উন্মুক্ত থাকবে।",
+			"ব্যক্তিত্বের পূর্ণ বিকাশ এবং মানবিক অধিকার ও মৌলিক স্বাধীনতা-সমূহের প্রতি শ্রদ্ধাবোধ সুদৃঢ় করার লক্ষ্যে শিক্ষা "
+		]
+	},
+	{
+		"category": "bosnian",
+		"fixtures": [
+			"Svako ima pravo na školovanje. Školovanje treba da bude besplatno bar u osnovnim i nižim školama. Osnovna nastava je obavezna. Tehnička i stručna nastava treba da bude opšte dostupna, a viša nastava treba da bude svima podjednako pristupačna na osnovu utvrdjenih kriterijuma.",
+			"Roditelji imaju prvenstveno pravo da biraju vrstu školovanja za svoju decu."
+		]
+	},
+	{
+		"category": "estonian",
+		"fixtures": [
+			"Igal inimesel on õigus haridusele. Haridus peab olema tasuta vähemalt alg- ja üldhariduse osas. Algharidus peab olema kohustuslik. Tehniline ja kutseharidus peab olema kättesaadav kõigile ja kõrgem haridus võrdselt kättesaadav kõigile vastavalt igaühe võimetele.",
+			"Haridus peab olema suunatud inimisiksuse täielikule arendamisele ja inimõigustest ning põhivabadustest lugupidamise suurendamisele",
+			"Vanematel on oma laste hariduse valikul eesõigus."
+		]
+	},
+	{
+		"category": "czech",
+		"fixtures": [
+			"Každý má právo na vzdělání. Vzdělání nechť je bezplatné, ",
+			"Rodiče mají přednostní právo volit druh vzdělání pro své děti.",
+			"Vzdělání má směřovat k plnému rozvoji lidské osobnosti a k posílení úcty k lidským právům a základním svobodám",
+			"rozvoji činnosti Spojených národů pro zachování míru."
+		]
+	},
+	{
 		"category": "albanian",
 		"fixtures": [
 			"Gjithkush ka të drejtën e shkollimit. Arsimi duhet të jetë falas, të paktën në shkollat fillore dhe të ulta. Arsimi fillor është i detyrueshëm. Arsimi teknik dhe profesional duhet të zgjerohet e arsimi i lartë duhet t'u bëhet i mundshëm të gjithëve në bazë të aftësisë."
@@ -61,6 +147,63 @@
 			"Laŭ sagao, la urbo (Barcino) estis fondita de Hamilkar Barka, patro de Hanibal Barka el Kartago. Post tio trakonstruis la urbon la romianoj al fortikaĵo (castrum). La centro de la urbo kuŝis sur Mons Taber, sur malgranda monteto proksime al la tiama Konsildomo (Plaça de Sant Jaume). Oni povas ankoraŭ hodiaŭ trovi restaĵojn de la romia urbomuro en la praurba parto. Gravaj romiaj trovitaĵoj estas ekspoziciitaj ĉe Plaça del Rei. En la 5-a jarcento la urbon konkeris visigotoj, en la 8-a jc. la maŭroj. En 801 konkeris la urbon la franca reĝo. Je 985 disrabis Barcelonon Al-Mansur, armeestro de Kordovo.",
 			"En la mezepoko Barcelono estis ĉefurbo de Reĝlando de Aragono kaj elstara mara kaj komerca potenco en la okcidenta Mediteranea maro, kun gravaj posedaĵoj, kiel Sardio kaj Sicilio. Ekde la 15-a jarcento, post la Kompromiso de Caspe (1412) kaj la enlanda milito (1462-1472), la urbo perdis potencon, unue favore al Valencio kaj poste al kastiliaj urboj. La malvenko en la milito de postveno de Hispanio (1701-1714) kaj la postaj reprezalioj de Filipo la 5-a de Kastilio plimalfortigis kaj katenis la urbon ĝis meze de la 19-a jarcento, kiam estiĝis permeso malkonstrui la urbomurojn.",
 			"La ekonomia bonfarto permesis rapidegan plilarĝigon de la urbo, kiu ensorbis diversajn antaŭurbojn kiel Sants, Gràcia kaj Sarrià. Partoj de la urbo aldoniĝis post eventoj, kiel la internaciaj ekspozicioj de 1888 kaj 1929, la Olimpikaj ludoj (1992) aŭ la Forumo de la Kulturoj (2004)."
+		]
+	},
+	{
+		"category": "irish",
+		"fixtures": [
+			"Tá ag gach uile dhuine an ceart chun an oideachais.",
+			"Tá ag na tuismitheoirí, i dtosach ar chách eile, an ceart chun an cineál oideachais a thoghadh a bhéarfar dá leanaí"
+		]
+	},
+	{
+		"category": "welsh",
+		"fixtures": [
+			"Y mae gan bawb hawl i addysg. Dylai addysg fod yn rhydd, o leiaf addysg elfennol a sylfaenol. Dylai addysg elfennol fod yn orfodol. Dylid gwneud addysg dechnegol a phroffesiynol yn agored i bawb, a dylai fod mynediad llawn a chydradd i bawb i addysg uwchradd ar sail teilyngdod",
+			"Gan rieni y mae'r hawl cyntaf i ddewis y math o addysg a roddir i'w plant."
+		]
+	},
+	{
+		"category": "gujarati",
+		"fixtures": [
+			"પોતાનાં બાળકોને કયા પ્રકારનું શિક્ષણ આપવું તે પસંદ કરવાનો પ્રથમ અધિકાર માબાપોને રહેશે."
+		]
+	},
+	{
+		"category": "hungarian",
+		"fixtures": [
+			"Minden személynek joga van a neveléshez. A nevelésnek, legalábbis az elemi és alapvető oktatást illetően, ingyenesnek kell lennie. Az elemi oktatás kötelező. A technikai és szakoktatást általánossá kell tenni; a felsőbb tanulmányokra való felvételnek mindenki előtt -érdeméhez képest- egyenlő feltételek mellett nyitva kell állnia.",
+			"A szülőket elsőbbségi jog illeti meg a gyermekeiknek adandó nevelés megválasztásában."
+		]
+	},
+	{
+		"category": "indonesian",
+		"fixtures": [
+			" Setiap orang berhak mendapat pendidikan",
+			"Orang-tua mempunyai hak utama untuk memilih jenis pendidikan yang akan diberikan kepada anak-anak mereka.",
+			"Pendidikan harus ditujukan ke arah perkembangan pribadi yang seluas-luasnya serta memperkokoh rasa penghargaan terhadap hak-hak manusia dan kebebasan asasi"
+		]
+	},
+	{
+		"category": "georgian",
+		"fixtures": [
+			"ყოველ ადამიანს აქვს განათლების უფლება. განათლება დაწყებითი და ზოგადი მაინც, უფასო უნდა იყოს. დაწყებითი განათლება უნდა იყოს სავალდებულო. ტექნიკური და პროფესიული განათლება უნდა იყოს ხელმისაწვდომი, უმაღლესი განათლება კი - ერთაირად მისაწვდომი ყველასათვის თითოეულის უნარისამბერ",
+			"მშობლებს აქვთ პრიორიტეტის უფლება აირჩიონ რა სახის განათლებაც სურთ თავიანთი მცირეწლოვანი შვილებისათვის."
+		]
+	},
+	{
+		"category": "icelandic",
+		"fixtures": [
+			"Hver maður á rétt til menntunar. Skal hún veitt ókeypis, að minnsta kosti barnafræðsla og undirstöðummentu. Börn skulu vera skólaskyld. Iðnaðar- og verknám skal öllum standa til boða og æðri menntu vera öllum jafnfrjáls, þeim er hæfileika hafa til að njóta hennar.",
+			"Menntun skal beina í þá átt að þroska persónuleika einstaklinganna og innræta þeim virðingu fyrir mannréttindum og mannhelgi. Hún skal miða að því að efla skilning, umburðarlyndi og vináttu meðal allra þjóða, kynþátta og trúarflokka og að efla starf Sameinuðu þjóðanna í þágu friðarins.",
+			"Foreldrar skulu fremur öðrum ráða, hverrar menntunar börn þeirra skuli njóta."
+		]
+	},
+	{
+		"category": "armenian",
+		"fixtures": [
+			"1Եթէ խօսեմ մարդկանց լեզուները եւ հրեշտակներինը, բայց սէր չունենամ, կը նմանուեմ մի պղնձի, որ հնչում է, կամ՝ ծնծղաների, որ ղօղանջում են։",
+			"եւ եթէ ունենամ ամբողջ հաւատը՝ մինչեւ իսկ լեռները տեղափոխելու չափ"
 		]
 	},
 	{
