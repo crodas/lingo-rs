@@ -3,7 +3,7 @@ name = "lingo"
 description = "Simple library to detect text languages"
 repository  = "https://github.com/crodas/lingo-rs"
 license = "MIT"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Cesar Rodas <cesar@rodasm.com.py>"]
 edition = "2018"
 
