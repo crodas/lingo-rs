@@ -3,14 +3,15 @@ name = "lingo"
 description = "Simple library to detect text languages"
 repository  = "https://github.com/crodas/lingo-rs"
 license = "MIT"
-version = "0.1.2"
+version = "0.2.0"
 authors = ["Cesar Rodas <cesar@rodasm.com.py>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-textcat = "^0.1.5"
+serde = "^1.0"
+textcat = "^0.3.2"
 stopwords = "^0.1"
 strum = "0.20.0"
 strum_macros = "0.20.1"
@@ -18,7 +19,7 @@ rust-stemmers = "1.2.0"
 
 [build-dependencies]
 tera = "1"
-textcat = "^0.1.5"
+textcat = "^0.3.2"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 glob = "0.3.0"

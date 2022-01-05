@@ -5,14 +5,16 @@
 /// by build.rs
 use crate::{stemmer::StemmerTrait, stopwords::StopwordsTrait};
 use rust_stemmers::{Algorithm, Stemmer};
-use std::collections::HashSet;
-use std::str::FromStr;
+use serde::{Deserialize, Serialize};
+use std::{collections::HashSet, str::FromStr};
 use stopwords::{Stopwords, NLTK};
 use strum::IntoEnumIterator;
 use strum_macros::{Display, EnumIter};
-use textcat::storage::FileContent;
+use textcat::category::Categories;
 
-#[derive(Clone, Debug, EnumIter, Eq, Display, PartialEq, Hash, Ord, PartialOrd)]
+#[derive(
+    Clone, Debug, EnumIter, Eq, Display, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize,
+)]
 pub enum Language {
     Afrikaans,
     Albanian,
@@ -65,59 +67,6 @@ pub enum Language {
 }
 
 impl Language {
-    pub fn name(&self) -> &'static str {
-        match self {
-            Self::Afrikaans => "afrikaans",
-            Self::Albanian => "albanian",
-            Self::Arabic => "arabic",
-            Self::Armenian => "armenian",
-            Self::Azerbaijani => "azerbaijani",
-            Self::Belarusian => "belarusian",
-            Self::Bengali => "bengali",
-            Self::Bosnian => "bosnian",
-            Self::Bulgarian => "bulgarian",
-            Self::Catalan => "catalan",
-            Self::Chinese => "chinese",
-            Self::Czech => "czech",
-            Self::Danish => "danish",
-            Self::Dutch => "dutch",
-            Self::English => "english",
-            Self::Esperanto => "esperanto",
-            Self::Estonian => "estonian",
-            Self::Euskara => "euskara",
-            Self::Finnish => "finnish",
-            Self::French => "french",
-            Self::Georgian => "georgian",
-            Self::German => "german",
-            Self::Greek => "greek",
-            Self::Guarani => "guarani",
-            Self::Gujarati => "gujarati",
-            Self::Hebrew => "hebrew",
-            Self::Hindi => "hindi",
-            Self::Hungarian => "hungarian",
-            Self::Icelandic => "icelandic",
-            Self::Indonesian => "indonesian",
-            Self::Irish => "irish",
-            Self::Italian => "italian",
-            Self::Japanese => "japanese",
-            Self::Kazakh => "kazakh",
-            Self::Ladino => "ladino",
-            Self::Latin => "latin",
-            Self::Norwegian => "norwegian",
-            Self::Persian => "persian",
-            Self::Portuguese => "portuguese",
-            Self::Romanian => "romanian",
-            Self::Russian => "russian",
-            Self::Spanish => "spanish",
-            Self::Swedish => "swedish",
-            Self::Tamil => "tamil",
-            Self::Turkish => "turkish",
-            Self::Urdu => "urdu",
-            Self::Vietnamese => "vietnamese",
-            Self::Welsh => "welsh",
-        }
-    }
-
     pub fn all() -> HashSet<Language> {
         Language::iter().collect()
     }
@@ -235,39 +184,30 @@ impl FromStr for Language {
 }
 
 pub struct Lingo {
-    built_in: FileContent,
+    inner: Categories<Language>,
 }
 
 #[allow(clippy::new_without_default)]
 impl Lingo {
     pub fn new() -> Self {
         Lingo {
-            built_in: Self::get_embed_languages(),
+            inner: Self::get_embed_languages(),
         }
     }
 
     pub fn get_language(&self, sample: &str) -> Option<Language> {
-        self.built_in
-            .get_category(sample)
-            .map(|r| Language::from_str(r.as_str()).unwrap())
+        self.inner.get_category(sample)
     }
 
     pub fn get_languages(&self, sample: &str) -> Option<Vec<(Language, u64)>> {
-        Some(
-            self.built_in
-                .get_categories(sample)?
-                .iter()
-                .map(|r| (Language::from_str(&r.0).unwrap(), r.1))
-                .collect(),
-        )
+        self.inner.get_categories(sample)
     }
 
-    #[allow(unused_must_use)]
     #[allow(clippy::invisible_characters)]
-    pub fn get_embed_languages() -> FileContent {
-        let mut f = FileContent::from_vec(vec![
+    pub fn get_embed_languages() -> Categories<Language> {
+        let mut f: Categories<Language> = vec![
             (
-                Language::Afrikaans.name(),
+                Language::Afrikaans,
                 vec![
                     "e", "a", "i", "n", "s", "r", "o", "t", "d", "e_", "l", "k", "g", "ie", "n_",
                     "_d", "m", "er", "s_", "ie_", "di", "u", "t_", "v", "h", "an", "_di", "w",
@@ -307,7 +247,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Albanian.name(),
+                Language::Albanian,
                 vec![
                     "ë", "e", "t", "i", "r", "a", "n", "s", "ë_", "h", "e_", "j", "u", "k", "m",
                     "o", "të", "p", "d", "_t", "të_", "_n", "sh", "l", "_p", "_s", "a_", "i_",
@@ -347,7 +287,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Arabic.name(),
+                Language::Arabic,
                 vec![
                     "ا", "ل", "ي", "م", "ر", "و", "ب", "ن", "ال", "ي_", "_ا", "س", "ف", "_ال", "د",
                     "ت", "ع", "أ", "ة_", "ة", "_م", "ه", "_ف", "ك", "في", "في_", "_أ", "_في",
@@ -387,7 +327,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Armenian.name(),
+                Language::Armenian,
                 vec![
                     "ա", "ն", "ր", "ո", "ե", "ի", "ւ", "ու", "մ", "ան", "կ", "ն_", "տ", "յ", "ս",
                     "վ", "հ", "ար", "եր", "ի_", "լ", "_ա", "ց", "կա", "թ", "_հ", "դ", "ը", "ք",
@@ -426,7 +366,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Azerbaijani.name(),
+                Language::Azerbaijani,
                 vec![
                     "i", "a", "ə", "n", "r", "l", "d", "s", "ı", "m", "t", "y", "u", "n_", "e",
                     "b", "ə_", "k", "o", "i_", "r_", "in", "ü", "ər", "ş", "q", "a_", "ar", "v",
@@ -465,7 +405,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Belarusian.name(),
+                Language::Belarusian,
                 vec![
                     "а", "н", "і", "р", "ы", "с", "к", "е", "л", "т", "д", "я", "о", "в", "м",
                     "а_", "у", "п", "ц", "з", "ў", "і_", "на", "г", "_п", "ра", "б", "ка", "ь",
@@ -503,7 +443,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Bengali.name(),
+                Language::Bengali,
                 vec![
                     "া",
                     "ে",
@@ -908,7 +848,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Bosnian.name(),
+                Language::Bosnian,
                 vec![
                     "a", "i", "o", "e", "n", "j", "r", "s", "t", "a_", "u", "k", "e_", "l", "d",
                     "v", "m", "je", "p", "i_", "_s", "g", "_p", "u_", "z", "o_", "na", "b", "je_",
@@ -947,7 +887,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Bulgarian.name(),
+                Language::Bulgarian,
                 vec![
                     "а", "и", "е", "о", "т", "н", "а_", "р", "с", "в", "д", "к", "л", "е_", "п",
                     "и_", "м", "_с", "на", "з", "о_", "_н", "_п", "я", "б", "ъ", "та", "ни", "т_",
@@ -986,7 +926,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Catalan.name(),
+                Language::Catalan,
                 vec![
                     "e", "a", "s", "r", "l", "i", "t", "n", "c", "o", "d", "u", "a_", "s_", "_d",
                     "p", "m", "es", "e_", "de", "_de", "_l", "_e", "l_", "_c", "_a", "t_", "es_",
@@ -1026,7 +966,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Chinese.name(),
+                Language::Chinese,
                 vec![
                     "球_", "球", "_球_", "_球", "的_", "的", "_的_", "_的", "西_", "西", "_西_",
                     "_西", "_2", "年_", "年", "_年_", "_年", "20", "_1", "_20", "美_", "美", "斯_",
@@ -1070,7 +1010,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Czech.name(),
+                Language::Czech,
                 vec![
                     "o", "e", "a", "n", "t", "s", "i", "v", "r", "l", "d", "k", "p", "u", "m", "c",
                     "í", "e_", "_p", "z", "h", "j", "y", "á", "a_", "_s", "b", "_v", "o_", "_n",
@@ -1108,7 +1048,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Danish.name(),
+                Language::Danish,
                 vec![
                     "e", "r", "n", "t", "s", "i", "a", "d", "l", "o", "g", "e_", "er", "k", "de",
                     "r_", "en", "f", "m", "t_", "_d", "er_", "n_", "b", "v", "u", "_a", "re",
@@ -1148,7 +1088,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Dutch.name(),
+                Language::Dutch,
                 vec![
                     "e", "n", "t", "a", "i", "r", "d", "n_", "o", "en", "s", "g", "e_", "l", "en_",
                     "t_", "de", "er", "v", "u", "k", "h", "_d", "an", "j", "_v", "m", "ge", "b",
@@ -1188,7 +1128,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::English.name(),
+                Language::English,
                 vec![
                     "e", "t", "a", "i", "n", "o", "s", "r", "h", "e_", "_t", "l", "d", "th", "c",
                     "s_", "_th", "_a", "he", "m", "u", "the", "f", "in", "_the", "n_", "p", "_i",
@@ -1228,7 +1168,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Esperanto.name(),
+                Language::Esperanto,
                 vec![
                     "a", "o", "i", "e", "n", "r", "s", "l", "t", "u", "m", "k", "o_", "d", "n_",
                     "p", "a_", "s_", "v", "e_", "j", "_k", "_p", "as", "i_", "as_", "_s", "_m",
@@ -1268,7 +1208,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Estonian.name(),
+                Language::Estonian,
                 vec![
                     "a", "e", "i", "s", "t", "u", "l", "k", "n", "m", "a_", "d", "o", "e_", "r",
                     "_k", "s_", "i_", "v", "h", "g", "p", "d_", "j", "_t", "_m", "se", "ma", "is",
@@ -1308,7 +1248,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Euskara.name(),
+                Language::Euskara,
                 vec![
                     "a", "e", "r", "i", "n", "t", "o", "k", "u", "z", "a_", "n_", "s", "en", "l",
                     "_e", "ar", "d", "g", "er", "en_", "ra", "b", "an", "re", "ta", "ko", "o_",
@@ -1348,7 +1288,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Finnish.name(),
+                Language::Finnish,
                 vec![
                     "a", "i", "t", "n", "e", "s", "l", "k", "o", "u", "ä", "n_", "m", "a_", "v",
                     "h", "y", "ta", "r", "an", "st", "in", "p", "en", "j", "is", "_k", "it", "si",
@@ -1388,7 +1328,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::French.name(),
+                Language::French,
                 vec![
                     "e", "s", "i", "r", "n", "a", "t", "e_", "o", "u", "l", "d", "s_", "_d", "c",
                     "p", "é", "m", "es", "_l", "t_", "on", "le", "de", "es_", "_de", "re", "en",
@@ -1428,7 +1368,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Georgian.name(),
+                Language::Georgian,
                 vec![
                     "ა",
                     "ი",
@@ -1833,7 +1773,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::German.name(),
+                Language::German,
                 vec![
                     "e", "n", "i", "r", "t", "s", "a", "d", "l", "u", "h", "er", "g", "en", "o",
                     "n_", "e_", "c", "ch", "en_", "_d", "b", "m", "ei", "de", "r_", "te", "t_",
@@ -1873,7 +1813,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Greek.name(),
+                Language::Greek,
                 vec![
                     "α", "ο", "τ", "ε", "ν", "ι", "σ", "π", "μ", "ρ", "η", "ς", "ς_", "υ", "κ",
                     "_τ", "α_", "ί", "ν_", "_σ", "έ", "δ", "λ", "τη", "ου", "_π", "ι_", "_μ", "_ε",
@@ -1913,7 +1853,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Guarani.name(),
+                Language::Guarani,
                 vec![
                     "a", "e", "o", "i", "a_", "h", "r", "p", "u", "e_", "t", "v", "m", "k", "n",
                     "_o", "ha", "y", "c", "_h", "o_", "g", "pe", "d", "re", "ch", "va", "é", "j",
@@ -1953,7 +1893,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Gujarati.name(),
+                Language::Gujarati,
                 vec![
                     "ા",
                     "ે",
@@ -2358,7 +2298,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Hebrew.name(),
+                Language::Hebrew,
                 vec![
                     "י", "ו", "ה", "ל", "מ", "ר", "ת", "ב", "א", "_ה", "ש", "ת_", "ח", "ם", "ם_",
                     "כ", "ע", "_מ", "נ", "ס", "_ב", "ד", "ים", "ים_", "ה_", "_ל", "פ", "ל_", "ג",
@@ -2397,7 +2337,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Hindi.name(),
+                Language::Hindi,
                 vec![
                     "ा",
                     "क",
@@ -2802,7 +2742,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Hungarian.name(),
+                Language::Hungarian,
                 vec![
                     "e", "a", "t", "l", "s", "n", "k", "i", "z", "r", "o", "á", "m", "é", "g",
                     "_a", "a_", "y", "t_", "b", "d", "v", "k_", "sz", "el", "_a_", "h", "n_", "_m",
@@ -2841,7 +2781,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Icelandic.name(),
+                Language::Icelandic,
                 vec![
                     "a", "r", "n", "i", "e", "s", "t", "l", "u", "ð", "g", "m", "k", "r_", "f",
                     "a_", "v", "_s", "ð_", "o", "ar", "h", "á", "in", "i_", "_e", "d", "að", "í",
@@ -2880,7 +2820,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Indonesian.name(),
+                Language::Indonesian,
                 vec![
                     "a", "n", "e", "i", "an", "t", "u", "r", "k", "m", "s", "g", "d", "n_", "a_",
                     "p", "l", "ng", "an_", "b", "h", "i_", "er", "_d", "ka", "_m", "en", "y", "da",
@@ -2920,7 +2860,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Irish.name(),
+                Language::Irish,
                 vec![
                     "a", "i", "h", "n", "_a", "r", "s", "t", "e", "c", "l", "g", "a_", "o", "n_",
                     "d", "m", "b", "an", "u", "h_", "í", "é", "_s", "ai", "ch", "ea", "á", "r_",
@@ -2960,7 +2900,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Italian.name(),
+                Language::Italian,
                 vec![
                     "a", "e", "i", "o", "l", "n", "r", "a_", "s", "c", "e_", "t", "d", "o_", "i_",
                     "u", "v", "p", "m", "_c", "_s", "_d", "_a", "la", "_p", "g", "er", "ar", "an",
@@ -3000,7 +2940,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Japanese.name(),
+                Language::Japanese,
                 vec![
                     "の_",
                     "の",
@@ -3405,7 +3345,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Kazakh.name(),
+                Language::Kazakh,
                 vec![
                     "а", "ы", "е", "н", "т", "р", "л", "і", "д", "с", "қ", "о", "к", "м", "ы_",
                     "н_", "б", "и", "ар", "ж", "у", "ан", "_б", "ғ", "_ж", "да", "ң", "з", "ал",
@@ -3444,7 +3384,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Ladino.name(),
+                Language::Ladino,
                 vec![
                     "a", "e", "s", "i", "o", "n", "l", "r", "d", "t", "a_", "s_", "u", "_d", "m",
                     "k", "e_", "de", "_e", "n_", "y", "en", "_de", "ra", "es", "el", "de_", "la",
@@ -3484,7 +3424,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Latin.name(),
+                Language::Latin,
                 vec![
                     "e", "i", "a", "u", "t", "s", "r", "m", "o", "n", "s_", "c", "l", "e_", "p",
                     "d", "t_", "m_", "qu", "q", "er", "is", "a_", "_i", "_a", "v", "um", "re",
@@ -3524,7 +3464,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Norwegian.name(),
+                Language::Norwegian,
                 vec![
                     "e", "n", "r", "t", "a", "s", "o", "l", "i", "n_", "r_", "g", "k", "h", "en",
                     "e_", "d", "_h", "m", "er", "t_", "v", "_s", "er_", "an", "u", "en_", "ha",
@@ -3564,7 +3504,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Persian.name(),
+                Language::Persian,
                 vec![
                     "ا",
                     "ی",
@@ -3969,7 +3909,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Portuguese.name(),
+                Language::Portuguese,
                 vec![
                     "a", "o", "e", "s", "i", "r", "t", "d", "n", "o_", "m", "u", "a_", "c", "e_",
                     "s_", "p", "_d", "l", "de", "_a", "es", "os", "_p", "ra", "os_", "do", "_s",
@@ -4009,7 +3949,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Romanian.name(),
+                Language::Romanian,
                 vec![
                     "a", "i", "e", "t", "r", "n", "u", "e_", "c", "s", "a_", "o", "l", "i_", "d",
                     "p", "m", "in", "_c", "_s", "_d", "ar", "re", "_a", "_p", "de", "ra", "at",
@@ -4049,7 +3989,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Russian.name(),
+                Language::Russian,
                 vec![
                     "о", "е", "а", "и", "н", "т", "с", "в", "р", "л", "к", "м", "д", "п", "у",
                     "о_", "е_", "я", "ы", "и_", "_п", "ь", "_н", "_в", "_с", "з", "г", "а_", "б",
@@ -4087,7 +4027,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Spanish.name(),
+                Language::Spanish,
                 vec![
                     "e", "a", "o", "s", "n", "r", "i", "l", "d", "c", "t", "e_", "a_", "s_", "u",
                     "m", "de", "p", "_d", "_de", "o_", "_l", "la", "de_", "en", "_de_", "es", "_p",
@@ -4127,7 +4067,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Swedish.name(),
+                Language::Swedish,
                 vec![
                     "a", "i", "a_", "k", "u", "n", "w", "m", "o", "e", "wa", "h", "i_", "s", "t",
                     "l", "_k", "y", "_w", "_wa", "wa_", "_m", "r", "o_", "ka", "ku", "li", "z",
@@ -4167,7 +4107,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Tamil.name(),
+                Language::Tamil,
                 vec![
                     "்",
                     "க",
@@ -4572,7 +4512,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Turkish.name(),
+                Language::Turkish,
                 vec![
                     "a", "e", "i", "l", "r", "n", "k", "t", "d", "m", "ı", "s", "u", "y", "o",
                     "e_", "n_", "b", "ar", "er", "la", "ü", "le", "i_", "r_", "a_", "an", "_b",
@@ -4611,7 +4551,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Urdu.name(),
+                Language::Urdu,
                 vec![
                     "ی", "ا", "ر", "ک", "و", "م", "س", "ی_", "_ک", "ے_", "ے", "_م", "ن", "می",
                     "_س", "ں_", "ں", "ل", "ہ", "ب", "گ", "یں_", "یں", "میں_", "میں", "_میں", "_می",
@@ -4652,7 +4592,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Vietnamese.name(),
+                Language::Vietnamese,
                 vec![
                     "n", "h", "i", "t", "g", "c", "_t", "n_", "ng", "ng_", "g_", "a", "_c", "m",
                     "u", "o", "l", "i_", "đ", "_đ", "_l", "r", "_n", "nh", "à", "á", "v", "m_",
@@ -4692,7 +4632,7 @@ impl Lingo {
                 ],
             ),
             (
-                Language::Welsh.name(),
+                Language::Welsh,
                 vec![
                     "y", "d", "a", "n", "e", "r", "i", "o", "l", "h", "g", "_y", "f", "t", "w",
                     "n_", "dd", "u", "m", "s", "c", "d_", "yn", "r_", "_a", "yn_", "yd", "th",
@@ -4731,24 +4671,25 @@ impl Lingo {
                     "sa", "rwy", "ru", "rif_", "rhau", "rau_", "rau",
                 ],
             ),
-        ]);
+        ]
+        .into();
 
         // The more languages we support the less lower the threshold needs to be
-        f.set_threshold(0.01);
+        let _ = f.set_threshold(0.01);
 
         f
     }
 }
 
+#[cfg(test)]
 mod test {
-    #[allow(unused_imports)]
     use crate::{Language, Lingo, Stemmer, Stopwords};
 
     #[test]
     fn test_english_stopwords() {
         let stopwords = Language::English.stopwords();
         assert_eq!(true, stopwords.is_some());
-        assert_eq!(true, 100 < stopwords.unwrap().len());
+        assert_eq!(true, 100 < stopwords.expect("stopwords").len());
     }
 
     #[test]
@@ -4769,2361 +4710,1081 @@ mod test {
         assert_eq!(true, stopwords.is_none());
     }
 
+    fn test_expected_language(l: Lingo, sample: &str, expected: Language) {
+        if let Some(language) = l.get_language(sample) {
+            assert_eq!(expected, language);
+        } else {
+            panic!(
+                "{} -> {}",
+                sample,
+                if let Some(candidates) = l.get_languages(sample) {
+                    candidates
+                        .iter()
+                        .map(|l| l.0.to_string())
+                        .collect::<Vec<String>>()
+                        .join(", ")
+                } else {
+                    "no candidate".into()
+                }
+            );
+        }
+    }
+
     #[test]
     fn test_afrikaans_from_str() {
-        assert_eq!(Language::Afrikaans.name(), "afrikaans");
+        assert_eq!(Language::Afrikaans.to_string(), "Afrikaans".to_owned());
     }
 
     #[test]
     fn test_afrikaans_1() {
-        let l = Lingo::new();
-        let sample = "Elkeen het die reg tot opvoeding. Opvoeding sal gratis wees, ten minste in die elementêre en fundamentele stadiums. Elementêre opvoeding sal verpligtend wees. Tegniese en professionele opvoeding sal geredelik beskikbaar wees en ho‘r opvoeding sal net so geredelik op meriete beskikbaar wees.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Elkeen het die reg tot opvoeding. Opvoeding sal gratis wees, ten minste in die elementêre en fundamentele stadiums. Elementêre opvoeding sal verpligtend wees. Tegniese en professionele opvoeding sal geredelik beskikbaar wees en ho‘r opvoeding sal net so geredelik op meriete beskikbaar wees.",
+                Language::Afrikaans
             );
-        }
-
-        assert_eq!(Language::Afrikaans, language.unwrap());
     }
 
     #[test]
     fn test_afrikaans_2() {
-        let l = Lingo::new();
-        let sample = "Opvoeding sal gemik wees op die volle ontwikkeling van die menslike persoonlikheid en op die bevordering van respek vir menseregte en fundamentele vryheid. Dit sal begrip, verdraag-saamheid en vriendskap tussen alle nasies, rasse of etniese groepe bevorder, asook die aktiwiteite van die Verenigde Volke in die handhawing van vrede.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Opvoeding sal gemik wees op die volle ontwikkeling van die menslike persoonlikheid en op die bevordering van respek vir menseregte en fundamentele vryheid. Dit sal begrip, verdraag-saamheid en vriendskap tussen alle nasies, rasse of etniese groepe bevorder, asook die aktiwiteite van die Verenigde Volke in die handhawing van vrede.",
+                Language::Afrikaans
             );
-        }
-
-        assert_eq!(Language::Afrikaans, language.unwrap());
     }
 
     #[test]
     fn test_tamil_from_str() {
-        assert_eq!(Language::Tamil.name(), "tamil");
+        assert_eq!(Language::Tamil.to_string(), "Tamil".to_owned());
     }
 
     #[test]
     fn test_tamil_1() {
-        let l = Lingo::new();
-        let sample = "சமுதாயத்தின் பண்பாட்டு வாழ்க்கையிற் சுதந்திரமாகப் பங்குகொள்வதற்கும், கலைகளைத் தூய்ப்பதற்கும் அறிவியல் முன்னேற்றத்திலும், அதன் நன்மைகளிலும் பங்கெடு்ப்பதற்கும் எவருக்கும் உரிமையுண்டு.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "சமுதாயத்தின் பண்பாட்டு வாழ்க்கையிற் சுதந்திரமாகப் பங்குகொள்வதற்கும், கலைகளைத் தூய்ப்பதற்கும் அறிவியல் முன்னேற்றத்திலும், அதன் நன்மைகளிலும் பங்கெடு்ப்பதற்கும் எவருக்கும் உரிமையுண்டு.",
+                Language::Tamil
             );
-        }
-
-        assert_eq!(Language::Tamil, language.unwrap());
     }
 
     #[test]
     fn test_tamil_2() {
-        let l = Lingo::new();
-        let sample = "அறிவியல், இலக்கிய, கலைப் படைப்பின் ஆக்கியற் கர்த்தர் என்ற வகையில் அப்படைப்புகள் வழியாக வரும் ஒழுக்க நெறி, பருப்பொருள் நலங்களின் பாதுகாப்பிற்கு அத்தகையோர் ஒவ்வொருவருக்கும் உரிமை உடையவராவர்.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "அறிவியல், இலக்கிய, கலைப் படைப்பின் ஆக்கியற் கர்த்தர் என்ற வகையில் அப்படைப்புகள் வழியாக வரும் ஒழுக்க நெறி, பருப்பொருள் நலங்களின் பாதுகாப்பிற்கு அத்தகையோர் ஒவ்வொருவருக்கும் உரிமை உடையவராவர்.",
+                Language::Tamil
             );
-        }
-
-        assert_eq!(Language::Tamil, language.unwrap());
     }
 
     #[test]
     fn test_tamil_3() {
-        let l = Lingo::new();
-        let sample = "உறுப்புரை 27";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Tamil, language.unwrap());
+        test_expected_language(Lingo::new(), "உறுப்புரை 27", Language::Tamil);
     }
 
     #[test]
     fn test_kazakh_from_str() {
-        assert_eq!(Language::Kazakh.name(), "kazakh");
+        assert_eq!(Language::Kazakh.to_string(), "Kazakh".to_owned());
     }
 
     #[test]
     fn test_kazakh_1() {
-        let l = Lingo::new();
-        let sample = "Ас мәзіріндегі ең жақсы тағам қайсысы?";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Kazakh, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Ас мәзіріндегі ең жақсы тағам қайсысы?",
+            Language::Kazakh,
+        );
     }
 
     #[test]
     fn test_kazakh_2() {
-        let l = Lingo::new();
-        let sample = "Өлкеңіздегі ең жақсы тағам қайсысы";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Kazakh, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Өлкеңіздегі ең жақсы тағам қайсысы",
+            Language::Kazakh,
+        );
     }
 
     #[test]
     fn test_kazakh_3() {
-        let l = Lingo::new();
-        let sample = "Мен ет жемеймін.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Kazakh, language.unwrap());
+        test_expected_language(Lingo::new(), "Мен ет жемеймін.", Language::Kazakh);
     }
 
     #[test]
     fn test_turkish_from_str() {
-        assert_eq!(Language::Turkish.name(), "turkish");
+        assert_eq!(Language::Turkish.to_string(), "Turkish".to_owned());
     }
 
     #[test]
     fn test_turkish_1() {
-        let l = Lingo::new();
-        let sample = "Herkes, topluluğun kültürel faaliyetine serbestçe katılmak, güzel sanatları tatmak, ilim sahasındaki ilerleyişe iştirak etmek ve bundan faydalanmak hakkını haizdir.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Herkes, topluluğun kültürel faaliyetine serbestçe katılmak, güzel sanatları tatmak, ilim sahasındaki ilerleyişe iştirak etmek ve bundan faydalanmak hakkını haizdir.",
+                Language::Turkish
             );
-        }
-
-        assert_eq!(Language::Turkish, language.unwrap());
     }
 
     #[test]
     fn test_turkish_2() {
-        let l = Lingo::new();
-        let sample = "Herkesin yarattığı, her türlü bilim, edebiyat veya sanat eserlerinden mütevellit manevi ve maddi menfaatlerin korunmasına hakkı vardır.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Herkesin yarattığı, her türlü bilim, edebiyat veya sanat eserlerinden mütevellit manevi ve maddi menfaatlerin korunmasına hakkı vardır.",
+                Language::Turkish
             );
-        }
-
-        assert_eq!(Language::Turkish, language.unwrap());
     }
 
     #[test]
     fn test_turkish_3() {
-        let l = Lingo::new();
-        let sample =
-            "Ana baba, çocuklarına verilecek eğitim türünü seçmek hakkını öncelikle haizdirler.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Turkish, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Ana baba, çocuklarına verilecek eğitim türünü seçmek hakkını öncelikle haizdirler.",
+            Language::Turkish,
+        );
     }
 
     #[test]
     fn test_azerbaijani_from_str() {
-        assert_eq!(Language::Azerbaijani.name(), "azerbaijani");
+        assert_eq!(Language::Azerbaijani.to_string(), "Azerbaijani".to_owned());
     }
 
     #[test]
     fn test_azerbaijani_1() {
-        let l = Lingo::new();
-        let sample = "Mərhəmətli, rəhmli Allahın adı ilə!";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Azerbaijani, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Mərhəmətli, rəhmli Allahın adı ilə!",
+            Language::Azerbaijani,
+        );
     }
 
     #[test]
     fn test_azerbaijani_2() {
-        let l = Lingo::new();
-        let sample = "Həmd (şükür və tə\'rif) olsun Allaha (və ya: Həmd məxsusdur Allaha) - aləmlərin Rəbbinə,";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Həmd (şükür və tə\'rif) olsun Allaha (və ya: Həmd məxsusdur Allaha) - aləmlərin Rəbbinə,",
+                Language::Azerbaijani
             );
-        }
-
-        assert_eq!(Language::Azerbaijani, language.unwrap());
     }
 
     #[test]
     fn test_azerbaijani_3() {
-        let l = Lingo::new();
-        let sample =
-            " (Bu dünyada hamıya) mərhəmətli, (axirətdə isə ancaq mö\'minlərə) rəhmli olana,";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Azerbaijani, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            " (Bu dünyada hamıya) mərhəmətli, (axirətdə isə ancaq mö\'minlərə) rəhmli olana,",
+            Language::Azerbaijani,
+        );
     }
 
     #[test]
     fn test_bulgarian_from_str() {
-        assert_eq!(Language::Bulgarian.name(), "bulgarian");
+        assert_eq!(Language::Bulgarian.to_string(), "Bulgarian".to_owned());
     }
 
     #[test]
     fn test_bulgarian_1() {
-        let l = Lingo::new();
-        let sample = "Bсеки човек има право на образование. Oбразованието трябва да бъде безплатно, поне що се отнася до началното и основното образование. Hачалното образование трябва да бъде задължително. Tехническото и професионалното образование трябва да бъдат общодостъпни, а висшето образование трябва да бъде еднакво достъпно за всички на основата на техните способности.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Bсеки човек има право на образование. Oбразованието трябва да бъде безплатно, поне що се отнася до началното и основното образование. Hачалното образование трябва да бъде задължително. Tехническото и професионалното образование трябва да бъдат общодостъпни, а висшето образование трябва да бъде еднакво достъпно за всички на основата на техните способности.",
+                Language::Bulgarian
             );
-        }
-
-        assert_eq!(Language::Bulgarian, language.unwrap());
     }
 
     #[test]
     fn test_bulgarian_2() {
-        let l = Lingo::new();
-        let sample = "Oбразованието трябва да бъде насочено към цялостно развитие на човешката личност и заcилване на уважението към правата на човека и основните свободи";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Oбразованието трябва да бъде насочено към цялостно развитие на човешката личност и заcилване на уважението към правата на човека и основните свободи",
+                Language::Bulgarian
             );
-        }
-
-        assert_eq!(Language::Bulgarian, language.unwrap());
     }
 
     #[test]
     fn test_bulgarian_3() {
-        let l = Lingo::new();
-        let sample = "Bсеки човек има право свободно да участва в културния живот на обществото";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Bulgarian, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Bсеки човек има право свободно да участва в културния живот на обществото",
+            Language::Bulgarian,
+        );
     }
 
     #[test]
     fn test_belarusian_from_str() {
-        assert_eq!(Language::Belarusian.name(), "belarusian");
+        assert_eq!(Language::Belarusian.to_string(), "Belarusian".to_owned());
     }
 
     #[test]
     fn test_belarusian_1() {
-        let l = Lingo::new();
-        let sample = "Кожны чалавек мае права на адукацыю. Адукацыя павiнна быць бясплатнай па меншай меры ў тым, што датычыць пачатковай i агульнай адукацыi. Пачатковая адукацыя павiнна быць абавязковай. Тэхнiчная i прафесiянальная адукацыя павiнна быць агульнадаступнай i вышэйшая адукацыя павiнна быць аднолькава даступнай для ўсiх на падставе здольнасцей кожнага.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Кожны чалавек мае права на адукацыю. Адукацыя павiнна быць бясплатнай па меншай меры ў тым, што датычыць пачатковай i агульнай адукацыi. Пачатковая адукацыя павiнна быць абавязковай. Тэхнiчная i прафесiянальная адукацыя павiнна быць агульнадаступнай i вышэйшая адукацыя павiнна быць аднолькава даступнай для ўсiх на падставе здольнасцей кожнага.",
+                Language::Belarusian
             );
-        }
-
-        assert_eq!(Language::Belarusian, language.unwrap());
     }
 
     #[test]
     fn test_belarusian_2() {
-        let l = Lingo::new();
-        let sample = "Адукацыя павiнна быць накiравана да поўнага развiцця чалавечай асобы i да павелiчэння павагi да правоў чалавека i асноўных свабод";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Адукацыя павiнна быць накiравана да поўнага развiцця чалавечай асобы i да павелiчэння павагi да правоў чалавека i асноўных свабод",
+                Language::Belarusian
             );
-        }
-
-        assert_eq!(Language::Belarusian, language.unwrap());
     }
 
     #[test]
     fn test_belarusian_3() {
-        let l = Lingo::new();
-        let sample = "Кожны чалавек мае права свабодна ўдзельнiчаць у культурным жыццi грамадства";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Belarusian, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Кожны чалавек мае права свабодна ўдзельнiчаць у культурным жыццi грамадства",
+            Language::Belarusian,
+        );
     }
 
     #[test]
     fn test_bengali_from_str() {
-        assert_eq!(Language::Bengali.name(), "bengali");
+        assert_eq!(Language::Bengali.to_string(), "Bengali".to_owned());
     }
 
     #[test]
     fn test_bengali_1() {
-        let l = Lingo::new();
-        let sample = "প্রত্যেকের‌ই শিক্ষালাভের অধিকার রয়েছে। অন্ততঃপক্ষে প্রাথমিক ও মৌলিক পর্যায়ে শিক্ষা অবৈতনিক হবে। প্রাথমিক শিক্ষা বাধ্যতামূলক হবে। কারিগরী ও বৃত্তিমূলক শিক্ষা সাধারণভাবে লভ্য থাকবে এবং উচ্চতর শিক্ষা মেধার ভিত্তিতে সকলের জন্য সমভাবে উন্মুক্ত থাকবে।";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "প্রত্যেকের‌ই শিক্ষালাভের অধিকার রয়েছে। অন্ততঃপক্ষে প্রাথমিক ও মৌলিক পর্যায়ে শিক্ষা অবৈতনিক হবে। প্রাথমিক শিক্ষা বাধ্যতামূলক হবে। কারিগরী ও বৃত্তিমূলক শিক্ষা সাধারণভাবে লভ্য থাকবে এবং উচ্চতর শিক্ষা মেধার ভিত্তিতে সকলের জন্য সমভাবে উন্মুক্ত থাকবে।",
+                Language::Bengali
             );
-        }
-
-        assert_eq!(Language::Bengali, language.unwrap());
     }
 
     #[test]
     fn test_bengali_2() {
-        let l = Lingo::new();
-        let sample = "ব্যক্তিত্বের পূর্ণ বিকাশ এবং মানবিক অধিকার ও মৌলিক স্বাধীনতা-সমূহের প্রতি শ্রদ্ধাবোধ সুদৃঢ় করার লক্ষ্যে শিক্ষা ";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "ব্যক্তিত্বের পূর্ণ বিকাশ এবং মানবিক অধিকার ও মৌলিক স্বাধীনতা-সমূহের প্রতি শ্রদ্ধাবোধ সুদৃঢ় করার লক্ষ্যে শিক্ষা ",
+                Language::Bengali
             );
-        }
-
-        assert_eq!(Language::Bengali, language.unwrap());
     }
 
     #[test]
     fn test_bosnian_from_str() {
-        assert_eq!(Language::Bosnian.name(), "bosnian");
+        assert_eq!(Language::Bosnian.to_string(), "Bosnian".to_owned());
     }
 
     #[test]
     fn test_bosnian_1() {
-        let l = Lingo::new();
-        let sample = "Svako ima pravo na školovanje. Školovanje treba da bude besplatno bar u osnovnim i nižim školama. Osnovna nastava je obavezna. Tehnička i stručna nastava treba da bude opšte dostupna, a viša nastava treba da bude svima podjednako pristupačna na osnovu utvrdjenih kriterijuma.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Svako ima pravo na školovanje. Školovanje treba da bude besplatno bar u osnovnim i nižim školama. Osnovna nastava je obavezna. Tehnička i stručna nastava treba da bude opšte dostupna, a viša nastava treba da bude svima podjednako pristupačna na osnovu utvrdjenih kriterijuma.",
+                Language::Bosnian
             );
-        }
-
-        assert_eq!(Language::Bosnian, language.unwrap());
     }
 
     #[test]
     fn test_bosnian_2() {
-        let l = Lingo::new();
-        let sample = "Roditelji imaju prvenstveno pravo da biraju vrstu školovanja za svoju decu.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Bosnian, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Roditelji imaju prvenstveno pravo da biraju vrstu školovanja za svoju decu.",
+            Language::Bosnian,
+        );
     }
 
     #[test]
     fn test_estonian_from_str() {
-        assert_eq!(Language::Estonian.name(), "estonian");
+        assert_eq!(Language::Estonian.to_string(), "Estonian".to_owned());
     }
 
     #[test]
     fn test_estonian_1() {
-        let l = Lingo::new();
-        let sample = "Igal inimesel on õigus haridusele. Haridus peab olema tasuta vähemalt alg- ja üldhariduse osas. Algharidus peab olema kohustuslik. Tehniline ja kutseharidus peab olema kättesaadav kõigile ja kõrgem haridus võrdselt kättesaadav kõigile vastavalt igaühe võimetele.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Igal inimesel on õigus haridusele. Haridus peab olema tasuta vähemalt alg- ja üldhariduse osas. Algharidus peab olema kohustuslik. Tehniline ja kutseharidus peab olema kättesaadav kõigile ja kõrgem haridus võrdselt kättesaadav kõigile vastavalt igaühe võimetele.",
+                Language::Estonian
             );
-        }
-
-        assert_eq!(Language::Estonian, language.unwrap());
     }
 
     #[test]
     fn test_estonian_2() {
-        let l = Lingo::new();
-        let sample = "Haridus peab olema suunatud inimisiksuse täielikule arendamisele ja inimõigustest ning põhivabadustest lugupidamise suurendamisele";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Haridus peab olema suunatud inimisiksuse täielikule arendamisele ja inimõigustest ning põhivabadustest lugupidamise suurendamisele",
+                Language::Estonian
             );
-        }
-
-        assert_eq!(Language::Estonian, language.unwrap());
     }
 
     #[test]
     fn test_estonian_3() {
-        let l = Lingo::new();
-        let sample = "Vanematel on oma laste hariduse valikul eesõigus.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Estonian, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Vanematel on oma laste hariduse valikul eesõigus.",
+            Language::Estonian,
+        );
     }
 
     #[test]
     fn test_czech_from_str() {
-        assert_eq!(Language::Czech.name(), "czech");
+        assert_eq!(Language::Czech.to_string(), "Czech".to_owned());
     }
 
     #[test]
     fn test_czech_1() {
-        let l = Lingo::new();
-        let sample = "Každý má právo na vzdělání. Vzdělání nechť je bezplatné, ";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Czech, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Každý má právo na vzdělání. Vzdělání nechť je bezplatné, ",
+            Language::Czech,
+        );
     }
 
     #[test]
     fn test_czech_2() {
-        let l = Lingo::new();
-        let sample = "Rodiče mají přednostní právo volit druh vzdělání pro své děti.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Czech, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Rodiče mají přednostní právo volit druh vzdělání pro své děti.",
+            Language::Czech,
+        );
     }
 
     #[test]
     fn test_czech_3() {
-        let l = Lingo::new();
-        let sample = "Vzdělání má směřovat k plnému rozvoji lidské osobnosti a k posílení úcty k lidským právům a základním svobodám";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Vzdělání má směřovat k plnému rozvoji lidské osobnosti a k posílení úcty k lidským právům a základním svobodám",
+                Language::Czech
             );
-        }
-
-        assert_eq!(Language::Czech, language.unwrap());
     }
 
     #[test]
     fn test_czech_4() {
-        let l = Lingo::new();
-        let sample = "rozvoji činnosti Spojených národů pro zachování míru.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Czech, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "rozvoji činnosti Spojených národů pro zachování míru.",
+            Language::Czech,
+        );
     }
 
     #[test]
     fn test_albanian_from_str() {
-        assert_eq!(Language::Albanian.name(), "albanian");
+        assert_eq!(Language::Albanian.to_string(), "Albanian".to_owned());
     }
 
     #[test]
     fn test_albanian_1() {
-        let l = Lingo::new();
-        let sample = "Gjithkush ka të drejtën e shkollimit. Arsimi duhet të jetë falas, të paktën në shkollat fillore dhe të ulta. Arsimi fillor është i detyrueshëm. Arsimi teknik dhe profesional duhet të zgjerohet e arsimi i lartë duhet t\'u bëhet i mundshëm të gjithëve në bazë të aftësisë.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Gjithkush ka të drejtën e shkollimit. Arsimi duhet të jetë falas, të paktën në shkollat fillore dhe të ulta. Arsimi fillor është i detyrueshëm. Arsimi teknik dhe profesional duhet të zgjerohet e arsimi i lartë duhet t\'u bëhet i mundshëm të gjithëve në bazë të aftësisë.",
+                Language::Albanian
             );
-        }
-
-        assert_eq!(Language::Albanian, language.unwrap());
     }
 
     #[test]
     fn test_spanish_from_str() {
-        assert_eq!(Language::Spanish.name(), "spanish");
+        assert_eq!(Language::Spanish.to_string(), "Spanish".to_owned());
     }
 
     #[test]
     fn test_spanish_1() {
-        let l = Lingo::new();
-        let sample = "En el hotel ¡Ya estoy en el hotel! Ayer por la noche he llegado a la ciudad de Santiago de Compostela. ";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "En el hotel ¡Ya estoy en el hotel! Ayer por la noche he llegado a la ciudad de Santiago de Compostela. ",
+                Language::Spanish
             );
-        }
-
-        assert_eq!(Language::Spanish, language.unwrap());
     }
 
     #[test]
     fn test_spanish_2() {
-        let l = Lingo::new();
-        let sample = "El hotel está a pocos minutos de la catedral. Hace un mes que he hecho la reserva de la habitación.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "El hotel está a pocos minutos de la catedral. Hace un mes que he hecho la reserva de la habitación.",
+                Language::Spanish
             );
-        }
-
-        assert_eq!(Language::Spanish, language.unwrap());
     }
 
     #[test]
     fn test_spanish_3() {
-        let l = Lingo::new();
-        let sample = "Y estoy encantado! La habitación es de tamaño mediano. Tiene mucha luz y una gran ventana. ";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Y estoy encantado! La habitación es de tamaño mediano. Tiene mucha luz y una gran ventana. ",
+                Language::Spanish
             );
-        }
-
-        assert_eq!(Language::Spanish, language.unwrap());
     }
 
     #[test]
     fn test_spanish_4() {
-        let l = Lingo::new();
-        let sample = "Tengo una cama grande y una gran caja fuerte. Lamentablemente no tiene cuarto de baño propio, pero hay uno común en el pasillo.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Tengo una cama grande y una gran caja fuerte. Lamentablemente no tiene cuarto de baño propio, pero hay uno común en el pasillo.",
+                Language::Spanish
             );
-        }
-
-        assert_eq!(Language::Spanish, language.unwrap());
     }
 
     #[test]
     fn test_spanish_5() {
-        let l = Lingo::new();
-        let sample = "He realizado el check-in nada más llegar. Los empleados del hotel son muy amables. Me ha atendido una recepcionista que sabía hablar… ¡8 idiomas!";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "He realizado el check-in nada más llegar. Los empleados del hotel son muy amables. Me ha atendido una recepcionista que sabía hablar… ¡8 idiomas!",
+                Language::Spanish
             );
-        }
-
-        assert_eq!(Language::Spanish, language.unwrap());
     }
 
     #[test]
     fn test_guarani_from_str() {
-        assert_eq!(Language::Guarani.name(), "guarani");
+        assert_eq!(Language::Guarani.to_string(), "Guarani".to_owned());
     }
 
     #[test]
     fn test_guarani_1() {
-        let l = Lingo::new();
-        let sample = "Mayma yvypóra ou ko yvy ári iñapytyʼyre ha eteĩcha tekoruvicharenda ha akatúape jeguerekópe; ha ikatu rupi oikuaa añetéva ha añeteʼyva, iporãva ha ivaíva, tekotevẽ pehenguéicha oiko oñondivekuéra";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Mayma yvypóra ou ko yvy ári iñapytyʼyre ha eteĩcha tekoruvicharenda ha akatúape jeguerekópe; ha ikatu rupi oikuaa añetéva ha añeteʼyva, iporãva ha ivaíva, tekotevẽ pehenguéicha oiko oñondivekuéra",
+                Language::Guarani
             );
-        }
-
-        assert_eq!(Language::Guarani, language.unwrap());
     }
 
     #[test]
     fn test_catalan_from_str() {
-        assert_eq!(Language::Catalan.name(), "catalan");
+        assert_eq!(Language::Catalan.to_string(), "Catalan".to_owned());
     }
 
     #[test]
     fn test_catalan_1() {
-        let l = Lingo::new();
-        let sample = "Francisco de Goya y Lucientes (Fuendetodos, Saragossa, 30 de març del 1746 - Bordeus, França, 15 d\'abril del 1828) fou un pintor i gravador aragonès. La seva obra comprèn la pintura de cavallet i mural, el gravat i el dibuix. En totes aquestes facetes va desenvolupar un estil que inaugura el romanticisme. La seva contribució representa també el començament de la pintura contemporània, i se\'l considera un precursor de les avantguardes pictòriques del segle XX.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Francisco de Goya y Lucientes (Fuendetodos, Saragossa, 30 de març del 1746 - Bordeus, França, 15 d\'abril del 1828) fou un pintor i gravador aragonès. La seva obra comprèn la pintura de cavallet i mural, el gravat i el dibuix. En totes aquestes facetes va desenvolupar un estil que inaugura el romanticisme. La seva contribució representa també el començament de la pintura contemporània, i se\'l considera un precursor de les avantguardes pictòriques del segle XX.",
+                Language::Catalan
             );
-        }
-
-        assert_eq!(Language::Catalan, language.unwrap());
     }
 
     #[test]
     fn test_catalan_2() {
-        let l = Lingo::new();
-        let sample = "La seva obra reflecteix el convuls període històric en què va viure, particularment per les conseqüències de la Guerra de la Independència Espanyola (Guerra del Francès), de la qual ha quedat la sèrie d\'estampes Els estralls de la guerra. Cal destacat també la famosa pintura La maja nua.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "La seva obra reflecteix el convuls període històric en què va viure, particularment per les conseqüències de la Guerra de la Independència Espanyola (Guerra del Francès), de la qual ha quedat la sèrie d\'estampes Els estralls de la guerra. Cal destacat també la famosa pintura La maja nua.",
+                Language::Catalan
             );
-        }
-
-        assert_eq!(Language::Catalan, language.unwrap());
     }
 
     #[test]
     fn test_catalan_3() {
-        let l = Lingo::new();
-        let sample = "El claustre d\'estil romànic del Mas del Vent de Palamós és un conjunt arquitectònic suposadament datat del segle XII i que s\'ha considerat procedent de Castella que es troba dins d\'una finca privada des de 1959. La seva troballa va sortir a la premsa a inicis de juny de 2012 gràcies a la investigació de Gerardo Boto, investigador del Departament d\'Història i Història de l\'Art de la Universitat de Girona,[1] tot i que varis documents anteriors ja tenien constància de la seva existència.[2][3] L\'obra està mancada de qualsevol catalogació o protecció.[4]";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "El claustre d\'estil romànic del Mas del Vent de Palamós és un conjunt arquitectònic suposadament datat del segle XII i que s\'ha considerat procedent de Castella que es troba dins d\'una finca privada des de 1959. La seva troballa va sortir a la premsa a inicis de juny de 2012 gràcies a la investigació de Gerardo Boto, investigador del Departament d\'Història i Història de l\'Art de la Universitat de Girona,[1] tot i que varis documents anteriors ja tenien constància de la seva existència.[2][3] L\'obra està mancada de qualsevol catalogació o protecció.[4]",
+                Language::Catalan
             );
-        }
-
-        assert_eq!(Language::Catalan, language.unwrap());
     }
 
     #[test]
     fn test_catalan_4() {
-        let l = Lingo::new();
-        let sample = "Segons el càlcul de Gerardo Boto, les galeries fan 23,8 i 23,9 metres de llargada. Dues d\'elles presenten deu arcs sobre columnes i capitells dobles, excepte la del mig, que és quàdruple. De les altres dues galeries que acabarien de tancar el claustre de 44 capitells no se\'n conserven columnes ni arcs i els capitells reposen directament sobre les bases.[7] Envoltat de pins, oliveres i garrofers,[8] compta amb un petit teulat de ferro que el protegeix de la humitat.[9]";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Segons el càlcul de Gerardo Boto, les galeries fan 23,8 i 23,9 metres de llargada. Dues d\'elles presenten deu arcs sobre columnes i capitells dobles, excepte la del mig, que és quàdruple. De les altres dues galeries que acabarien de tancar el claustre de 44 capitells no se\'n conserven columnes ni arcs i els capitells reposen directament sobre les bases.[7] Envoltat de pins, oliveres i garrofers,[8] compta amb un petit teulat de ferro que el protegeix de la humitat.[9]",
+                Language::Catalan
             );
-        }
-
-        assert_eq!(Language::Catalan, language.unwrap());
     }
 
     #[test]
     fn test_catalan_5() {
-        let l = Lingo::new();
-        let sample = "El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]",
+                Language::Catalan
             );
-        }
-
-        assert_eq!(Language::Catalan, language.unwrap());
     }
 
     #[test]
     fn test_catalan_6() {
-        let l = Lingo::new();
-        let sample = "El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "El claustre del Mas del Vent, segons Gerardo Boto, historiador de l\'art nascut a Lleó, és d\'enormes proporcions. Els capitells superen les mides de qualsevol altre conjunt conegut i els arcs fan 3,21 metres des del fust a la clau.[5][6] Alguns capitells mostren figures humanes i gran nombre d\'elements vegetals i animals, sobretot aus, lleons i senglars i monstres, tot i que no hi ha cap motiu religiós.[1][4]",
+                Language::Catalan
             );
-        }
-
-        assert_eq!(Language::Catalan, language.unwrap());
     }
 
     #[test]
     fn test_catalan_7() {
-        let l = Lingo::new();
-        let sample = "Xena: Warrior Princess (en català. Xena: la princesa guerrera) és una sèrie de televisió originalment emesa entre el 15 de setembre de 1995 i el 18 de juny de 2001. La sèrie va ser creada el 1995 pels directors i productors Robert Tapert i John Schulian, amb l\'ajuda dels productors Sam Raimi i RJ Stewart. La idea va sorgir a partir de Xena, un personatge secundari de la primera temporada de Hercules: The Legendary Journeys. Rodada a Nova Zelanda, es tracta d\'una coproducció entre aquest país i els Estats Units. La sèrie ha estat produïda per la Pacific Renaissance Pictures Ltd, els creadors són Robert Tapert i Sam Raimi, productors de la sèrie i fou distribuïda per Universal Studios. La sèrie, ambientada a l\'Antiga Grècia, narra les aventures de Xena (Lucy Lawless) i Gabrielle (Renée O\'Connor), dos grans guerreres i inseparables amigues que lluiten contra les injustícies de l\'època.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Xena: Warrior Princess (en català. Xena: la princesa guerrera) és una sèrie de televisió originalment emesa entre el 15 de setembre de 1995 i el 18 de juny de 2001. La sèrie va ser creada el 1995 pels directors i productors Robert Tapert i John Schulian, amb l\'ajuda dels productors Sam Raimi i RJ Stewart. La idea va sorgir a partir de Xena, un personatge secundari de la primera temporada de Hercules: The Legendary Journeys. Rodada a Nova Zelanda, es tracta d\'una coproducció entre aquest país i els Estats Units. La sèrie ha estat produïda per la Pacific Renaissance Pictures Ltd, els creadors són Robert Tapert i Sam Raimi, productors de la sèrie i fou distribuïda per Universal Studios. La sèrie, ambientada a l\'Antiga Grècia, narra les aventures de Xena (Lucy Lawless) i Gabrielle (Renée O\'Connor), dos grans guerreres i inseparables amigues que lluiten contra les injustícies de l\'època.",
+                Language::Catalan
             );
-        }
-
-        assert_eq!(Language::Catalan, language.unwrap());
     }
 
     #[test]
     fn test_catalan_8() {
-        let l = Lingo::new();
-        let sample = "La sèrie es va mantenir en l\'aire durant sis temporades als Estats Units, entre 1995 i 2001, convertint-se en la més reeixida de les sèries sindicades del moment i arribant a ser un autèntic fenomen social al llarg de tot el món .De fet, és considerada una de les millors sèries de la història per la revista TV Guide i, avui dia, el fanatisme per la sèrie continua actiu a Internet. Aquesta sèrie d\'aventures, vista en més de vuitanta-sis països dels cinc continents, ha rebut diversos premis, incloent un Emmy. A més, aprofitant l\'èxit de la mateixa, s\'han comercialitzat nombrosos productes sobre ella, com ara episodis en DVD, una pel·lícula, llibres, còmics o videojocs. La influència de la sèrie fora de la pantalla arriba a sectors com la comunitat lèsbica o la astronòmica, així com a altres sèries de televisió i pel·lícules.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "La sèrie es va mantenir en l\'aire durant sis temporades als Estats Units, entre 1995 i 2001, convertint-se en la més reeixida de les sèries sindicades del moment i arribant a ser un autèntic fenomen social al llarg de tot el món .De fet, és considerada una de les millors sèries de la història per la revista TV Guide i, avui dia, el fanatisme per la sèrie continua actiu a Internet. Aquesta sèrie d\'aventures, vista en més de vuitanta-sis països dels cinc continents, ha rebut diversos premis, incloent un Emmy. A més, aprofitant l\'èxit de la mateixa, s\'han comercialitzat nombrosos productes sobre ella, com ara episodis en DVD, una pel·lícula, llibres, còmics o videojocs. La influència de la sèrie fora de la pantalla arriba a sectors com la comunitat lèsbica o la astronòmica, així com a altres sèries de televisió i pel·lícules.",
+                Language::Catalan
             );
-        }
-
-        assert_eq!(Language::Catalan, language.unwrap());
     }
 
     #[test]
     fn test_dutch_from_str() {
-        assert_eq!(Language::Dutch.name(), "dutch");
+        assert_eq!(Language::Dutch.to_string(), "Dutch".to_owned());
     }
 
     #[test]
     fn test_dutch_1() {
-        let l = Lingo::new();
-        let sample = "Het Nederlands is een West-Germaanse taal en de moedertaal van de meeste inwoners van Nederland, België en Suriname, de drie lidstaten van de Nederlandse Taalunie, een internationale instelling die onder meer de regels voor de Nederlandse standaardtaal vastlegt. In de Europese Unie spreken ongeveer 23 miljoen mensen Nederlands als eerste taal, en een bijkomende vijf miljoen als tweede taal. Verder is het Nederlands ook een officiële taal van de Caraïbische eilanden Aruba, Curaçao en Sint-Maarten, terwijl er nog minderheden bestaan in Frankrijk, Duitsland en in mindere mate Indonesië, en nog ruim een half miljoen sprekers in de Verenigde Staten, Canada en Australië. De Kaap-Hollandse dialecten van Zuid-Afrika en Namibië werden gestandaardiseerd tot Afrikaans, een wederzijds verstaanbare dochtertaal van het Nederlands.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Het Nederlands is een West-Germaanse taal en de moedertaal van de meeste inwoners van Nederland, België en Suriname, de drie lidstaten van de Nederlandse Taalunie, een internationale instelling die onder meer de regels voor de Nederlandse standaardtaal vastlegt. In de Europese Unie spreken ongeveer 23 miljoen mensen Nederlands als eerste taal, en een bijkomende vijf miljoen als tweede taal. Verder is het Nederlands ook een officiële taal van de Caraïbische eilanden Aruba, Curaçao en Sint-Maarten, terwijl er nog minderheden bestaan in Frankrijk, Duitsland en in mindere mate Indonesië, en nog ruim een half miljoen sprekers in de Verenigde Staten, Canada en Australië. De Kaap-Hollandse dialecten van Zuid-Afrika en Namibië werden gestandaardiseerd tot Afrikaans, een wederzijds verstaanbare dochtertaal van het Nederlands.",
+                Language::Dutch
             );
-        }
-
-        assert_eq!(Language::Dutch, language.unwrap());
     }
 
     #[test]
     fn test_dutch_2() {
-        let l = Lingo::new();
-        let sample = "Het Nederlands is nauw verwant aan het Engels en Duits, en wordt tussen beide geplaatst. Naast het feit dat het Nederlands de Hoogduitse klankverschuiving niet heeft ondergaan, verschilt het Nederlands – net als het Engels – verder ook van het Duits door de sterke reductie van de naamvallen, de algemene zeldzaamheid van de Germaanse umlaut en een meer regelmatige morfologie. Het moderne Nederlands heeft in oorsprong drie grammaticale geslachten, waarvan er twee in de praktijk grotendeels samenvallen (de de-woorden). Bijgevolg speelt het grammaticale geslacht een kleinere grammaticale rol dan in het Duits. De Nederlandse woordvolgorde is onderwerp-werkwoord-lijdend voorwerp (SVO) in hoofdzinnen maar past, net als in het Duits, inversie toe in bijzinnen (SOV). Het Nederlands kent een hoofdzakelijk Germaanse woordenschat, in grotere mate dan het sterk geromaniseerde Engels, maar aangevuld door een grotere Romaanse component dan in het Duits.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Het Nederlands is nauw verwant aan het Engels en Duits, en wordt tussen beide geplaatst. Naast het feit dat het Nederlands de Hoogduitse klankverschuiving niet heeft ondergaan, verschilt het Nederlands – net als het Engels – verder ook van het Duits door de sterke reductie van de naamvallen, de algemene zeldzaamheid van de Germaanse umlaut en een meer regelmatige morfologie. Het moderne Nederlands heeft in oorsprong drie grammaticale geslachten, waarvan er twee in de praktijk grotendeels samenvallen (de de-woorden). Bijgevolg speelt het grammaticale geslacht een kleinere grammaticale rol dan in het Duits. De Nederlandse woordvolgorde is onderwerp-werkwoord-lijdend voorwerp (SVO) in hoofdzinnen maar past, net als in het Duits, inversie toe in bijzinnen (SOV). Het Nederlands kent een hoofdzakelijk Germaanse woordenschat, in grotere mate dan het sterk geromaniseerde Engels, maar aangevuld door een grotere Romaanse component dan in het Duits.",
+                Language::Dutch
             );
-        }
-
-        assert_eq!(Language::Dutch, language.unwrap());
     }
 
     #[test]
     fn test_english_from_str() {
-        assert_eq!(Language::English.name(), "english");
+        assert_eq!(Language::English.to_string(), "English".to_owned());
     }
 
     #[test]
     fn test_english_1() {
-        let l = Lingo::new();
-        let sample = "SEOUL, South Korea (AP) — The outside world focuses on the messages of doom and gloom from North Korea: bombastic threats of nuclear war, fantasy videos of U.S. cities in flames, digitally altered photos of leader Kim Jong Un guiding military drills. But back home, North Koreans get a decidedly softer dose of propaganda: Kim portrayed as a young, energetic leader, a people person and family man.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "SEOUL, South Korea (AP) — The outside world focuses on the messages of doom and gloom from North Korea: bombastic threats of nuclear war, fantasy videos of U.S. cities in flames, digitally altered photos of leader Kim Jong Un guiding military drills. But back home, North Koreans get a decidedly softer dose of propaganda: Kim portrayed as a young, energetic leader, a people person and family man.",
+                Language::English
             );
-        }
-
-        assert_eq!(Language::English, language.unwrap());
     }
 
     #[test]
     fn test_english_2() {
-        let l = Lingo::new();
-        let sample = "Mixed in with the images showing Kim aboard a speeding boat on a tour of front-line islands, or handing out commemorative rifles to smartly saluting soldiers, are those of Kim and his wife clapping at a dolphin show or linking arms with weeping North Korean children";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Mixed in with the images showing Kim aboard a speeding boat on a tour of front-line islands, or handing out commemorative rifles to smartly saluting soldiers, are those of Kim and his wife clapping at a dolphin show or linking arms with weeping North Korean children",
+                Language::English
             );
-        }
-
-        assert_eq!(Language::English, language.unwrap());
     }
 
     #[test]
     fn test_english_3() {
-        let l = Lingo::new();
-        let sample = "The pictures can look odd or obviously staged to outsiders. But they\'re carefully crafted propaganda meant to give North Koreans an image of a country governed by a leader who is as comfortable overseeing a powerful military as he is mingling with the people.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "The pictures can look odd or obviously staged to outsiders. But they\'re carefully crafted propaganda meant to give North Koreans an image of a country governed by a leader who is as comfortable overseeing a powerful military as he is mingling with the people.",
+                Language::English
             );
-        }
-
-        assert_eq!(Language::English, language.unwrap());
     }
 
     #[test]
     fn test_english_4() {
-        let l = Lingo::new();
-        let sample = "Views are the V in MVC. Views are responsible for generating the specific output required for the request. Often this is in the form of HTML, XML, or JSON, but streaming files and creating PDF’s that users can download are also responsibilities of the View Layer.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Views are the V in MVC. Views are responsible for generating the specific output required for the request. Often this is in the form of HTML, XML, or JSON, but streaming files and creating PDF’s that users can download are also responsibilities of the View Layer.",
+                Language::English
             );
-        }
-
-        assert_eq!(Language::English, language.unwrap());
     }
 
     #[test]
     fn test_english_5() {
-        let l = Lingo::new();
-        let sample = "CakePHP comes with a few built-in View classes for handling the most common rendering scenarios";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "CakePHP comes with a few built-in View classes for handling the most common rendering scenarios",
+                Language::English
             );
-        }
-
-        assert_eq!(Language::English, language.unwrap());
     }
 
     #[test]
     fn test_english_6() {
-        let l = Lingo::new();
-        let sample = "View extending allows you to wrap one view in another. Combining this with view blocks gives you a powerful way to keep your views DRY. For example, your application has a sidebar that needs to change depending on the specific view being rendered. By extending a common view file you can avoid repeating the common markup for your sidebar, and only define the parts that change";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "View extending allows you to wrap one view in another. Combining this with view blocks gives you a powerful way to keep your views DRY. For example, your application has a sidebar that needs to change depending on the specific view being rendered. By extending a common view file you can avoid repeating the common markup for your sidebar, and only define the parts that change",
+                Language::English
             );
-        }
-
-        assert_eq!(Language::English, language.unwrap());
     }
 
     #[test]
     fn test_esperanto_from_str() {
-        assert_eq!(Language::Esperanto.name(), "esperanto");
+        assert_eq!(Language::Esperanto.to_string(), "Esperanto".to_owned());
     }
 
     #[test]
     fn test_esperanto_1() {
-        let l = Lingo::new();
-        let sample = "Lucy LAWLESS, naskiĝis kiel Lucille Frances Ryan (* 29-a de marto 1968 en Mount Albert, Nov-Zelando) estas novzelanda aktorino.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Lucy LAWLESS, naskiĝis kiel Lucille Frances Ryan (* 29-a de marto 1968 en Mount Albert, Nov-Zelando) estas novzelanda aktorino.",
+                Language::Esperanto
             );
-        }
-
-        assert_eq!(Language::Esperanto, language.unwrap());
     }
 
     #[test]
     fn test_esperanto_2() {
-        let l = Lingo::new();
-        let sample = "Ŝi iĝis mondkonata en la rolo de Xena, kiel ĉefrolulo de la televida serio. Ŝi ankaŭ rolludis en etaj roloj, kiel en la kineja filmo \"Spiderman\" aŭ en la TV-serio \"Tarzan\" en 2002. Ŝi ankaŭ donis sian voĉon ĉe \"The Simpsons\".";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Ŝi iĝis mondkonata en la rolo de Xena, kiel ĉefrolulo de la televida serio. Ŝi ankaŭ rolludis en etaj roloj, kiel en la kineja filmo \"Spiderman\" aŭ en la TV-serio \"Tarzan\" en 2002. Ŝi ankaŭ donis sian voĉon ĉe \"The Simpsons\".",
+                Language::Esperanto
             );
-        }
-
-        assert_eq!(Language::Esperanto, language.unwrap());
     }
 
     #[test]
     fn test_esperanto_3() {
-        let l = Lingo::new();
-        let sample =
-            "Ŝi estas edziniĝinta ekde 1998 kun Robert G. Tapert, produktisto de la serio \"Xena\"";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Esperanto, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Ŝi estas edziniĝinta ekde 1998 kun Robert G. Tapert, produktisto de la serio \"Xena\"",
+            Language::Esperanto,
+        );
     }
 
     #[test]
     fn test_esperanto_4() {
-        let l = Lingo::new();
-        let sample = "Laŭ sagao, la urbo (Barcino) estis fondita de Hamilkar Barka, patro de Hanibal Barka el Kartago. Post tio trakonstruis la urbon la romianoj al fortikaĵo (castrum). La centro de la urbo kuŝis sur Mons Taber, sur malgranda monteto proksime al la tiama Konsildomo (Plaça de Sant Jaume). Oni povas ankoraŭ hodiaŭ trovi restaĵojn de la romia urbomuro en la praurba parto. Gravaj romiaj trovitaĵoj estas ekspoziciitaj ĉe Plaça del Rei. En la 5-a jarcento la urbon konkeris visigotoj, en la 8-a jc. la maŭroj. En 801 konkeris la urbon la franca reĝo. Je 985 disrabis Barcelonon Al-Mansur, armeestro de Kordovo.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Laŭ sagao, la urbo (Barcino) estis fondita de Hamilkar Barka, patro de Hanibal Barka el Kartago. Post tio trakonstruis la urbon la romianoj al fortikaĵo (castrum). La centro de la urbo kuŝis sur Mons Taber, sur malgranda monteto proksime al la tiama Konsildomo (Plaça de Sant Jaume). Oni povas ankoraŭ hodiaŭ trovi restaĵojn de la romia urbomuro en la praurba parto. Gravaj romiaj trovitaĵoj estas ekspoziciitaj ĉe Plaça del Rei. En la 5-a jarcento la urbon konkeris visigotoj, en la 8-a jc. la maŭroj. En 801 konkeris la urbon la franca reĝo. Je 985 disrabis Barcelonon Al-Mansur, armeestro de Kordovo.",
+                Language::Esperanto
             );
-        }
-
-        assert_eq!(Language::Esperanto, language.unwrap());
     }
 
     #[test]
     fn test_esperanto_5() {
-        let l = Lingo::new();
-        let sample = "En la mezepoko Barcelono estis ĉefurbo de Reĝlando de Aragono kaj elstara mara kaj komerca potenco en la okcidenta Mediteranea maro, kun gravaj posedaĵoj, kiel Sardio kaj Sicilio. Ekde la 15-a jarcento, post la Kompromiso de Caspe (1412) kaj la enlanda milito (1462-1472), la urbo perdis potencon, unue favore al Valencio kaj poste al kastiliaj urboj. La malvenko en la milito de postveno de Hispanio (1701-1714) kaj la postaj reprezalioj de Filipo la 5-a de Kastilio plimalfortigis kaj katenis la urbon ĝis meze de la 19-a jarcento, kiam estiĝis permeso malkonstrui la urbomurojn.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "En la mezepoko Barcelono estis ĉefurbo de Reĝlando de Aragono kaj elstara mara kaj komerca potenco en la okcidenta Mediteranea maro, kun gravaj posedaĵoj, kiel Sardio kaj Sicilio. Ekde la 15-a jarcento, post la Kompromiso de Caspe (1412) kaj la enlanda milito (1462-1472), la urbo perdis potencon, unue favore al Valencio kaj poste al kastiliaj urboj. La malvenko en la milito de postveno de Hispanio (1701-1714) kaj la postaj reprezalioj de Filipo la 5-a de Kastilio plimalfortigis kaj katenis la urbon ĝis meze de la 19-a jarcento, kiam estiĝis permeso malkonstrui la urbomurojn.",
+                Language::Esperanto
             );
-        }
-
-        assert_eq!(Language::Esperanto, language.unwrap());
     }
 
     #[test]
     fn test_esperanto_6() {
-        let l = Lingo::new();
-        let sample = "La ekonomia bonfarto permesis rapidegan plilarĝigon de la urbo, kiu ensorbis diversajn antaŭurbojn kiel Sants, Gràcia kaj Sarrià. Partoj de la urbo aldoniĝis post eventoj, kiel la internaciaj ekspozicioj de 1888 kaj 1929, la Olimpikaj ludoj (1992) aŭ la Forumo de la Kulturoj (2004).";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "La ekonomia bonfarto permesis rapidegan plilarĝigon de la urbo, kiu ensorbis diversajn antaŭurbojn kiel Sants, Gràcia kaj Sarrià. Partoj de la urbo aldoniĝis post eventoj, kiel la internaciaj ekspozicioj de 1888 kaj 1929, la Olimpikaj ludoj (1992) aŭ la Forumo de la Kulturoj (2004).",
+                Language::Esperanto
             );
-        }
-
-        assert_eq!(Language::Esperanto, language.unwrap());
     }
 
     #[test]
     fn test_irish_from_str() {
-        assert_eq!(Language::Irish.name(), "irish");
+        assert_eq!(Language::Irish.to_string(), "Irish".to_owned());
     }
 
     #[test]
     fn test_irish_1() {
-        let l = Lingo::new();
-        let sample = "Tá ag gach uile dhuine an ceart chun an oideachais.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Irish, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Tá ag gach uile dhuine an ceart chun an oideachais.",
+            Language::Irish,
+        );
     }
 
     #[test]
     fn test_irish_2() {
-        let l = Lingo::new();
-        let sample = "Tá ag na tuismitheoirí, i dtosach ar chách eile, an ceart chun an cineál oideachais a thoghadh a bhéarfar dá leanaí";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Tá ag na tuismitheoirí, i dtosach ar chách eile, an ceart chun an cineál oideachais a thoghadh a bhéarfar dá leanaí",
+                Language::Irish
             );
-        }
-
-        assert_eq!(Language::Irish, language.unwrap());
     }
 
     #[test]
     fn test_welsh_from_str() {
-        assert_eq!(Language::Welsh.name(), "welsh");
+        assert_eq!(Language::Welsh.to_string(), "Welsh".to_owned());
     }
 
     #[test]
     fn test_welsh_1() {
-        let l = Lingo::new();
-        let sample = "Y mae gan bawb hawl i addysg. Dylai addysg fod yn rhydd, o leiaf addysg elfennol a sylfaenol. Dylai addysg elfennol fod yn orfodol. Dylid gwneud addysg dechnegol a phroffesiynol yn agored i bawb, a dylai fod mynediad llawn a chydradd i bawb i addysg uwchradd ar sail teilyngdod";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Y mae gan bawb hawl i addysg. Dylai addysg fod yn rhydd, o leiaf addysg elfennol a sylfaenol. Dylai addysg elfennol fod yn orfodol. Dylid gwneud addysg dechnegol a phroffesiynol yn agored i bawb, a dylai fod mynediad llawn a chydradd i bawb i addysg uwchradd ar sail teilyngdod",
+                Language::Welsh
             );
-        }
-
-        assert_eq!(Language::Welsh, language.unwrap());
     }
 
     #[test]
     fn test_welsh_2() {
-        let l = Lingo::new();
-        let sample = "Gan rieni y mae\'r hawl cyntaf i ddewis y math o addysg a roddir i\'w plant.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Welsh, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Gan rieni y mae\'r hawl cyntaf i ddewis y math o addysg a roddir i\'w plant.",
+            Language::Welsh,
+        );
     }
 
     #[test]
     fn test_gujarati_from_str() {
-        assert_eq!(Language::Gujarati.name(), "gujarati");
+        assert_eq!(Language::Gujarati.to_string(), "Gujarati".to_owned());
     }
 
     #[test]
     fn test_gujarati_1() {
-        let l = Lingo::new();
-        let sample = "પોતાનાં બાળકોને કયા પ્રકારનું શિક્ષણ આપવું તે પસંદ કરવાનો પ્રથમ અધિકાર માબાપોને રહેશે.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Gujarati, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "પોતાનાં બાળકોને કયા પ્રકારનું શિક્ષણ આપવું તે પસંદ કરવાનો પ્રથમ અધિકાર માબાપોને રહેશે.",
+            Language::Gujarati,
+        );
     }
 
     #[test]
     fn test_hungarian_from_str() {
-        assert_eq!(Language::Hungarian.name(), "hungarian");
+        assert_eq!(Language::Hungarian.to_string(), "Hungarian".to_owned());
     }
 
     #[test]
     fn test_hungarian_1() {
-        let l = Lingo::new();
-        let sample = "Minden személynek joga van a neveléshez. A nevelésnek, legalábbis az elemi és alapvető oktatást illetően, ingyenesnek kell lennie. Az elemi oktatás kötelező. A technikai és szakoktatást általánossá kell tenni; a felsőbb tanulmányokra való felvételnek mindenki előtt -érdeméhez képest- egyenlő feltételek mellett nyitva kell állnia.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Minden személynek joga van a neveléshez. A nevelésnek, legalábbis az elemi és alapvető oktatást illetően, ingyenesnek kell lennie. Az elemi oktatás kötelező. A technikai és szakoktatást általánossá kell tenni; a felsőbb tanulmányokra való felvételnek mindenki előtt -érdeméhez képest- egyenlő feltételek mellett nyitva kell állnia.",
+                Language::Hungarian
             );
-        }
-
-        assert_eq!(Language::Hungarian, language.unwrap());
     }
 
     #[test]
     fn test_hungarian_2() {
-        let l = Lingo::new();
-        let sample =
-            "A szülőket elsőbbségi jog illeti meg a gyermekeiknek adandó nevelés megválasztásában.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Hungarian, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "A szülőket elsőbbségi jog illeti meg a gyermekeiknek adandó nevelés megválasztásában.",
+            Language::Hungarian,
+        );
     }
 
     #[test]
     fn test_indonesian_from_str() {
-        assert_eq!(Language::Indonesian.name(), "indonesian");
+        assert_eq!(Language::Indonesian.to_string(), "Indonesian".to_owned());
     }
 
     #[test]
     fn test_indonesian_1() {
-        let l = Lingo::new();
-        let sample = " Setiap orang berhak mendapat pendidikan";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Indonesian, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            " Setiap orang berhak mendapat pendidikan",
+            Language::Indonesian,
+        );
     }
 
     #[test]
     fn test_indonesian_2() {
-        let l = Lingo::new();
-        let sample = "Orang-tua mempunyai hak utama untuk memilih jenis pendidikan yang akan diberikan kepada anak-anak mereka.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Orang-tua mempunyai hak utama untuk memilih jenis pendidikan yang akan diberikan kepada anak-anak mereka.",
+                Language::Indonesian
             );
-        }
-
-        assert_eq!(Language::Indonesian, language.unwrap());
     }
 
     #[test]
     fn test_indonesian_3() {
-        let l = Lingo::new();
-        let sample = "Pendidikan harus ditujukan ke arah perkembangan pribadi yang seluas-luasnya serta memperkokoh rasa penghargaan terhadap hak-hak manusia dan kebebasan asasi";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Pendidikan harus ditujukan ke arah perkembangan pribadi yang seluas-luasnya serta memperkokoh rasa penghargaan terhadap hak-hak manusia dan kebebasan asasi",
+                Language::Indonesian
             );
-        }
-
-        assert_eq!(Language::Indonesian, language.unwrap());
     }
 
     #[test]
     fn test_georgian_from_str() {
-        assert_eq!(Language::Georgian.name(), "georgian");
+        assert_eq!(Language::Georgian.to_string(), "Georgian".to_owned());
     }
 
     #[test]
     fn test_georgian_1() {
-        let l = Lingo::new();
-        let sample = "ყოველ ადამიანს აქვს განათლების უფლება. განათლება დაწყებითი და ზოგადი მაინც, უფასო უნდა იყოს. დაწყებითი განათლება უნდა იყოს სავალდებულო. ტექნიკური და პროფესიული განათლება უნდა იყოს ხელმისაწვდომი, უმაღლესი განათლება კი - ერთაირად მისაწვდომი ყველასათვის თითოეულის უნარისამბერ";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "ყოველ ადამიანს აქვს განათლების უფლება. განათლება დაწყებითი და ზოგადი მაინც, უფასო უნდა იყოს. დაწყებითი განათლება უნდა იყოს სავალდებულო. ტექნიკური და პროფესიული განათლება უნდა იყოს ხელმისაწვდომი, უმაღლესი განათლება კი - ერთაირად მისაწვდომი ყველასათვის თითოეულის უნარისამბერ",
+                Language::Georgian
             );
-        }
-
-        assert_eq!(Language::Georgian, language.unwrap());
     }
 
     #[test]
     fn test_georgian_2() {
-        let l = Lingo::new();
-        let sample = "მშობლებს აქვთ პრიორიტეტის უფლება აირჩიონ რა სახის განათლებაც სურთ თავიანთი მცირეწლოვანი შვილებისათვის.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "მშობლებს აქვთ პრიორიტეტის უფლება აირჩიონ რა სახის განათლებაც სურთ თავიანთი მცირეწლოვანი შვილებისათვის.",
+                Language::Georgian
             );
-        }
-
-        assert_eq!(Language::Georgian, language.unwrap());
     }
 
     #[test]
     fn test_icelandic_from_str() {
-        assert_eq!(Language::Icelandic.name(), "icelandic");
+        assert_eq!(Language::Icelandic.to_string(), "Icelandic".to_owned());
     }
 
     #[test]
     fn test_icelandic_1() {
-        let l = Lingo::new();
-        let sample = "Hver maður á rétt til menntunar. Skal hún veitt ókeypis, að minnsta kosti barnafræðsla og undirstöðummentu. Börn skulu vera skólaskyld. Iðnaðar- og verknám skal öllum standa til boða og æðri menntu vera öllum jafnfrjáls, þeim er hæfileika hafa til að njóta hennar.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Hver maður á rétt til menntunar. Skal hún veitt ókeypis, að minnsta kosti barnafræðsla og undirstöðummentu. Börn skulu vera skólaskyld. Iðnaðar- og verknám skal öllum standa til boða og æðri menntu vera öllum jafnfrjáls, þeim er hæfileika hafa til að njóta hennar.",
+                Language::Icelandic
             );
-        }
-
-        assert_eq!(Language::Icelandic, language.unwrap());
     }
 
     #[test]
     fn test_icelandic_2() {
-        let l = Lingo::new();
-        let sample = "Menntun skal beina í þá átt að þroska persónuleika einstaklinganna og innræta þeim virðingu fyrir mannréttindum og mannhelgi. Hún skal miða að því að efla skilning, umburðarlyndi og vináttu meðal allra þjóða, kynþátta og trúarflokka og að efla starf Sameinuðu þjóðanna í þágu friðarins.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Menntun skal beina í þá átt að þroska persónuleika einstaklinganna og innræta þeim virðingu fyrir mannréttindum og mannhelgi. Hún skal miða að því að efla skilning, umburðarlyndi og vináttu meðal allra þjóða, kynþátta og trúarflokka og að efla starf Sameinuðu þjóðanna í þágu friðarins.",
+                Language::Icelandic
             );
-        }
-
-        assert_eq!(Language::Icelandic, language.unwrap());
     }
 
     #[test]
     fn test_icelandic_3() {
-        let l = Lingo::new();
-        let sample =
-            "Foreldrar skulu fremur öðrum ráða, hverrar menntunar börn þeirra skuli njóta.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Icelandic, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Foreldrar skulu fremur öðrum ráða, hverrar menntunar börn þeirra skuli njóta.",
+            Language::Icelandic,
+        );
     }
 
     #[test]
     fn test_armenian_from_str() {
-        assert_eq!(Language::Armenian.name(), "armenian");
+        assert_eq!(Language::Armenian.to_string(), "Armenian".to_owned());
     }
 
     #[test]
     fn test_armenian_1() {
-        let l = Lingo::new();
-        let sample = "1Եթէ խօսեմ մարդկանց լեզուները եւ հրեշտակներինը, բայց սէր չունենամ, կը նմանուեմ մի պղնձի, որ հնչում է, կամ՝ ծնծղաների, որ ղօղանջում են։";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "1Եթէ խօսեմ մարդկանց լեզուները եւ հրեշտակներինը, բայց սէր չունենամ, կը նմանուեմ մի պղնձի, որ հնչում է, կամ՝ ծնծղաների, որ ղօղանջում են։",
+                Language::Armenian
             );
-        }
-
-        assert_eq!(Language::Armenian, language.unwrap());
     }
 
     #[test]
     fn test_armenian_2() {
-        let l = Lingo::new();
-        let sample = "եւ եթէ ունենամ ամբողջ հաւատը՝ մինչեւ իսկ լեռները տեղափոխելու չափ";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Armenian, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "եւ եթէ ունենամ ամբողջ հաւատը՝ մինչեւ իսկ լեռները տեղափոխելու չափ",
+            Language::Armenian,
+        );
     }
 
     #[test]
     fn test_euskara_from_str() {
-        assert_eq!(Language::Euskara.name(), "euskara");
+        assert_eq!(Language::Euskara.to_string(), "Euskara".to_owned());
     }
 
     #[test]
     fn test_euskara_1() {
-        let l = Lingo::new();
-        let sample = "Eskozia (ingelesez eta scotseraz Scotland; Eskoziako gaeleraz Alba) Erresuma Batua osatzen duten lau herrialdeetatik iparraldeena kokatzen dena da. Ingalaterra eta Galesekin batera Britainia Handiko Uhartea osatzen dute, Eskoziak lurralde honen heren bat hartzen du eta 790 uharte baino gehiago ditu. Ipar eta mendebaldean Ozeano Atlantikoarekin mugatzen du, ekialdean Ipar Itsasoarekin, hegoaldean Ingalaterrarekin eta azkenik hego-mendebaldean Iparraldeko kanala eta Irlandako itsasoarekin. Eskoziar lurraldea 78.772 km2-tan hedatzen da eta bere biztanleria gutxi-gorabehera 5.116.900 biztanletakoa da, honek km2-ko 65 biztanleko dentsitatea ematen duelarik. Hiriburua Edinburgh da, aldiz hiririk handiena Glasgow, azken honen hiriguneak eskoziar biztanlegoaren %20a osatzen duelarik.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Eskozia (ingelesez eta scotseraz Scotland; Eskoziako gaeleraz Alba) Erresuma Batua osatzen duten lau herrialdeetatik iparraldeena kokatzen dena da. Ingalaterra eta Galesekin batera Britainia Handiko Uhartea osatzen dute, Eskoziak lurralde honen heren bat hartzen du eta 790 uharte baino gehiago ditu. Ipar eta mendebaldean Ozeano Atlantikoarekin mugatzen du, ekialdean Ipar Itsasoarekin, hegoaldean Ingalaterrarekin eta azkenik hego-mendebaldean Iparraldeko kanala eta Irlandako itsasoarekin. Eskoziar lurraldea 78.772 km2-tan hedatzen da eta bere biztanleria gutxi-gorabehera 5.116.900 biztanletakoa da, honek km2-ko 65 biztanleko dentsitatea ematen duelarik. Hiriburua Edinburgh da, aldiz hiririk handiena Glasgow, azken honen hiriguneak eskoziar biztanlegoaren %20a osatzen duelarik.",
+                Language::Euskara
             );
-        }
-
-        assert_eq!(Language::Euskara, language.unwrap());
     }
 
     #[test]
     fn test_euskara_2() {
-        let l = Lingo::new();
-        let sample = "1707 urterarte Eskoziako Erresuma independientea izan zen, data honetan Britainia Handia sortzeko Ingalaterrarekin Batasun Agiria sinatu zelarik. Batasunak ez zuen Eskoziako berezko sistema legal edo judizialaren aldaketarik suposatu, hau ordudanik Gales, Ingalaterra eta Ipar Irlandakotik ezberdina delarik, honenbestez nazioarteko zuzenbidean erakunde juridiko ezberdintzat onartu eta hartzen da. Berezko legeen biziraupena jaso da, baita eskoziar kulturako zati diren hezkuntza eta erlijio sistema ezberdinak, hauek mendeetan zehar garatu direlarik. XIX. mendean sortua, eskoziar independentismoa eragina eta indarra pilatuz joan da, batez ere XX. mendearen amaieratik aurrera, eta Scottish National Party (SNP, Eskoziako Alderdi Nazionala) alderdia ordezkari duela. Alderdi horren helburu nagusia Eskoziaren independentzia da eta 2011ko Eskoziar Parlamenturako hauteskundeetan gehiengo absolutua lortu zuen.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "1707 urterarte Eskoziako Erresuma independientea izan zen, data honetan Britainia Handia sortzeko Ingalaterrarekin Batasun Agiria sinatu zelarik. Batasunak ez zuen Eskoziako berezko sistema legal edo judizialaren aldaketarik suposatu, hau ordudanik Gales, Ingalaterra eta Ipar Irlandakotik ezberdina delarik, honenbestez nazioarteko zuzenbidean erakunde juridiko ezberdintzat onartu eta hartzen da. Berezko legeen biziraupena jaso da, baita eskoziar kulturako zati diren hezkuntza eta erlijio sistema ezberdinak, hauek mendeetan zehar garatu direlarik. XIX. mendean sortua, eskoziar independentismoa eragina eta indarra pilatuz joan da, batez ere XX. mendearen amaieratik aurrera, eta Scottish National Party (SNP, Eskoziako Alderdi Nazionala) alderdia ordezkari duela. Alderdi horren helburu nagusia Eskoziaren independentzia da eta 2011ko Eskoziar Parlamenturako hauteskundeetan gehiengo absolutua lortu zuen.",
+                Language::Euskara
             );
-        }
-
-        assert_eq!(Language::Euskara, language.unwrap());
     }
 
     #[test]
     fn test_euskara_3() {
-        let l = Lingo::new();
-        let sample = "Meneame.net taldeko adimena erabiliz albisteak ezagutarazteko balio duen gaztelaniazko bloga da. Erregistratutako erabiltzaileek gainontzekoek (erregistratuta edo gabe) bozka ditzaketen albisteak bidal ditzakete webgunera, boto gehien dituzten albisteak azalera pasako direlarik. Proiektu honen garatzailea Ricardo Galli da, Balear Uharteetako Unibertsitateko irakaslea.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Meneame.net taldeko adimena erabiliz albisteak ezagutarazteko balio duen gaztelaniazko bloga da. Erregistratutako erabiltzaileek gainontzekoek (erregistratuta edo gabe) bozka ditzaketen albisteak bidal ditzakete webgunera, boto gehien dituzten albisteak azalera pasako direlarik. Proiektu honen garatzailea Ricardo Galli da, Balear Uharteetako Unibertsitateko irakaslea.",
+                Language::Euskara
             );
-        }
-
-        assert_eq!(Language::Euskara, language.unwrap());
     }
 
     #[test]
     fn test_euskara_4() {
-        let l = Lingo::new();
-        let sample = "Web 2.0 proiektu bat da, Digg.com-en ideia berean oinarrituz. Hala eta guztiz ere, azken honek ez bezala, karma bezalako kontzeptuak ere baditu. Karma erabiltzaile batek duen puntuazioa da, bere partehartzea eta lan onaren ondorioz handituz doana.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Web 2.0 proiektu bat da, Digg.com-en ideia berean oinarrituz. Hala eta guztiz ere, azken honek ez bezala, karma bezalako kontzeptuak ere baditu. Karma erabiltzaile batek duen puntuazioa da, bere partehartzea eta lan onaren ondorioz handituz doana.",
+                Language::Euskara
             );
-        }
-
-        assert_eq!(Language::Euskara, language.unwrap());
     }
 
     #[test]
     fn test_euskara_5() {
-        let l = Lingo::new();
-        let sample = "Meneame.neten oinarrituta, eta euskaraz, Zabaldu.com egitasmoa dugu.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Euskara, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Meneame.neten oinarrituta, eta euskaraz, Zabaldu.com egitasmoa dugu.",
+            Language::Euskara,
+        );
     }
 
     #[test]
     fn test_chinese_from_str() {
-        assert_eq!(Language::Chinese.name(), "chinese");
+        assert_eq!(Language::Chinese.to_string(), "Chinese".to_owned());
     }
 
     #[test]
     fn test_chinese_1() {
-        let l = Lingo::new();
-        let sample = "在欧冠小组赛第二轮与鲍里索夫（白俄罗斯球队）的对阵中，梅西独中两元，并造成对方打进一个乌龙球，最终使得巴塞5-0大胜对手。本场比赛后，梅西以194个进球，追平库巴拉成为巴塞罗那足球俱乐部历史上的第二射手。其後在作客捷克的比尔森胜利時再演帽子戲法協助球隊作客4比0大勝，本场比赛后，美斯突破200球。在主场5:0战胜利雲特的比赛中，梅西打入1球，本场比赛是梅西代表巴塞罗那一队正式参加的第292场的比赛，至此，梅西追平菲利普·科库，并列成为代表巴塞罗那俱乐部出场次数最多的外籍球员。";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "在欧冠小组赛第二轮与鲍里索夫（白俄罗斯球队）的对阵中，梅西独中两元，并造成对方打进一个乌龙球，最终使得巴塞5-0大胜对手。本场比赛后，梅西以194个进球，追平库巴拉成为巴塞罗那足球俱乐部历史上的第二射手。其後在作客捷克的比尔森胜利時再演帽子戲法協助球隊作客4比0大勝，本场比赛后，美斯突破200球。在主场5:0战胜利雲特的比赛中，梅西打入1球，本场比赛是梅西代表巴塞罗那一队正式参加的第292场的比赛，至此，梅西追平菲利普·科库，并列成为代表巴塞罗那俱乐部出场次数最多的外籍球员。",
+                Language::Chinese
             );
-        }
-
-        assert_eq!(Language::Chinese, language.unwrap());
     }
 
     #[test]
     fn test_persian_from_str() {
-        assert_eq!(Language::Persian.name(), "persian");
+        assert_eq!(Language::Persian.to_string(), "Persian".to_owned());
     }
 
     #[test]
     fn test_persian_1() {
-        let l = Lingo::new();
-        let sample = "ابوجعفر خازن خراسانی ستاره‌شناس و ریاضی‌دان ایرانی[۱] است که در قرن چهارم هجری قمری در خراسان می‌زیست. از او کتاب‌هایی در این دو علم در دست است. وی به کمک مقاطع مخروطی، معادلهٴ درجه سوم را که به معادلهٴ ماهانی موسوم است حل کرد. در مابین سال‌های ۹۶۱ و ۹۷۱ میلادی درگذشت.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "ابوجعفر خازن خراسانی ستاره‌شناس و ریاضی‌دان ایرانی[۱] است که در قرن چهارم هجری قمری در خراسان می‌زیست. از او کتاب‌هایی در این دو علم در دست است. وی به کمک مقاطع مخروطی، معادلهٴ درجه سوم را که به معادلهٴ ماهانی موسوم است حل کرد. در مابین سال‌های ۹۶۱ و ۹۷۱ میلادی درگذشت.",
+                Language::Persian
             );
-        }
-
-        assert_eq!(Language::Persian, language.unwrap());
     }
 
     #[test]
     fn test_persian_2() {
-        let l = Lingo::new();
-        let sample = "خراسان (خراسان بزرگ یا خراسان باستانی یا خراسان تاریخی) سرزمینی بزرگ‌تر از خراسان امروزی، بخشی از ایران بزرگ و از دوران ایران ساسانی نامی سنتی و همگانی برای اشاره به نواحی شرقی ایران است. ساسانیان سرزمین ایران را چهار بخش کرده بودند که یکی از آن بخش‌ها خراسان به معنای «سرزمین خورشید» بود.[۲][۳] گسترهٔ تاریخی خراسان بزرگ استان خراسان در ایران کنونی و بخش‌های شمالی و باختری افغانستان و ترکمنستان امروزی را در بر می‌گرفت. در مفهوم گسترده‌تر ازبکستان و تاجیکستان و بخش‌هایی از قرقیزستان و قزاقستان را هم می‌توان در خراسان بزرگ تاریخی برشمرد.[۴]";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "خراسان (خراسان بزرگ یا خراسان باستانی یا خراسان تاریخی) سرزمینی بزرگ‌تر از خراسان امروزی، بخشی از ایران بزرگ و از دوران ایران ساسانی نامی سنتی و همگانی برای اشاره به نواحی شرقی ایران است. ساسانیان سرزمین ایران را چهار بخش کرده بودند که یکی از آن بخش‌ها خراسان به معنای «سرزمین خورشید» بود.[۲][۳] گسترهٔ تاریخی خراسان بزرگ استان خراسان در ایران کنونی و بخش‌های شمالی و باختری افغانستان و ترکمنستان امروزی را در بر می‌گرفت. در مفهوم گسترده‌تر ازبکستان و تاجیکستان و بخش‌هایی از قرقیزستان و قزاقستان را هم می‌توان در خراسان بزرگ تاریخی برشمرد.[۴]",
+                Language::Persian
             );
-        }
-
-        assert_eq!(Language::Persian, language.unwrap());
     }
 
     #[test]
     fn test_japanese_from_str() {
-        assert_eq!(Language::Japanese.name(), "japanese");
+        assert_eq!(Language::Japanese.to_string(), "Japanese".to_owned());
     }
 
     #[test]
     fn test_japanese_1() {
-        let l = Lingo::new();
-        let sample = "どうした報道ステーション？OBとしてもあまりに悲しい「”女性を馬鹿にした”番組 ";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Japanese, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "どうした報道ステーション？OBとしてもあまりに悲しい「”女性を馬鹿にした”番組 ",
+            Language::Japanese,
+        );
     }
 
     #[test]
     fn test_japanese_2() {
-        let l = Lingo::new();
-        let sample = "呉座氏は、ベストセラー「応仁の乱」で知られる日本中世史が専門の歴史学者。「鎌倉殿の13人」は三谷幸喜さんが脚本を担当し、鎌倉幕府の2代執権北条義時を描く。主演の義時を小栗旬さんが演じる";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "呉座氏は、ベストセラー「応仁の乱」で知られる日本中世史が専門の歴史学者。「鎌倉殿の13人」は三谷幸喜さんが脚本を担当し、鎌倉幕府の2代執権北条義時を描く。主演の義時を小栗旬さんが演じる",
+                Language::Japanese
             );
-        }
-
-        assert_eq!(Language::Japanese, language.unwrap());
     }
 
     #[test]
     fn test_japanese_3() {
-        let l = Lingo::new();
-        let sample = "などと批判の声が上がっていた";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Japanese, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "などと批判の声が上がっていた",
+            Language::Japanese,
+        );
     }
 
     #[test]
     fn test_greek_from_str() {
-        assert_eq!(Language::Greek.name(), "greek");
+        assert_eq!(Language::Greek.to_string(), "Greek".to_owned());
     }
 
     #[test]
     fn test_greek_1() {
-        let l = Lingo::new();
-        let sample = "Τρεις Έλληνες που ζουν στο Ισραήλ περιγράφουν την πρώτη φάση επιστροφής στην κανονικότητα.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Τρεις Έλληνες που ζουν στο Ισραήλ περιγράφουν την πρώτη φάση επιστροφής στην κανονικότητα.",
+                Language::Greek
             );
-        }
-
-        assert_eq!(Language::Greek, language.unwrap());
     }
 
     #[test]
     fn test_greek_2() {
-        let l = Lingo::new();
-        let sample = "Κάτι που μοιάζει σαν αιωνιότητα –η πανδημία κορωνοϊού που «έσκασε» στα χέρια του πλανήτη πριν από περίπου έναν χρόνο";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Κάτι που μοιάζει σαν αιωνιότητα –η πανδημία κορωνοϊού που «έσκασε» στα χέρια του πλανήτη πριν από περίπου έναν χρόνο",
+                Language::Greek
             );
-        }
-
-        assert_eq!(Language::Greek, language.unwrap());
     }
 
     #[test]
     fn test_hindi_from_str() {
-        assert_eq!(Language::Hindi.name(), "hindi");
+        assert_eq!(Language::Hindi.to_string(), "Hindi".to_owned());
     }
 
     #[test]
     fn test_hindi_1() {
-        let l = Lingo::new();
-        let sample = "नई दिल्ली, एजेंसी। उत्तर भारत के पहाड़ी राज्यों में पिछले 2 दिनों से भारी बारिश और बर्फबारी हो रही है। जम्मू और कश्मीर के ऊपर बना पश्चिमी विक्षोभ पूर्वी दिशा में आगे बढ़ता रहेगा। साथ ही चक्रवाती सिस्टम हरियाणा और दिल्ली के ऊपर पहुंच जाएगा। स्काईमेट वेदर के मुताबिक इन दोनों सिस्टमों के कारण उत्तर भारत के पहाड़ी राज्यों के साथ-साथ मैदानी इलाकों में आज भी मौसमी गतिविधियां जारी रहेंगी और कुछ हिस्सों में ओलावृष्टि की संभावना है। राजस्थान के बाद पंजाब, हरियाणा और दिल्ली समेत उत्तर के मैदानी इलाकों से गुरुवार से मौसम साफ हो जाएगा। पहाड़ों पर गतिविधियां जारी रहेंगी और 25 मार्च से मौसम साफ होने की संभावना है।,";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "नई दिल्ली, एजेंसी। उत्तर भारत के पहाड़ी राज्यों में पिछले 2 दिनों से भारी बारिश और बर्फबारी हो रही है। जम्मू और कश्मीर के ऊपर बना पश्चिमी विक्षोभ पूर्वी दिशा में आगे बढ़ता रहेगा। साथ ही चक्रवाती सिस्टम हरियाणा और दिल्ली के ऊपर पहुंच जाएगा। स्काईमेट वेदर के मुताबिक इन दोनों सिस्टमों के कारण उत्तर भारत के पहाड़ी राज्यों के साथ-साथ मैदानी इलाकों में आज भी मौसमी गतिविधियां जारी रहेंगी और कुछ हिस्सों में ओलावृष्टि की संभावना है। राजस्थान के बाद पंजाब, हरियाणा और दिल्ली समेत उत्तर के मैदानी इलाकों से गुरुवार से मौसम साफ हो जाएगा। पहाड़ों पर गतिविधियां जारी रहेंगी और 25 मार्च से मौसम साफ होने की संभावना है।,",
+                Language::Hindi
             );
-        }
-
-        assert_eq!(Language::Hindi, language.unwrap());
     }
 
     #[test]
     fn test_hindi_2() {
-        let l = Lingo::new();
-        let sample = "परमबीर सिंह की याचिका पर सुप्रीम कोर्ट में आज सुनवाई, सीबीआइ जांच की मांग";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Hindi, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "परमबीर सिंह की याचिका पर सुप्रीम कोर्ट में आज सुनवाई, सीबीआइ जांच की मांग",
+            Language::Hindi,
+        );
     }
 
     #[test]
     fn test_russian_from_str() {
-        assert_eq!(Language::Russian.name(), "russian");
+        assert_eq!(Language::Russian.to_string(), "Russian".to_owned());
     }
 
     #[test]
     fn test_russian_1() {
-        let l = Lingo::new();
-        let sample = "Болеющий коронавирусом Иван Ургант продолжил работать";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Russian, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Болеющий коронавирусом Иван Ургант продолжил работать",
+            Language::Russian,
+        );
     }
 
     #[test]
     fn test_russian_2() {
-        let l = Lingo::new();
-        let sample = "Телеведущий сказал, что он сидит на даче один в самоизоляции после получения положительного теста на коронавирус - семьи с ним нет.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Телеведущий сказал, что он сидит на даче один в самоизоляции после получения положительного теста на коронавирус - семьи с ним нет.",
+                Language::Russian
             );
-        }
-
-        assert_eq!(Language::Russian, language.unwrap());
     }
 
     #[test]
     fn test_vietnamese_from_str() {
-        assert_eq!(Language::Vietnamese.name(), "vietnamese");
+        assert_eq!(Language::Vietnamese.to_string(), "Vietnamese".to_owned());
     }
 
     #[test]
     fn test_vietnamese_1() {
-        let l = Lingo::new();
-        let sample = "Dự án Grand Marina Saigon \'chào sân\' thị trường quốc tế";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
-            );
-        }
-
-        assert_eq!(Language::Vietnamese, language.unwrap());
+        test_expected_language(
+            Lingo::new(),
+            "Dự án Grand Marina Saigon \'chào sân\' thị trường quốc tế",
+            Language::Vietnamese,
+        );
     }
 
     #[test]
     fn test_vietnamese_2() {
-        let l = Lingo::new();
-        let sample = "Đại sứ EU nói Việt Nam là nước có tiềm năng được chuyển giao công nghệ sản xuất vaccine Covid-19, dù vấn đề này chưa được thảo luận.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Đại sứ EU nói Việt Nam là nước có tiềm năng được chuyển giao công nghệ sản xuất vaccine Covid-19, dù vấn đề này chưa được thảo luận.",
+                Language::Vietnamese
             );
-        }
-
-        assert_eq!(Language::Vietnamese, language.unwrap());
     }
 
     #[test]
     fn test_vietnamese_3() {
-        let l = Lingo::new();
-        let sample = "Dự án căn hộ hạng sang Grand Marina Saigon được nhà phát triển Masterise Homes giới thiệu tại Hong Kong, mở đường chinh phục nhà đầu tư quốc tế.";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "Dự án căn hộ hạng sang Grand Marina Saigon được nhà phát triển Masterise Homes giới thiệu tại Hong Kong, mở đường chinh phục nhà đầu tư quốc tế.",
+                Language::Vietnamese
             );
-        }
-
-        assert_eq!(Language::Vietnamese, language.unwrap());
     }
 
     #[test]
     fn test_urdu_from_str() {
-        assert_eq!(Language::Urdu.name(), "urdu");
+        assert_eq!(Language::Urdu.to_string(), "Urdu".to_owned());
     }
 
     #[test]
     fn test_urdu_1() {
-        let l = Lingo::new();
-        let sample = "سعودی محکمہ پاسپورٹ نے سعودی شہریوں اور مقیم غیرملکیوں سے پھر کہا ہے کہ وہ مملکت کے تمام علاقوں میں محکمہ پاسپورٹ کے ڈائریکٹر جنرل سے ویڈیو کالنگ سروس سے استفادہ کریں۔ ";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "سعودی محکمہ پاسپورٹ نے سعودی شہریوں اور مقیم غیرملکیوں سے پھر کہا ہے کہ وہ مملکت کے تمام علاقوں میں محکمہ پاسپورٹ کے ڈائریکٹر جنرل سے ویڈیو کالنگ سروس سے استفادہ کریں۔ ",
+                Language::Urdu
             );
-        }
-
-        assert_eq!(Language::Urdu, language.unwrap());
     }
 
     #[test]
     fn test_urdu_2() {
-        let l = Lingo::new();
-        let sample = "سیدتی میگزین کے مطابق محکمہ پاسپورٹ نے ٹوئٹر کے اکاؤنٹ پر کہا کہ سعودی عرب کے تمام علاقوں کے پاسپورٹ دفاتر میں ڈائریکٹر جنرل سے وڈیو کال کی سہولت مقامی شہریوں اور مقیم غیرملکیوں کو ڈیجیٹل پلیٹ فارمز کے ذریعے خدمات کا معیار بہتر بنانے کی غرض سے متعارف کرائی گئی ہے۔";
-        let language = l.get_language(sample);
-
-        if language.is_none() {
-            panic!(
-                "{} -> {}",
-                sample,
-                l.get_languages(sample)
-                    .unwrap()
-                    .iter()
-                    .map(|l| l.0.name())
-                    .collect::<Vec<&str>>()
-                    .join(", ")
+        test_expected_language(
+                Lingo::new(),
+                "سیدتی میگزین کے مطابق محکمہ پاسپورٹ نے ٹوئٹر کے اکاؤنٹ پر کہا کہ سعودی عرب کے تمام علاقوں کے پاسپورٹ دفاتر میں ڈائریکٹر جنرل سے وڈیو کال کی سہولت مقامی شہریوں اور مقیم غیرملکیوں کو ڈیجیٹل پلیٹ فارمز کے ذریعے خدمات کا معیار بہتر بنانے کی غرض سے متعارف کرائی گئی ہے۔",
+                Language::Urdu
             );
-        }
-
-        assert_eq!(Language::Urdu, language.unwrap());
     }
 }
