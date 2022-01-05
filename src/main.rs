@@ -10,8 +10,8 @@ fn main() {
         .expect("failed to read from pipe");
 
     let lang = match lingo.get_language(&input) {
-        Some(l) => l.name(),
-        _ => "Unknown",
+        Some(l) => l.to_string(),
+        _ => "Unknown".to_string(),
     };
 
     println!("Language: {}", lang);

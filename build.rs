@@ -9,7 +9,7 @@ use std::io::Read;
 use std::io::Write;
 use std::process::Command;
 use tera::{Context, Tera};
-use textcat::storage::learn_from_directory;
+use textcat::category::learn_from_directory;
 
 #[derive(Deserialize, Serialize)]
 struct Fixture {
@@ -42,7 +42,7 @@ fn get_latest_changed_file() -> i64 {
         return 0;
     }
 
-    times.sort_by(|a, b| b.cmp(&a));
+    times.sort_by(|a, b| b.cmp(a));
 
     times[0]
 }

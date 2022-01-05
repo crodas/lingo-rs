@@ -5,27 +5,20 @@
 /// by build.rs
 use crate::{stopwords::StopwordsTrait, stemmer::StemmerTrait};
 use rust_stemmers::{Algorithm, Stemmer};
-use std::collections::HashSet;
-use std::str::FromStr;
+use serde::{Deserialize, Serialize};
+use std::{collections::HashSet, str::FromStr};
 use stopwords::{Stopwords, NLTK};
 use strum::IntoEnumIterator;
 use strum_macros::{Display, EnumIter};
-use textcat::storage::FileContent;
+use textcat::category::Categories;
 
-#[derive(Clone, Debug, EnumIter, Eq, Display, PartialEq, Hash, Ord, PartialOrd)]
+#[derive(Clone, Debug, EnumIter, Eq, Display, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
 pub enum Language {
     {% for lang in languages %}
         {{lang|capitalize}},{% endfor %}
 }
 
 impl Language {
-    pub fn name(&self) -> &'static str {
-        match self {
-            {% for lang in languages %}
-            Self::{{lang|capitalize}} => "{{lang}}",{% endfor %}
-        }
-    }
-
     pub fn all() -> HashSet<Language> {
         Language::iter().collect()
     }
@@ -65,63 +58,54 @@ impl FromStr for Language {
 }
 
 pub struct Lingo {
-    built_in: FileContent,
+    inner: Categories<Language>,
 }
 
 #[allow(clippy::new_without_default)]
 impl Lingo {
     pub fn new() -> Self {
         Lingo {
-            built_in: Self::get_embed_languages(),
+            inner: Self::get_embed_languages(),
         }
     }
     
     pub fn get_language(&self, sample: &str) -> Option<Language> {
-        self.built_in
-            .get_category(sample)
-            .map(|r| Language::from_str(r.as_str()).unwrap())
+        self.inner.get_category(sample)
     }
 
     pub fn get_languages(&self, sample: &str) -> Option<Vec<(Language, u64)>> {
-        Some(self.built_in
-            .get_categories(sample)?
-            .iter()
-            .map(|r| (Language::from_str(&r.0).unwrap(), r.1))
-            .collect()
-        )
+        self.inner.get_categories(sample)
     }
 
-    #[allow(unused_must_use)]
     #[allow(clippy::invisible_characters)]
-    pub fn get_embed_languages() -> FileContent {
-        let mut f = FileContent::from_vec(vec![
+    pub fn get_embed_languages() -> Categories<Language> {
+        let mut f: Categories<Language> = vec![
         {% for c in ngrams %}
             (
-                Language::{{c.0|capitalize}}.name(),
+                Language::{{c.0|capitalize}},
                 vec![
                 {% for ngram in c.1|slice(end=400) %}
                     "{{ngram}}",{% endfor %}
                 ]
             ),{% endfor %}
-        ]
-        );
+        ].into();
 
         // The more languages we support the less lower the threshold needs to be
-        f.set_threshold(0.01);
+        let _ = f.set_threshold(0.01);
 
         f
     }
 }
 
+#[cfg(test)]
 mod test {
-    #[allow(unused_imports)]
     use crate::{Language, Lingo, Stopwords, Stemmer};
 
     #[test]
     fn test_english_stopwords() {
         let stopwords = Language::English.stopwords();
         assert_eq!(true, stopwords.is_some());
-        assert_eq!(true, 100 < stopwords.unwrap().len());
+        assert_eq!(true, 100 < stopwords.expect("stopwords").len());
     }
 
     #[test]
@@ -142,31 +126,39 @@ mod test {
         assert_eq!(true, stopwords.is_none());
     }
 
+    fn test_expected_language(l: Lingo, sample: &str, expected: Language) {
+        if let Some(language) = l.get_language(sample) {
+            assert_eq!(
+                expected,
+                language
+            );
+        } else {
+            panic!(
+                "{} -> {}",
+                sample,
+                if let Some(candidates) = l.get_languages(sample) {
+                    candidates.iter().map(|l| l.0.to_string()).collect::<Vec<String>>().join(", ")
+                } else {
+                    "no candidate".into()
+                }
+            );
+        }
+    }
+
     {% for test in tests %}
         #[test]
         fn test_{{test['category']}}_from_str() {
-            assert_eq!(Language::{{test['category']|capitalize}}.name(), "{{test['category']|addslashes}}");
+            assert_eq!(Language::{{test['category']|capitalize}}.to_string(), "{{test['category']|capitalize}}".to_owned());
         }
 
         {% set i = loop.index %}
         {% for text in test['fixtures'] %}
         #[test]
         fn test_{{test['category']}}_{{loop.index}}() {
-            let l = Lingo::new();
-            let sample = "{{text|addslashes}}";
-            let language = l.get_language(sample);
-
-            if language.is_none() {
-                panic!(
-                    "{} -> {}",
-                    sample,
-                    l.get_languages(sample).unwrap().iter().map(|l| l.0.name()).collect::<Vec<&str>>().join(", ")
-                );
-            }
-
-            assert_eq!(
-                Language::{{test['category']|capitalize}},
-                language.unwrap()
+            test_expected_language(
+                Lingo::new(),
+                "{{text|addslashes}}",
+                Language::{{test['category']|capitalize}}
             );
         }
         {% endfor %}
